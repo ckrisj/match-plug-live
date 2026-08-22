@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "menu": "Left menu",
+  "items": [
+    {
+      "id": 5682,
+      "title": "Today's football tips",
+      "url": "http://matchplug.com",
+      "slug": "",
+      "parent": "0",
+      "object": "custom"
+    },
+    {
+      "id": 5688,
+      "title": "Past predictions",
+      "url": "http://localhost:8080/blog/category/football-prediction/",
+      "slug": "football-prediction",
+      "parent": "0",
+      "object": "category"
+    },
+    {
+      "id": 5679,
+      "title": "Match Previews",
+      "url": "http://localhost:8080/blog/category/match-preview/",
+      "slug": "match-preview",
+      "parent": "0",
+      "object": "category"
+    },
+    {
+      "id": 5686,
+      "title": "Football News",
+      "url": "http://localhost:8080/blog/category/football-news/",
+      "slug": "football-news",
+      "parent": "0",
+      "object": "category"
+    },
+    {
+      "id": 5684,
+      "title": "Others",
+      "url": "http://localhost:8080/blog/category/others/",
+      "slug": "others",
+      "parent": "0",
+      "object": "category"
+    }
+  ]
+}

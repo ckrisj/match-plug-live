@@ -1,0 +1,108 @@
+// Proxy to fetch single blog details by post id
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET() {
+  // ...implement actual logic here...
+  return NextResponse.json({
+    success: true,
+    menu: "footerMenu",
+    items: [
+      {
+        id: 10311,
+        title: "Premier League Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/premier-league/",
+        slug: "premier-league",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10312,
+        title: "Italian Serie A Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/serie-a/",
+        slug: "serie-a",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10314,
+        title: "German Bundesliga Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/bundesliga/",
+        slug: "bundesliga",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10315,
+        title: "Spanish La Liga Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/la-liga/",
+        slug: "la-liga",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10316,
+        title: "French Ligue Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/ligue-1/",
+        slug: "ligue-1",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10317,
+        title: "Europa League Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/europa-league/",
+        slug: "europa-league",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10321,
+        title: "FA Cup Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/fa-cup/",
+        slug: "fa-cup",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10323,
+        title: "European League Predictions",
+        url: "http://localhost:8080/blog/category/european-league/",
+        slug: "european-league",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10325,
+        title: "MLS Predictions",
+        url: "http://localhost:8080/blog/category/match-preview/mls/",
+        slug: "mls",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10326,
+        title: "Qatar World Cup 2022 Predictions",
+        url: "http://localhost:8080/blog/category/football-news/fifa-world-cup/",
+        slug: "fifa-world-cup",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10309,
+        title: "American Sports News",
+        url: "http://localhost:8080/blog/category/football-news/american-sport-football-news/",
+        slug: "american-sport-football-news",
+        parent: "0",
+        object: "category",
+      },
+      {
+        id: 10330,
+        title: "Fantasy",
+        url: "http://localhost:8080/blog/category/match-preview/fantasy/",
+        slug: "fantasy",
+        parent: "0",
+        object: "category",
+      },
+    ],
+  });
+}

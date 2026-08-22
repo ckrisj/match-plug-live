@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npx tsc --noEmit -p tsconfig.json 2>&1)",
+      "PowerShell($p = Get-Content package.json -Raw | ConvertFrom-Json; $p.scripts.dev; Test-Path node_modules/.bin/next.cmd)",
+      "PowerShell($mods = @\\('playwright','puppeteer','puppeteer-core','@playwright/test'\\); foreach\\($m in $mods\\){ if\\(Test-Path \"node_modules/$m\"\\){ \"FOUND: $m\" } }; \"done\")",
+      "PowerShell(npm view next dist-tags 2>&1)",
+      "PowerShell(npm view \"next@15\" version 2>&1)",
+      "PowerShell(\"---15.x latest---\")",
+      "PowerShell(\\(Get-Content node_modules/nuqs/package.json -Raw | ConvertFrom-Json\\).version; \"--- adapters ---\"; if \\(Test-Path node_modules/nuqs/dist/adapters\\) { Get-ChildItem node_modules/nuqs/dist/adapters | Select-Object -ExpandProperty Name } ; \"--- pnpm ---\"; try { pnpm --version } catch { \"no pnpm\" })",
+      "PowerShell(pnpm install --lockfile-only 2>&1)",
+      "PowerShell(pnpm install 2>&1)",
+      "PowerShell(\"=== next version in lock ===\")",
+      "PowerShell($env:NEXT_TELEMETRY_DISABLED=1; pnpm build 2>&1 | Select-Object -Last 45)",
+      "PowerShell($env:NEXT_TELEMETRY_DISABLED=1; pnpm build 2>&1 | Select-Object -Last 35)",
+      "PowerShell(\"=== next in package.json ===\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(command -v chromium-cli)",
+      "Bash(command -v chromium)",
+      "Bash(command -v chrome)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(git stash *)",
+      "Bash(curl -s -o /dev/null \"http://localhost:3000/?bust=99\" -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" \"http://localhost:3000/?final=1\")",
+      "Bash(curl -s \"http://localhost:3000/?final=1\")",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" \"http://localhost:3000/?fn=1\")",
+      "Bash(curl -s \"http://localhost:3000/?t=1\" -o /dev/null -w \"status=%{http_code}\\\\n\")",
+      "Bash(curl -s \"http://localhost:3000/?t=1\")",
+      "Bash(curl -s \"http://localhost:3000/?t=2\")",
+      "Bash(curl -s \"http://localhost:3000/?r=1\" -o /dev/null -w \"status=%{http_code}\\\\n\")",
+      "Bash(curl -s \"http://localhost:3000/?r=1\")",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3000/?img=1\")",
+      "Bash(curl -s -o /dev/null -w \"http=%{http_code} type=%{content_type} bytes=%{size_download}\\\\n\" \"http://localhost:3000/a3.png\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3000/?copy=1\")",
+      "Bash(curl -s \"http://localhost:3000/?copy=1\")",
+      "Bash(curl -s \"http://localhost:3000/?copy=2\")",
+      "Bash(curl -s \"http://localhost:3000/?copy=2\" -o page.html)"
+    ]
+  }
+}

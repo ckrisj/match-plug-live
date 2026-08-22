@@ -1,0 +1,66 @@
+// Proxy for magazine grid important posts
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET() {
+  // ...implement actual logic here...
+  return NextResponse.json({
+    success: true,
+    data: [
+      {
+        id: 34194,
+        title: "Yesplay in SA: Licence, games &amp; payouts",
+        date: "2025-08-29T15:49:58+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image: false,
+        categories: ["betting tips"],
+      },
+      {
+        id: 34149,
+        title:
+          "Football Prediction Today: Leeds United vs Newcastle United Sure Tips",
+        date: "2025-08-29T13:41:14+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image:
+          "http://localhost:8080/blog/wp-content/uploads/2025/08/football-prediction-today-leeds-united-vs-sheffield-united-300x171.png",
+        categories: ["Match Preview", "Premier League"],
+      },
+      {
+        id: 34151,
+        title: "Football Prediction Today: Middlesbrough vs Sheffield United",
+        date: "2025-08-29T13:34:40+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image:
+          "http://localhost:8080/blog/wp-content/uploads/2025/08/football-prediction-today-middlesbrough-vs-sheffield-united-300x171.png",
+        categories: ["Champions League", "Match Preview"],
+      },
+      {
+        id: 34153,
+        title: "Football Prediction Today: Stoke City vs West Brom",
+        date: "2025-08-29T13:25:52+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image:
+          "http://localhost:8080/blog/wp-content/uploads/2025/08/football-prediction-today-stoke-city-vs-west-brom-300x171.png",
+        categories: ["Champions League", "Match Preview"],
+      },
+      {
+        id: 34147,
+        title: "Football Prediction Today: Tottenham vs Bournemouth Sure Tips",
+        date: "2025-08-29T13:08:46+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image:
+          "http://localhost:8080/blog/wp-content/uploads/2025/08/football-prediction-today-tottenham-vs-bournemouth-1-300x171.png",
+        categories: ["Match Preview", "Premier League"],
+      },
+      {
+        id: 34145,
+        title: "Football Prediction Today: Man United vs Burnley Sure Tips",
+        date: "2025-08-29T12:28:28+01:00",
+        author: { id: "4", name: "Jane Njoku" },
+        featured_image:
+          "http://localhost:8080/blog/wp-content/uploads/2025/08/football-prediction-today-man-utd-vs-burnley-300x171.png",
+        categories: ["Match Preview", "Premier League"],
+      },
+    ],
+    meta: { total: 5852, pages: 976, current_page: 1 },
+  });
+}

@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "id": 33749,
+      "title": "Japan\u2019s Ritsu Doan signs for Frankfurt from Freiburg",
+      "link": "http://localhost:8080/blog/japans-ritsu-doan-signs-for-frankfurt-from-freiburg/",
+      "date": "August 11, 2025",
+      "image": "http://localhost:8080/blog/wp-content/uploads/2025/08/japan-ritsu-doan-signs-for-frankfurt-from-freiburg-300x200.jpg",
+      "author": {
+        "id": "4",
+        "name": "Jane Njoku",
+        "image": "https://secure.gravatar.com/avatar/d52c1219bd3dbcf74203e1c9c5df50f1c4b00d9bf4e20af18533f2747c20ec9a?s=96&d=mm&r=g",
+        "link": "http://localhost:8080/blog/author/jane/"
+      }
+    },
+    {
+      "id": 32941,
+      "title": "Liverpool Sign Goalkeeper Freddie Woodman on Free Transfer",
+      "link": "http://localhost:8080/blog/liverpool-sign-goalkeeper-freddie-woodman-on-free-transfer/",
+      "date": "July 2, 2025",
+      "image": "http://localhost:8080/blog/wp-content/uploads/2025/06/liverpool-sign-freddie-woodman-300x200.png",
+      "author": {
+        "id": "4",
+        "name": "Jane Njoku",
+        "image": "https://secure.gravatar.com/avatar/d52c1219bd3dbcf74203e1c9c5df50f1c4b00d9bf4e20af18533f2747c20ec9a?s=96&d=mm&r=g",
+        "link": "http://localhost:8080/blog/author/jane/"
+      }
+    },
+    {
+      "id": 32554,
+      "title": "Fanatics Fest NYC Returns June 20\u201322",
+      "link": "http://localhost:8080/blog/fanatics-fest-nyc-returns-june-20-22/",
+      "date": "June 11, 2025",
+      "image": "http://localhost:8080/blog/wp-content/uploads/2025/06/fanatic-fest-nyc-returns-in-june-300x171.png",
+      "author": {
+        "id": "4",
+        "name": "Jane Njoku",
+        "image": "https://secure.gravatar.com/avatar/d52c1219bd3dbcf74203e1c9c5df50f1c4b00d9bf4e20af18533f2747c20ec9a?s=96&d=mm&r=g",
+        "link": "http://localhost:8080/blog/author/jane/"
+      }
+    },
+    {
+      "id": 32599,
+      "title": "Haliburton Stunning Rise Headlines 2025 NBA Finals",
+      "link": "http://localhost:8080/blog/haliburton-stunning-rise-headlines-2025-nba-finals/",
+      "date": "June 10, 2025",
+      "image": "http://localhost:8080/blog/wp-content/uploads/2025/06/halliburton-300x171.png",
+      "author": {
+        "id": "4",
+        "name": "Jane Njoku",
+        "image": "https://secure.gravatar.com/avatar/d52c1219bd3dbcf74203e1c9c5df50f1c4b00d9bf4e20af18533f2747c20ec9a?s=96&d=mm&r=g",
+        "link": "http://localhost:8080/blog/author/jane/"
+      }
+    }
+  ],
+  "found": 13,
+  "pages": 4
+}
