@@ -21,7 +21,7 @@ export function useGetData<T extends Record<string, any>>({
     queryKey: key,
     queryFn: async () => {
       const { data } = await axios.get<T>(
-        `${process.env.NEXT_PUBLIC_BLOG_API_URL}/blog/wp-json/next/v1/${path}`,
+        `${process.env.NEXT_PUBLIC_BLOG_API_URL}/wp-json/next/v1/${path}`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_BLOG_API_KEY}`,
