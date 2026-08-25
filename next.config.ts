@@ -2,7 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["matchplug.com", "localhost", "user.matchplug.com"],
+    domains: ["matchplug.com", "localhost", "user.matchplug.com","wp.matchplug.com"],
   },
   // async rewrites() {
   //   return [
