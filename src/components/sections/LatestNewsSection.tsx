@@ -73,7 +73,7 @@ export function BlogCard({ title, id, content, featured_image, slug }: Post) {
     <div className="max-w-6xl w-full bg-white rounded-2xl p-6 flex flex-col md:flex-row gap-6 mx-auto shadow-lg">
       <div className="w-full md:w-[300px] flex-shrink-0">
         <Image
-          src={featured_image ?? ""}
+          src={featured_image ?? "https://wp.matchplug.com/wp-content/uploads/2026/08/person.webp"}
           alt={title}
           width={300}
           height={300}
