@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "matchplug.stage2production.com",
+        hostname: "wp.matchplug.com",
         pathname: "/wp-content/uploads/**",
       },
     ],
