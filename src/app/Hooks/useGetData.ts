@@ -1,3 +1,4 @@
+import { API_URL } from "@/components/utils/constant";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -21,7 +22,7 @@ export function useGetData<T extends Record<string, any>>({
     queryKey: key,
     queryFn: async () => {
       const { data } = await axios.get<T>(
-        `${process.env.NEXT_PUBLIC_BLOG_API_URL}/wp-json/next/v1/${path}`,
+        `${API_URL}/wp-json/next/v1/${path}`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_BLOG_API_KEY}`,

@@ -51,14 +51,11 @@ const Heading: React.FC<{ level: number; children: React.ReactNode }> = ({
 };
 
 // Main component
-const HaalandArticle: React.FC<HaalandArticleProps> = ({ content }) => {
+const HaalandArticleForCat: React.FC<HaalandArticleProps> = ({ content }) => {
   const cleanHtml = DOMPurify.sanitize(content, {
     ADD_ATTR: ["fetchpriority"],
   });
-  const updatedHtml = cleanHtml.replaceAll(
-    "https://wp.matchplug.com/",
-    "https://matchplug.com/blog/",
-  );
+
   const options: HTMLReactParserOptions = {
     replace: (domNode: DOMNode) => {
       if (!domNode || domNode.type !== "tag") return;
@@ -99,10 +96,10 @@ const HaalandArticle: React.FC<HaalandArticleProps> = ({ content }) => {
   };
 
   return (
-    <article className="prose lg:prose-xl max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-sm">
-      {parse(updatedHtml, options)}
+    <article className="prose lg:prose-xl max-w-4xl mx-auto   rounded-2xl">
+      {parse(cleanHtml, options)}
     </article>
   );
 };
 
-export default HaalandArticle;
+export default HaalandArticleForCat;

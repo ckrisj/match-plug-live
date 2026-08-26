@@ -63,7 +63,6 @@ export function BlogCard({ title, id, content, featured_image, slug }: Post) {
   const [expanded, setExpanded] = useState(false);
 
   const router = useRouter();
-
   const handleViewMore = () => {
     handleClick(id);
     router.push(`/blog/${slug}`);
@@ -73,7 +72,7 @@ export function BlogCard({ title, id, content, featured_image, slug }: Post) {
     <div className="max-w-6xl w-full bg-white rounded-2xl p-6 flex flex-col md:flex-row gap-6 mx-auto shadow-lg">
       <div className="w-full md:w-[300px] flex-shrink-0">
         <Image
-          src={featured_image ?? "https://wp.matchplug.com/wp-content/uploads/2026/08/person.webp"}
+          src={featured_image || "/person.webp"}
           alt={title}
           width={300}
           height={300}
@@ -157,7 +156,7 @@ const LatestNewsSection: React.FC = () => {
 
   const defaultCategory = useMemo(() => {
     return data?.data?.find(
-      ({ category }) => category.name === "Premier League"
+      ({ category }) => category.name === "Premier League",
     );
   }, [data]);
 
@@ -167,7 +166,7 @@ const LatestNewsSection: React.FC = () => {
       : [];
   }, [data?.data]);
 
-  const [activeCategory, setActiveCategory] = useState<number>(0)
+  const [activeCategory, setActiveCategory] = useState<number>(0);
 
   useMemo(() => {
     if (filtredCategories.length) {
@@ -178,6 +177,7 @@ const LatestNewsSection: React.FC = () => {
   const filteredPosts = useMemo(() => {
     return data?.data?.find(({ category }) => category.id === activeCategory);
   }, [data?.data, activeCategory]);
+  console.log("filteredPosts", filteredPosts);
 
   return (
     <section

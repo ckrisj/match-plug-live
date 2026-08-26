@@ -4,8 +4,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { handleClick } from "../utils/helper";
-import { useGetData } from "@/app/Hooks/useGetData";
+import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import { Loader } from "./Loader";
+import { formatDate } from "./BlogPage";
 
 type Author = {
   id: string;
@@ -28,12 +29,20 @@ type Data = {
   data: Article[];
 };
 
-export function LatestStories() {
-  const { data, isFetching } = useGetData<Data>({
-    path: "posts-by-category?category=trending-news&per_page=4",
-    key: ["post-by-category", "trending-news", 4],
+export function LatestStories({ categories }: { categories: string[] }) {
+  const categoryIds = categories?.join(",");
+  const { data: response, isFetching }: any = useGetData<Data>({
+    key: ["post-by-category", categoryIds, 1, 4],
+    path: "posts",
+    params: {
+      per_page: 4,
+      page: 1,
+      categories: categoryIds,
+      orderby: "date",
+      order: "desc",
+    },
   });
-
+  const posts = response?.data || [];
   if (isFetching) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -42,7 +51,7 @@ export function LatestStories() {
     );
   }
 
-  if (!isFetching && !data?.data.length) {
+  if (!isFetching && (!posts || posts?.length === 0)) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
         No Data Found
@@ -57,7 +66,7 @@ export function LatestStories() {
       </h2>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
-        {data?.data.map((item) => (
+        {posts?.map((item: any) => (
           <Link
             key={item.id}
             onClick={() => {
@@ -72,25 +81,31 @@ export function LatestStories() {
             <div>
               <div className="relative w-full h-48 md:h-46">
                 <img
-                  src={item?.image}
-                  alt={item?.title}
+                  src={item?.jetpack_featured_media_url || "/person.webp"}
+                  alt={item?.title?.rendered}
                   style={{
                     height: "150px",
                     width: "100%",
                     objectFit: "cover",
                   }}
-                  className=""
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/person.webp";
+                  }}
                 />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-lg line-clamp-2">
                   <p
                     className="hover:text-blue-600"
-                    dangerouslySetInnerHTML={{ __html: item?.title }}
+                    dangerouslySetInnerHTML={{ __html: item?.title?.rendered }}
                   ></p>
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">{item?.date}</p>
-                <div className="flex items-center mt-3 gap-2">
+                <p className="text-sm text-gray-500 mt-1">
+                  {" "}
+                  {formatDate(item?.date)}
+                </p>
+                {/* <div className="flex items-center mt-3 gap-2">
                   <img
                     src={item?.author?.image}
                     alt={item?.author?.name}
@@ -99,7 +114,7 @@ export function LatestStories() {
                     className="rounded-full"
                   />
                   <p key={item?.id}>{item.author.name}</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </Link>

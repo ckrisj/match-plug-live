@@ -4,8 +4,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { handleClick } from "../utils/helper";
-import { useGetData } from "@/app/Hooks/useGetData";
+import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import { Loader } from "./Loader";
+import { formatDate } from "./BlogPage";
 
 type Author = {
   id: string;
@@ -28,11 +29,20 @@ type Data = {
   data: Article[];
 };
 
-export function LatestUpdates() {
-  const { data, isFetching } = useGetData<Data>({
-    path: "posts-by-category?category=updates&per_page=5",
-    key: ["post-by-category", "updates"],
+export function LatestUpdates({ categories }: { categories: string[] }) {
+  const categoryIds = categories?.join(",");
+  const { data: response, isFetching }: any = useGetData<Data>({
+    key: ["post-by-category", categoryIds, 1, 5],
+    path: "posts",
+    params: {
+      per_page: 5,
+      page: 1,
+      categories: categoryIds,
+      orderby: "date",
+      order: "desc",
+    },
   });
+  const posts = response?.data || [];
 
   if (isFetching) {
     return (
@@ -42,7 +52,7 @@ export function LatestUpdates() {
     );
   }
 
-  if (!isFetching && !data?.data.length) {
+  if (!isFetching && (!posts || posts?.length === 0)) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
         No Data Found
@@ -57,7 +67,7 @@ export function LatestUpdates() {
       </h2>
 
       <div className="flex flex-wrap gap-6">
-        {data?.data.map((item) => (
+        {posts?.map((item: any) => (
           <Link
             key={item.id}
             onClick={() => {
@@ -72,46 +82,31 @@ export function LatestUpdates() {
             <div>
               <div className="relative w-full h-48 md:h-46">
                 <img
-                  src={item?.image}
-                  alt={item?.title}
+                  src={item?.jetpack_featured_media_url || "/person.webp"}
+                  alt={item?.title?.rendered || "Blog post"}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/person.webp";
+                  }}
                   style={{
                     height: "150px",
                     width: "100%",
                     objectFit: "cover",
                   }}
-                  className=""
                 />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-lg line-clamp-2">
                   <a
-                    href={item?.link}
+                    href={`/blog/${item?.slug}`}
                     target="_blank"
                     className="hover:text-blue-600"
-                    dangerouslySetInnerHTML={{ __html: item?.title }}
+                    dangerouslySetInnerHTML={{ __html: item?.title?.rendered }}
                   ></a>
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">{item?.date}</p>
-                <div className="flex items-center mt-3 gap-2">
-                  <img
-                    src={item?.author?.image}
-                    alt={item?.author?.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                  <p
-                    key={item?.id}
-                    onClick={() => {
-                      handleClick(item?.id);
-                    }}
-                    onMouseDown={() => {
-                      handleClick(item?.id);
-                    }}
-                  >
-                    {item.author.name}
-                  </p>
-                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  {formatDate(item?.date)}
+                </p>
               </div>
             </div>
           </Link>

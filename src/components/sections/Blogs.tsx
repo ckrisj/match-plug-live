@@ -5,7 +5,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
 import { v4 } from "uuid";
-import { useGetData } from "@/app/Hooks/useGetData";
+// import { useGetData } from "@/app/Hooks/useGetData";
+import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import { handleClick } from "../utils/helper";
 import { Loader } from "./Loader";
 
@@ -69,13 +70,29 @@ type Post = {
 };
 
 export function BlogPage() {
-  const { data, isFetching } = useGetData<{ data: Post[] }>({
-    key: ["homepage-slider"],
-    path: "homepage-slider",
-    initialData: { data: [] },
+  // const { data, isFetching } = useGetData<{ data: Post[] }>({
+  //   key: ["homepage-slider"],
+  //   path: "homepage-slider",
+  //   initialData: { data: [] },
+  // });
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useGetData<any[]>({
+    key: ["posts", 1, 3, "157,14,221"],
+    path: "posts",
+    params: {
+      per_page: 3,
+      page: 1,
+      categories: "157,14,221",
+      orderby: "date",
+      order: "desc",
+    },
   });
 
-  if (isFetching) {
+  const posts = response?.data || [];
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Loader />
@@ -85,7 +102,7 @@ export function BlogPage() {
 
   return (
     <div className="mt-20 bg-gray-50   max-w-7xl mx-auto space-y-10">
-      <section className="max-w-6xl mx-auto ">
+      <section className="p-4 max-w-7xl mx-auto ">
         <Swiper
           modules={[Autoplay, Navigation, Pagination]}
           spaceBetween={20}
@@ -94,7 +111,7 @@ export function BlogPage() {
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
         >
-          {data?.data?.slice(0, 3).map((post) => (
+          {posts?.map((post) => (
             <SwiperSlide key={v4()}>
               <Link
                 onClick={() => {
@@ -107,12 +124,12 @@ export function BlogPage() {
               >
                 <div className="relative h-96 rounded-xl overflow-hidden">
                   <img
-                    src={post.featured_image}
-                    alt={post.title}
+                    src={post?.jetpack_featured_media_url || "person.webp"}
+                    alt={post?.title?.rendered}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute bottom-0    bg-opacity-50 text-white p-4 w-full">
-                    <p className="text-xl font-bold">{post.title}</p>
+                    <p className="text-xl font-bold">{post.title?.rendered}</p>
                   </div>
                 </div>
               </Link>
