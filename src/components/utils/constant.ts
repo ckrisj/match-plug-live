@@ -1,1 +1,1 @@
-export const API_URL = "https://matchplug.stage2production.com";
+export const API_URL = "https://wp.matchplug.com";
