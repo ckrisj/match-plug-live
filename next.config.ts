@@ -2,7 +2,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["matchplug.com", "localhost", "user.matchplug.com","wp.matchplug.com"],
+    domains: ["matchplug.com", "localhost", "user.matchplug.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "matchplug.stage2production.com",
+        pathname: "/wp-content/uploads/**",
+      },
+    ],
   },
   // async rewrites() {
   //   return [

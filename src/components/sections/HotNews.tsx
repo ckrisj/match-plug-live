@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { v4 } from "uuid";
-import { useGetData } from "@/app/Hooks/useGetData";
+// import { useGetData } from "@/app/Hooks/useGetData";
+import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import { Loader } from "./Loader";
 import { handleClick } from "../utils/helper";
 
@@ -23,12 +24,26 @@ export type NewsResponse = {
 };
 
 export function HotNews() {
-  const { data, isFetching } = useGetData<NewsResponse>({
-    key: ["hot-news"],
-    path: "hot-news",
+  // const { data, isFetching } = useGetData<NewsResponse>({
+  //   key: ["hot-news"],
+  //   path: "hot-news",
+  // });
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useGetData<any[]>({
+    key: ["posts", 1, 10],
+    path: "posts",
+    params: {
+      per_page: 10,
+      page: 1,
+      orderby: "date",
+      order: "desc",
+    },
   });
-
-  if (isFetching) return <Loader />;
+  const posts = response?.data || [];
+  if (isLoading) return <Loader />;
 
   return (
     <div className="text-white py-2">
@@ -45,7 +60,7 @@ export function HotNews() {
               1024: { slidesPerView: 3 },
             }}
           >
-            {data?.data?.map((post) => (
+            {posts?.map((post) => (
               <SwiperSlide key={v4()}>
                 <Link
                   onClick={() => {
@@ -56,7 +71,7 @@ export function HotNews() {
                   }}
                   href={`/blog/${post.slug}`}
                   className="hover:underline block truncate"
-                  dangerouslySetInnerHTML={{ __html: post.title }}
+                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                 ></Link>
               </SwiperSlide>
             ))}

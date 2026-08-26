@@ -113,8 +113,8 @@ export function FootballPredictionTableServer({
   };
 
   const renderTableRows = () => {
-    return data[activeTab]?.map((match, index) => {
-      const isLastRow = index === data[activeTab]?.length - 1;
+    return data?.[activeTab]?.map((match, index) => {
+      const isLastRow = index === data?.[activeTab]?.length - 1;
       const firstTdClass = isLastRow ? "rounded-bl-full" : "";
       const lastTdClass = isLastRow ? "rounded-br-full" : "";
 

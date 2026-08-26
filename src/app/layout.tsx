@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
 import { TanstackProvider } from "../components/TanstackProvider";
 import Footer from "@/components/layout/Footer";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { NuqsAdapter } from "nuqs/adapters/react";
 import { routeTitles } from "./lib/title";
 import { headers } from "next/headers";
+import "./globals.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
