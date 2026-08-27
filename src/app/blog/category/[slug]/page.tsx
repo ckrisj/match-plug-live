@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-//import { Posts } from "@/components/sections/Posts";
-import { CategoryPosts } from "@/components/sections/CategoryPosts";
+import { Posts } from "@/components/sections/Posts";
+//import { CategoryPosts } from "@/components/sections/CategoryPosts";
 import { API_URL } from "@/components/utils/constant";
 import { notFound } from "next/navigation";
 
@@ -138,12 +138,12 @@ export default async function Page({ params }: Props) {
         }}
       />
 
-      {/* <Posts title={category?.name} slug={slug} categoryId={category?.id} /> */}
-      <div className="text-3xl font-bold mb-6 md:mb-12 flex justify-center">
+       <Posts title={category?.name} slug={slug} categoryId={category?.id} /> 
+      {/* <div className="text-3xl font-bold mb-6 md:mb-12 flex justify-center">
   {category.name}
 </div>
 
-<CategoryPosts categoryId={category.id} />
+<CategoryPosts categoryId={category.id} /> */}
 
     </div>
   );
