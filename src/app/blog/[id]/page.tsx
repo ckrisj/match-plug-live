@@ -43,18 +43,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seo = post.yoast_head_json;
   const image = seo?.og_image?.[0];
 
-  const canonical = `${process.env.NEXT_PUBLIC_BLOG_API_URL}/blog/${post.slug}`;
+  const canonical = `https://www.matchplug.com/blog/${post.slug}/`;
+
   return {
     title: seo?.title || post.title?.rendered,
     description: seo?.description,
-
-    robots: {
-      index: seo?.robots?.index === "index",
-      follow: seo?.robots?.follow === "follow",
-      // maxSnippet: -1,
-      // maxImagePreview: "large",
-      // maxVideoPreview: -1,
-    },
 
     alternates: {
       canonical,
@@ -62,10 +55,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     openGraph: {
       type: "article",
-      title: seo?.og_title || seo?.title,
+      title: seo?.og_title || seo?.title || post.title?.rendered,
       description: seo?.og_description || seo?.description,
       url: canonical,
-      siteName: seo?.og_site_name,
+      siteName: seo?.og_site_name || "Matchplug",
 
       publishedTime: seo?.article_published_time,
       modifiedTime: seo?.article_modified_time,
@@ -84,12 +77,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     twitter: {
       card: "summary_large_image",
-      title: seo?.og_title || seo?.title,
+      title: seo?.og_title || seo?.title || post.title?.rendered,
       description: seo?.og_description || seo?.description,
       images: image ? [image.url] : [],
     },
   };
 }
+
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
@@ -103,7 +97,9 @@ export default async function Page({ params }: Props) {
 
   const seo = post.yoast_head_json;
   const image = seo?.og_image?.[0];
-  const canonical = `${process.env.NEXT_PUBLIC_BLOG_API_URL}/blog/${post.slug}`;
+  //const canonical = `${process.env.NEXT_PUBLIC_BLOG_API_URL}/blog/${post.slug}`;
+  const canonical = `https://www.matchplug.com/blog/${post.slug}/`;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
