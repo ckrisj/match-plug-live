@@ -18,15 +18,15 @@ export async function getAdminData<T extends Record<string, any>>({
   path,
   enabled = true,
 }: UseGetDataArgs<T>) {
-  const { data } = await axios.get<T>(
+  const response = await axios.get<T>(
     `${process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL}/api/${path}`,
     {
       headers: {
         "MATCHPLUG-API-KEY": process.env.NEXT_PUBLIC_BLOG_ADMIN_API_KEY,
       },
       params,
-    }
+    },
   );
 
-  return data;
+  return response?.data;
 }

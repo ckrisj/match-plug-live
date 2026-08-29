@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Posts } from "@/components/sections/Posts";
 //import { CategoryPosts } from "@/components/sections/CategoryPosts";
-import { API_URL } from "@/components/utils/constant";
+import { API_URL, SITE_URL } from "@/components/utils/constant";
 import { notFound } from "next/navigation";
-
-const SITE_URL =
-  process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:3000";
 
 type Props = {
   params: Promise<{
@@ -49,19 +46,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const seo = category.yoast_head_json;
 
-  const canonical = `${SITE_URL}/blog/category/${category.slug}/`;
+  const canonical = `${SITE_URL}/blog/category/${category.slug}`;
 
   return {
     title: seo?.title || category.name,
     description: seo?.description || "",
 
-    robots: {
-      index: seo?.robots?.index === "index",
-      follow: seo?.robots?.follow === "follow",
-      // maxSnippet: -1,
-      // maxImagePreview: "large",
-      // maxVideoPreview: -1,
-    },
+    // robots: {
+    //   index: seo?.robots?.index === "index",
+    //   follow: seo?.robots?.follow === "follow",
+    //   // maxSnippet: -1,
+    //   // maxImagePreview: "large",
+    //   // maxVideoPreview: -1,
+    // },
 
     alternates: {
       canonical,
@@ -94,7 +91,7 @@ export default async function Page({ params }: Props) {
 
   const seo = category.yoast_head_json;
 
-  const canonical = `${SITE_URL}/blog/category/${category.slug}/`;
+  const canonical = `${SITE_URL}/blog/category/${category.slug}`;
 
   const schema = {
     "@context": "https://schema.org",
@@ -126,8 +123,6 @@ export default async function Page({ params }: Props) {
 
     inLanguage: "en-US",
   };
-  console.log("category", category);
-
   return (
     <div className="mt-20 max-w-7xl mx-auto px-4 py-10">
       {/* Archive JSON-LD */}
@@ -137,14 +132,7 @@ export default async function Page({ params }: Props) {
           __html: JSON.stringify(schema),
         }}
       />
-
-       <Posts title={category?.name} slug={slug} categoryId={category?.id} /> 
-      {/* <div className="text-3xl font-bold mb-6 md:mb-12 flex justify-center">
-  {category.name}
-</div>
-
-<CategoryPosts categoryId={category.id} /> */}
-
+      <Posts title={category?.name} slug={slug} categoryId={category?.id} />
     </div>
   );
 }

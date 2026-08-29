@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import Link from "next/link";
-import { handleClick } from "../utils/helper";
 import { Loader } from "./Loader";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
@@ -170,12 +169,6 @@ export function Posts({
               filteredPosts?.map((post: any) => (
                 <Link
                   key={post.id}
-                  onClick={() => {
-                    handleClick(post?.id);
-                  }}
-                  onMouseDown={() => {
-                    handleClick(post?.id);
-                  }}
                   href={`/blog/${post.slug}`}
                   className="h-full"
                 >

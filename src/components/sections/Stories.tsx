@@ -1,12 +1,10 @@
 // app/latest-updates/page.tsx (Next.js 13+ App Router)
 // If you are using pages router, create pages/latest-updates.tsx instead
 
-import Image from "next/image";
 import Link from "next/link";
-import { handleClick } from "../utils/helper";
-import { useGetData } from "@/app/Hooks/UseGetDataArgs";
+// import { useGetData } from "@/app/Hooks/UseGetDataArgs";
+import { useGetData } from "@/app/Hooks/useGetData";
 import { Loader } from "./Loader";
-import { formatDate } from "./BlogPage";
 
 type Author = {
   id: string;
@@ -30,19 +28,26 @@ type Data = {
 };
 
 export function LatestStories({ categories }: { categories: string[] }) {
-  const categoryIds = categories?.join(",");
-  const { data: response, isFetching }: any = useGetData<Data>({
-    key: ["post-by-category", categoryIds, 1, 4],
-    path: "posts",
-    params: {
-      per_page: 4,
-      page: 1,
-      categories: categoryIds,
-      orderby: "date",
-      order: "desc",
-    },
+  // const categoryIds = categories?.join(",");
+  // const { data: response, isFetching }: any = useGetData<Data>({
+  //   key: ["post-by-category", categoryIds, 1, 4],
+  //   path: "posts",
+  //   params: {
+  //     per_page: 4,
+  //     page: 1,
+  //     categories: categoryIds,
+  //     orderby: "date",
+  //     order: "desc",
+  //   },
+  // });
+
+  const { data, isFetching } = useGetData<Data>({
+    path: "posts-by-category?category=trending-news&per_page=4",
+    key: ["post-by-category", "trending-news", 4],
   });
-  const posts = response?.data || [];
+
+  const posts = data?.data || [];
+
   if (isFetching) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -69,20 +74,14 @@ export function LatestStories({ categories }: { categories: string[] }) {
         {posts?.map((item: any) => (
           <Link
             key={item.id}
-            onClick={() => {
-              handleClick(item?.id);
-            }}
-            onMouseDown={() => {
-              handleClick(item?.id);
-            }}
             href={`/blog/${item?.slug}`}
             className="bg-white rounded-2xl   shadow hover:shadow-lg transition overflow-hidden"
           >
             <div>
               <div className="relative w-full h-48 md:h-46">
                 <img
-                  src={item?.jetpack_featured_media_url || "/person.webp"}
-                  alt={item?.title?.rendered}
+                  src={item?.image || "/person.webp"}
+                  alt={item?.title}
                   style={{
                     height: "150px",
                     width: "100%",
@@ -98,23 +97,22 @@ export function LatestStories({ categories }: { categories: string[] }) {
                 <h3 className="font-semibold text-lg line-clamp-2">
                   <p
                     className="hover:text-blue-600"
-                    dangerouslySetInnerHTML={{ __html: item?.title?.rendered }}
+                    dangerouslySetInnerHTML={{ __html: item?.title }}
                   ></p>
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  {" "}
-                  {formatDate(item?.date)}
-                </p>
-                {/* <div className="flex items-center mt-3 gap-2">
-                  <img
-                    src={item?.author?.image}
-                    alt={item?.author?.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                  <p key={item?.id}>{item.author.name}</p>
-                </div> */}
+                <p className="text-sm text-gray-500 mt-1"> {item?.date}</p>
+                {item.author.name && (
+                  <div className="flex items-center mt-3 gap-2">
+                    <img
+                      src={item?.author?.image}
+                      alt={item?.author?.name}
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                    <p key={item?.id}>{item.author.name}</p>
+                  </div>
+                )}
               </div>
             </div>
           </Link>

@@ -45,7 +45,6 @@ const FootballPredictionDetailsTable = async ({
   currentDate: string;
   slug: { link: string; label: string; description: string };
 }) => {
-  console.log("call--slug.label", slug.label);
 
   const data = await getAdminData<MatchPrediction[]>({
     key: ["predictions", currentDate, slug.label],

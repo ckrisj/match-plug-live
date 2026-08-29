@@ -5,7 +5,9 @@ import parse, {
   HTMLReactParserOptions,
   Element,
 } from "html-react-parser";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
+import { API_URL, SITE_URL } from "../utils/constant";
 
 // Props interface
 interface HaalandArticleProps {
@@ -55,10 +57,7 @@ const HaalandArticle: React.FC<HaalandArticleProps> = ({ content }) => {
   const cleanHtml = DOMPurify.sanitize(content, {
     ADD_ATTR: ["fetchpriority"],
   });
-  const updatedHtml = cleanHtml.replaceAll(
-    "https://wp.matchplug.com/",
-    "https://matchplug.com/blog/",
-  );
+  const updatedHtml = cleanHtml.replaceAll(API_URL, `${SITE_URL}/blog/`);
   const options: HTMLReactParserOptions = {
     replace: (domNode: DOMNode) => {
       if (!domNode || domNode.type !== "tag") return;
