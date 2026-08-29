@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Tabs } from "@/components/sections/Tabs";
-import { API_URL } from "@/components/utils/constant";
+import { API_URL, SITE_URL } from "@/components/utils/constant";
 import { notFound } from "next/navigation";
 type Props = {
   params: Promise<{
     slug: string;
-    id: string;
   }>;
 };
 
@@ -29,8 +28,7 @@ async function getPost(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const slug = id;
+  const { slug } = await params;
 
   const post = await getPost(slug);
 
@@ -43,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seo = post.yoast_head_json;
   const image = seo?.og_image?.[0];
 
-  const canonical = `https://www.matchplug.com/blog/${post.slug}/`;
+  const canonical = `${SITE_URL}/blog/${post.slug}`;
 
   return {
     title: seo?.title || post.title?.rendered,
@@ -84,11 +82,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-
 export default async function Page({ params }: Props) {
-  const { id } = await params;
-  const slug = id;
-
+  const { slug } = await params;
   const post = await getPost(slug);
 
   if (!post) {
@@ -97,8 +92,7 @@ export default async function Page({ params }: Props) {
 
   const seo = post.yoast_head_json;
   const image = seo?.og_image?.[0];
-  //const canonical = `${process.env.NEXT_PUBLIC_BLOG_API_URL}/blog/${post.slug}`;
-  const canonical = `https://www.matchplug.com/blog/${post.slug}/`;
+  const canonical = `${SITE_URL}/blog/${post.slug}`;
 
   const articleSchema = {
     "@context": "https://schema.org",

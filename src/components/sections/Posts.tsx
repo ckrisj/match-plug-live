@@ -170,12 +170,6 @@ export function Posts({
               filteredPosts?.map((post: any) => (
                 <Link
                   key={post.id}
-                  onClick={() => {
-                    handleClick(post?.id);
-                  }}
-                  onMouseDown={() => {
-                    handleClick(post?.id);
-                  }}
                   href={`/blog/${post.slug}`}
                   className="h-full"
                 >

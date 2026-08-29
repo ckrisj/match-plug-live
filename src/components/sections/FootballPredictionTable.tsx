@@ -78,10 +78,6 @@ const FootballPredictionTable = async ({ title }: { title: string }) => {
     ? tomorrowResponse
     : (tomorrowResponse?.data ?? []);
 
-  console.log("today", today);
-  console.log("yesterday", yesterday);
-  console.log("tomorrow", tomorrow);
-
   return (
     <FootballPredictionTableServer
       title={title}

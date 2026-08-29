@@ -177,7 +177,6 @@ const LatestNewsSection: React.FC = () => {
   const filteredPosts = useMemo(() => {
     return data?.data?.find(({ category }) => category.id === activeCategory);
   }, [data?.data, activeCategory]);
-  console.log("filteredPosts", filteredPosts);
 
   return (
     <section
