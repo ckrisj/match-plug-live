@@ -29,6 +29,9 @@ export function BlogDetailPage({
   structuredData?: any;
 }) {
   const data = structuredData;
+
+  console.log("data", data);
+
   useEffect(() => {
     if (data?.categories?.length > 0) {
       setCategories(data?.categories || []);
@@ -48,10 +51,15 @@ export function BlogDetailPage({
       {data?.jetpack_featured_media_url && (
         <div className="mb-6">
           <img
-            src={data.jetpack_featured_media_url || "person.webp"}
+            src={data?.jetpack_featured_media_url || "person.webp"}
             alt={data?.title?.rendered}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "person.webp";
+              const imageContainer = (e.currentTarget as HTMLImageElement)
+                .parentElement;
+
+              if (imageContainer) {
+                imageContainer.style.display = "none";
+              }
             }}
             width={900}
             height={500}

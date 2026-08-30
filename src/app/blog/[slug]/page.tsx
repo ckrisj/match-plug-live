@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Tabs } from "@/components/sections/Tabs";
 import { API_URL, SITE_URL } from "@/components/utils/constant";
 import { notFound } from "next/navigation";
+
 type Props = {
   params: Promise<{
     slug: string;
@@ -27,7 +28,54 @@ async function getPost(slug: string) {
   return posts?.[0] || null;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+// Remove HTML tags and decode basic HTML entities
+function stripHtml(html = "") {
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;|&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// Create SEO-friendly description with max ~155 characters
+function truncateDescription(text = "", maxLength = 155) {
+  const cleanText = stripHtml(text);
+
+  if (cleanText.length <= maxLength) {
+    return cleanText;
+  }
+
+  return `${cleanText.slice(0, maxLength).trimEnd()}...`;
+}
+
+// One description source for Meta, OG, Twitter and Schema
+function getDescription(post: any) {
+  const seo = post?.yoast_head_json;
+
+  // Prefer a proper Yoast meta description
+  if (seo?.description?.trim()) {
+    return truncateDescription(seo.description);
+  }
+
+  // If missing, use excerpt
+  if (post?.excerpt?.rendered) {
+    return truncateDescription(post.excerpt.rendered);
+  }
+
+  // Final fallback: article content
+  if (post?.content?.rendered) {
+    return truncateDescription(post.content.rendered);
+  }
+
+  return "";
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
   const { slug } = await params;
 
   const post = await getPost(slug);
@@ -43,9 +91,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const canonical = `${SITE_URL}/blog/${post.slug}`;
 
+  // Generate one clean description
+  const description = getDescription(post);
+
   return {
     title: seo?.title || post.title?.rendered,
-    description: seo?.description,
+
+    // Meta description
+    description,
 
     alternates: {
       canonical,
@@ -54,7 +107,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: "article",
       title: seo?.og_title || seo?.title || post.title?.rendered,
-      description: seo?.og_description || seo?.description,
+      description,
       url: canonical,
       siteName: seo?.og_site_name || "Matchplug",
 
@@ -76,7 +129,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: seo?.og_title || seo?.title || post.title?.rendered,
-      description: seo?.og_description || seo?.description,
+      description,
       images: image ? [image.url] : [],
     },
   };
@@ -84,6 +137,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
+
   const post = await getPost(slug);
 
   if (!post) {
@@ -94,12 +148,15 @@ export default async function Page({ params }: Props) {
   const image = seo?.og_image?.[0];
   const canonical = `${SITE_URL}/blog/${post.slug}`;
 
+  // Use the same description in Schema
+  const description = getDescription(post);
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
 
     headline: post.title?.rendered,
-    description: seo?.description,
+    description,
 
     image: image
       ? {
@@ -138,11 +195,11 @@ export default async function Page({ params }: Props) {
     excerpt: post?.excerpt?.rendered,
     title: post?.title?.rendered,
     slug: post?.slug,
-    author: post?.yoast_head_json?.author,
+    author: seo?.author,
   };
+
   return (
     <div className="mt-20 max-w-4xl mx-auto px-4 py-10">
-      {/* Article Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
