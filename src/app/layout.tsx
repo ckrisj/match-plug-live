@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { TanstackProvider } from "../components/TanstackProvider";
+import { SITE_URL } from "@/components/utils/constant";
 import Footer from "@/components/layout/Footer";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { NuqsAdapter } from "nuqs/adapters/react";
@@ -15,15 +16,51 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export async function generateMetadata() {
-  const pathname = (await (await headers()).get("x-pathname")) ?? "/";
+export async function generateMetadata(): Promise<Metadata> {
+  const pathname = (await headers()).get("x-pathname") ?? "/";
 
-  const title = routeTitles[pathname] ?? {
+  const route = routeTitles[pathname] ?? {
     title: "Matchplug - Football Predictions & Betting Tips",
     description:
       "Expert football predictions, betting tips, and sports insights daily.",
   };
-  return { title: title.title, description: title.description };
+
+  const canonicalPath = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+
+  return {
+    metadataBase: new URL(SITE_URL),
+
+    title: route.title,
+    description: route.description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      type: "website",
+      url: canonicalUrl,
+      siteName: "MatchPlug",
+      title: route.title,
+      description: route.description,
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: route.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: route.title,
+      description: route.description,
+      images: ["/og-image.jpg"],
+    },
+  };
 }
 
 export default function RootLayout({
