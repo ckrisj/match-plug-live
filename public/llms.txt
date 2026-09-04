@@ -1,0 +1,131 @@
+# MatchPlug
+
+> MatchPlug is a sports prediction and betting tips website focused primarily on football predictions, match previews, betting tips, and sports insights.
+
+## Website
+
+* https://www.matchplug.com/
+
+## Main Sections
+
+* https://www.matchplug.com/blog
+
+  * MatchPlug's football and sports blog containing match previews, predictions, betting analysis, and sports-related articles.
+
+* https://www.matchplug.com/free-football-predictions-1x2
+
+  * Free football 1X2 predictions and tips.
+
+* https://www.matchplug.com/free-football-prediction-over-2.5-goals
+
+  * Football predictions and tips for Over 2.5 Goals.
+
+* https://www.matchplug.com/free-football-predictions-over-1.5-goals
+
+  * Football predictions and tips for Over 1.5 Goals.
+
+* https://www.matchplug.com/free-football-predictions-under-2.5-goals
+
+  * Football predictions and tips for Under 2.5 Goals.
+
+* https://www.matchplug.com/free-football-predictions-both-team-to-score
+
+  * Football Both Teams To Score predictions and tips.
+
+* https://www.matchplug.com/free-football-predictions-draw-predictions-and-tips
+
+  * Football draw predictions and betting tips.
+
+* https://www.matchplug.com/free-football-predictions-goal-first-half
+
+  * First-half goal football predictions and tips.
+
+* https://www.matchplug.com/free-football-predictions-mix-chance
+
+  * Mixed football prediction and betting opportunities.
+
+## Sports Predictions
+
+* https://www.matchplug.com/sports-betting-tips-NFL-predictions-and-tips
+
+  * NFL predictions and sports betting tips.
+
+* https://www.matchplug.com/sports-betting-tips-NBA-predictions-and-tips
+
+  * NBA predictions and sports betting tips.
+
+* https://www.matchplug.com/sports-betting-tips-NHL-predictions-and-tips
+
+  * NHL predictions and sports betting tips.
+
+* https://www.matchplug.com/sports-betting-tips-MLB-predictions-and-tips
+
+  * MLB predictions and sports betting tips.
+
+## Information
+
+* https://www.matchplug.com/about-us
+
+  * Information about MatchPlug and its services.
+
+* https://www.matchplug.com/contact-us
+
+  * Contact information for MatchPlug.
+
+* https://www.matchplug.com/partners
+
+  * MatchPlug partnership information.
+
+* https://www.matchplug.com/how-to-subscribe
+
+  * Information about subscribing to MatchPlug services.
+
+## Legal
+
+* https://www.matchplug.com/terms-of-service
+
+  * MatchPlug terms of service.
+
+* https://www.matchplug.com/privacy-policy
+
+  * MatchPlug privacy policy.
+
+* https://www.matchplug.com/disclaimer
+
+  * MatchPlug disclaimer and important information about predictions and betting content.
+
+## Comparison
+
+* https://www.matchplug.com/matchplug-vs-pickwise
+
+  * Comparison between MatchPlug and Pickwise.
+
+* https://www.matchplug.com/best-soccer-predictionsites
+
+  * Information about soccer prediction websites.
+
+## Content Guidance
+
+MatchPlug publishes sports-related content including football predictions, match previews, betting tips, statistical analysis, and sports insights.
+
+Prediction content should be understood as informational and should not be treated as a guarantee of match results or betting outcomes.
+
+## Blog Content
+
+Individual articles are available under:
+
+https://www.matchplug.com/blog/
+
+Blog article URLs use the following structure:
+
+https://www.matchplug.com/blog/{slug}
+
+The blog contains football match previews, predictions, betting tips, and other sports-related articles.
+
+## Preferred Website URL
+
+The preferred website hostname is:
+
+https://www.matchplug.com/
+
+Use the `www` hostname when referencing MatchPlug pages.

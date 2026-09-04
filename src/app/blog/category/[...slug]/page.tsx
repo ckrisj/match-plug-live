@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{
-    slug: string;
+    slug: string[];
   }>;
 };
 
@@ -31,8 +31,8 @@ async function getCategory(slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-
-  const category = await getCategory(slug);
+  const categorySlug = slug[slug.length - 1];
+  const category = await getCategory(categorySlug);
 
   if (!category) {
     return {
@@ -82,17 +82,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-
-  const category = await getCategory(slug);
+  const categorySlug = slug[slug.length - 1];
+  const category = await getCategory(categorySlug);
 
   if (!category) {
     return notFound();
   }
-
   const seo = category.yoast_head_json;
-
   const canonical = `${SITE_URL}/blog/category/${category.slug}`;
-
   const schema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -123,6 +120,7 @@ export default async function Page({ params }: Props) {
 
     inLanguage: "en-US",
   };
+
   return (
     <div className="mt-20 max-w-7xl mx-auto px-4 py-10">
       {/* Archive JSON-LD */}
@@ -132,7 +130,11 @@ export default async function Page({ params }: Props) {
           __html: JSON.stringify(schema),
         }}
       />
-      <Posts title={category?.name} slug={slug} categoryId={category?.id} />
+      <Posts
+        title={category?.name}
+        slug={categorySlug}
+        categoryId={category?.id}
+      />
     </div>
   );
 }

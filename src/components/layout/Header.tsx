@@ -13,7 +13,7 @@ const Header: React.FC = () => {
 
   const path = usePathname();
 
-  const router = useRouter()
+  const router = useRouter();
 
   useMemo(() => {
     if (path === "/") {
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
     <header
       className={twMerge(
         `fixed top-0 left-0 right-0 z-50 bg-black/80 border-b border-gray-800`,
-        isMobileMenuOpen && "bg-black"
+        isMobileMenuOpen && "bg-black",
       )}
     >
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,15 +68,15 @@ const Header: React.FC = () => {
               Betting tips
             </Link>
             <Link
-              href="https://match-plug-landing-1.vercel.app/how-to-subscribe"
+              href={`/how-to-subscribe`}
               className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
             >
               How to subscribe
             </Link>
             <Link
-            onClick={()=>{
-              router.replace("/blog")
-            }}
+              onClick={() => {
+                router.replace("/blog");
+              }}
               href="/blog"
               className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
             >
@@ -152,7 +152,7 @@ const Header: React.FC = () => {
               Betting tips
             </Link>
             <Link
-              href="https://match-plug-landing-1.vercel.app/how-to-subscribe"
+              href={"/how-to-subscribe"}
               onClick={closeMobileMenu}
               className="text-gray-300 hover:text-white transition-colors duration-200 font-medium py-2"
             >
