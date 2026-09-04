@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 ">
         <img
-          src="/hero.png"
+          src="/hero_new.webp"
           alt=""
           className="  object-cover w-full h-full  object-top"
         />
