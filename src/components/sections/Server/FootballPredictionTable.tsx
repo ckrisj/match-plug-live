@@ -151,7 +151,7 @@ const FootballPredictionTable = ({
           <div className="flex sm:justify-start  justify-center items-center mb-6 sm:mb-8 gap-5 sm:gap-20">
             <div className="text-center sm:text-start">
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-1">
-                {slug.heading ?? slug.displayLabel ?? slug.label}
+                About {slug.displayLabel ?? slug.label}
               </h2>
               <p className="text-black text-sm sm:text-base md:text-lg max-w-xl">
                 Free Sport betting Picks and best bets today from the experts
@@ -221,7 +221,7 @@ const FootballPredictionTable = ({
       <section className="bg-[#F4F6FB] py-12 py-24">
         <div className="max-w-6xl mx-auto sm:px-4 px-2">
           <h1 className="text-[28px] font-bold">
-            About {slug.displayLabel ?? slug.label}
+            {slug.heading ?? `About ${slug.displayLabel ?? slug.label}`}
           </h1>
           <p
             className="text-lg"
