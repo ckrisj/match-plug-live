@@ -1,40 +1,37 @@
 import Link from "next/link";
+import { DateTime } from "luxon";
+import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
 import MarketFAQSection from "@/components/sections/MarketFAQSection";
 
-export default function VipResults() {
+type PageParams = {
+  searchParams: Promise<{
+    date: string;
+  }>;
+};
+
+// `label` is the market key the predictions API is queried with; the rest is
+// what the page shows.
+const vip = {
+  link: "vip",
+  label: "VIP",
+  displayLabel: "VIP Results",
+  heading: "VIP Results — Verified Records",
+  description:
+    "Matchplug VIP is a paid tier delivered through Telegram. Members receive the day's highest-conviction selections earlier than they appear on the site, push alerts the moment a live in-play call is issued, and staking guidance for each selection. The markets are the same ones published free on the site — VIP is a filter and a delivery channel, not a different model, so the hit rate is higher because the selections clear a higher confidence threshold.\n\nEvery VIP selection is logged and the resulting record is published, including the losses. VIP does not remove risk: no prediction service can guarantee an outcome, and any that claims to is not being honest.",
+};
+
+const Page = async ({ searchParams }: PageParams) => {
+  const { date } = await searchParams;
+
   return (
     <>
-      <section className="max-w-5xl mx-auto px-6 py-20 leading-relaxed text-gray-800">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-          VIP Results — Verified Records
-        </h1>
-        <p className="text-lg mb-10">
-          Every VIP selection is logged and the resulting record is published,
-          including the losses.
-        </p>
+      <FootballPredictionDetailsTable
+        currentDate={date ?? DateTime.now().toISODate()}
+        slug={vip}
+      />
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
-          What Matchplug VIP Includes
-        </h2>
-        <p className="text-lg mb-4">
-          Matchplug VIP is a paid tier delivered through Telegram. Members
-          receive the day&apos;s highest-conviction selections earlier than they
-          appear on the site, push alerts the moment a live in-play call is
-          issued, and staking guidance for each selection. The markets are the
-          same ones published free on the site — VIP is a filter and a delivery
-          channel, not a different model, so the hit rate is higher because the
-          selections clear a higher confidence threshold.
-        </p>
-        <p className="text-lg mb-4">
-          Both the free and VIP records are published on this page. VIP does not
-          remove risk: no prediction service can guarantee an outcome, and any
-          that claims to is not being honest. Pricing, billing period and
-          cancellation terms are below.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-3">
-          Pricing
-        </h2>
+      <section className="max-w-6xl mx-auto sm:px-4 px-2 py-12">
+        <h2 className="text-[28px] font-bold mb-3">Pricing</h2>
         <p className="text-lg mb-6">
           VIP is <span className="font-semibold">$29.9 / month</span> and Elite
           Games (High Stakers) is{" "}
@@ -53,4 +50,6 @@ export default function VipResults() {
       <MarketFAQSection slug="vip" />
     </>
   );
-}
+};
+
+export default Page;
