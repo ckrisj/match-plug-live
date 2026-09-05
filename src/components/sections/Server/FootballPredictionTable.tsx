@@ -36,6 +36,8 @@ type FootballPredictionTableProps = {
     label: string;
     /** Shown instead of `label` where the market's public name differs. */
     displayLabel?: string;
+    /** Heading above the market explanation; falls back to "About <market>". */
+    heading?: string;
     description: string;
   };
   data: MatchPrediction[];
@@ -218,7 +220,9 @@ const FootballPredictionTable = ({
 
       <section className="bg-[#F4F6FB] py-12 py-24">
         <div className="max-w-6xl mx-auto sm:px-4 px-2">
-          <h1 className="text-[28px] font-bold">About {slug.displayLabel ?? slug.label}</h1>
+          <h1 className="text-[28px] font-bold">
+            {slug.heading ?? `About ${slug.displayLabel ?? slug.label}`}
+          </h1>
           <p
             className="text-lg"
             dangerouslySetInnerHTML={{

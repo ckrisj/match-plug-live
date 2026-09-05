@@ -1,6 +1,7 @@
 import { PredictionMap } from "@/components/sections/DirectWinPredictions";
 import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
 import MarketFAQSection from "@/components/sections/MarketFAQSection";
+import { marketContent } from "@/components/utils/Collection/market-content";
 import { DateTime } from "luxon";
 
 type PageParams = {
@@ -224,9 +225,21 @@ const Page = async ({ params, searchParams }: PageParams) => {
 
   const { date } = await searchParams;
 
-  const title = descriptions.find(({ link }) => {
+  const entry = descriptions.find(({ link }) => {
     return link === pageSlug;
   });
+
+  // Markets covered by the build sheet take their heading and explanation from
+  // it; the rest keep the copy defined above.
+  const sheet = marketContent[pageSlug];
+  const title = entry && {
+    ...entry,
+    ...(sheet && {
+      displayLabel: sheet.name,
+      heading: sheet.heading,
+      description: sheet.note,
+    }),
+  };
 
   return (
     title && (

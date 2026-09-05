@@ -1,12 +1,13 @@
 // app/lib/titles.ts
 
+import { marketContent } from "@/components/utils/Collection/market-content";
+
 /**
  * A simple map of routes → titles
  */
-export const routeTitles: Record<
-  string,
-  { label: string; title: string; description: string }
-> = {
+type RouteTitle = { label: string; title: string; description: string };
+
+const baseRouteTitles: Record<string, RouteTitle> = {
   "/": {
     label: "Home",
     title: "Expert Football Predictions Today – Win Big with Matchplug",
@@ -210,4 +211,22 @@ export const routeTitles: Record<
     description:
       "Free corner predictions with expert stats and betting insights.",
   },
+};
+
+/**
+ * Markets covered by the on-page build sheet take their meta title and
+ * description from it, overriding the entries above so the two can't drift.
+ */
+export const routeTitles: Record<string, RouteTitle> = {
+  ...baseRouteTitles,
+  ...Object.fromEntries(
+    Object.entries(marketContent).map(([slug, content]) => [
+      `/${slug}`,
+      {
+        label: content.name,
+        title: content.metaTitle,
+        description: content.metaDescription,
+      },
+    ])
+  ),
 };

@@ -49,6 +49,8 @@ const FootballPredictionDetailsTable = async ({
     label: string;
     /** Shown instead of `label` where the market's public name differs. */
     displayLabel?: string;
+    /** Heading above the market explanation; falls back to "About <market>". */
+    heading?: string;
     description: string;
   };
 }) => {
