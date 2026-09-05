@@ -43,7 +43,14 @@ const FootballPredictionDetailsTable = async ({
   slug,
 }: {
   currentDate: string;
-  slug: { link: string; label: string; description: string };
+  slug: {
+    link: string;
+    /** Also the market key sent to the predictions API — not shown to users. */
+    label: string;
+    /** Shown instead of `label` where the market's public name differs. */
+    displayLabel?: string;
+    description: string;
+  };
 }) => {
 
   const data = await getAdminData<MatchPrediction[]>({

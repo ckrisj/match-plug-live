@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { DateTime } from "luxon";
 import { useGetData } from "@/app/Hooks/useGetData";
 import footerResponse from "@/components/utils/Collection/footer-menu-response.json";
 
@@ -88,32 +89,36 @@ const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({
 );
 
 const Footer: React.FC = () => {
+  // The picks pages default to today anyway, but the link carries the date
+  // explicitly so it always resolves to today's card rather than a fixed day.
+  const today = DateTime.now().toISODate();
+
   const quickLinks = [
     { name: "News", url: "/blog" },
     { name: "Match Previews", url: "#" },
     {
       name: "NFL Picks Today",
-      url: "/sports-betting-tips-NFL-predictions-and-tips",
+      url: `/sports-betting-tips-NFL-predictions-and-tips?date=${today}`,
     },
     {
       name: "NBA Picks Today",
-      url: "/sports-betting-tips-NBA-predictions-and-tips",
+      url: `/sports-betting-tips-NBA-predictions-and-tips?date=${today}`,
     },
     {
       name: "MLB Picks Today",
-      url: "/sports-betting-tips-MLB-predictions-and-tips",
+      url: `/sports-betting-tips-MLB-predictions-and-tips?date=${today}`,
     },
     {
       name: "NHL Picks Today",
-      url: "/sports-betting-tips-NHL-predictions-and-tips",
+      url: `/sports-betting-tips-NHL-predictions-and-tips?date=${today}`,
     },
     {
       name: "NCAAF Picks Today",
-      url: "/sports-betting-tips-NCAAF-predictions-and-tips",
+      url: `/sports-betting-tips-NCAAF-predictions-and-tips?date=${today}`,
     },
     {
       name: "NCAAB Picks Today",
-      url: "/sports-betting-tips-NCAAB-predictions-and-tips",
+      url: `/sports-betting-tips-NCAAB-predictions-and-tips?date=${today}`,
     },
   ];
 

@@ -242,34 +242,36 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       },
     ],
   },
-  // /predictions/Mix-chance/
+  // /predictions/bet-builder/ — this market is presented as
+  // "Betbuilder / Same Game Parlay", so it carries the sheet's bet builder FAQs
+  // rather than the mix chance ones.
   "free-football-predictions-mix-chance": {
-    heading: "Mix Chance / Double Chance FAQs",
+    heading: "Bet Builder FAQs",
     faqs: [
       {
-        question: "What is double chance in betting?",
+        question: "What is a bet builder?",
         answer:
-          "Double chance covers two of the three possible results in one bet: home or draw (1X), away or draw (X2), or home or away (12). It wins more often than a straight result bet but pays shorter odds.",
+          "A bet builder combines several selections from the same match into a single bet — such as a team to win, over 2.5 goals, and a player to score. Every leg must win for the bet to pay.",
       },
       {
-        question: "What does 1X mean?",
+        question: "How is a bet builder different from an accumulator?",
         answer:
-          "1X means home win or draw. The bet wins if the home team wins or the match finishes level, and loses only if the away team wins.",
+          "An accumulator combines selections from different matches and simply multiplies the odds. A bet builder combines legs from one match, so the bookmaker prices in how the legs affect each other.",
       },
       {
-        question: "Is Mix Chance the same as double chance?",
+        question: "Are bet builders good value?",
         answer:
-          "Yes. Mix Chance is the label some bookmakers use for the same market — two of the three results covered by a single selection.",
+          "They can be when the legs are correlated — a favourite winning makes their striker scoring more likely, and that relationship is not always priced accurately. Uncorrelated legs stacked for long odds are usually poor value.",
       },
       {
-        question: "Is double chance better than a straight win bet?",
+        question: "What happens if one leg is voided?",
         answer:
-          "Neither is inherently better. Double chance wins more often at shorter odds; a win bet wins less often at longer odds. What matters is whether the price covers the true probability.",
+          "The bet builder normally recalculates at the odds of the remaining legs, though some bookmakers void the whole bet. Check the specific rules, as they differ more here than in other markets.",
       },
       {
-        question: "What is the difference between double chance and draw no bet?",
+        question: "How many legs should a bet builder have?",
         answer:
-          "Double chance pays out if the draw happens. Draw no bet refunds your stake if the draw happens. Draw no bet therefore pays slightly better odds but returns nothing extra on a level result.",
+          "Three to four is the practical range. Each additional leg multiplies the chance of one failing, and the price rarely compensates fairly beyond four.",
       },
     ],
   },
