@@ -8,6 +8,12 @@ import { marketContent } from "@/components/utils/Collection/market-content";
 type RouteTitle = { label: string; title: string; description: string };
 
 const baseRouteTitles: Record<string, RouteTitle> = {
+  "/vip": {
+    label: "VIP Results",
+    title: "Matchplug VIP — Premium Football Tips & Live Alerts | Matchplug",
+    description:
+      "Matchplug VIP: our highest-conviction daily picks, live in-play alerts and staking guidance, delivered to Telegram. Pricing, what's included and our record.",
+  },
   "/": {
     label: "Home",
     title: "Soccer Tips Today — Win Draw Win Predictions | Matchplug",

@@ -554,4 +554,36 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       },
     ],
   },
+  // /vip/ — the sheet leaves the pricing and cancellation answers as briefs for
+  // a copywriter, so those two are written from the published pricing table.
+  vip: {
+    heading: "VIP FAQs",
+    faqs: [
+      {
+        question: "What do you get with Matchplug VIP?",
+        answer:
+          "VIP members receive the day's highest-conviction selections earlier than the site, push alerts when live in-play calls are issued, and staking guidance for each selection. The markets covered are the same as the free tips.",
+      },
+      {
+        question: "How much does Matchplug VIP cost?",
+        answer:
+          "VIP is $29.9 per month and Elite Games (High Stakers) is $99.9 per month, billed monthly. Each renews automatically at the same price until you cancel.",
+      },
+      {
+        question: "Is VIP more accurate than the free tips?",
+        answer:
+          "VIP selections are the subset that clears a higher confidence threshold, so the hit rate is higher — but the difference is a filter, not a different model. Both records are published.",
+      },
+      {
+        question: "Can I cancel VIP?",
+        answer:
+          "Yes. You can cancel at any time, with no minimum term. Access continues to the end of the billing period you have already paid for.",
+      },
+      {
+        question: "Do you guarantee profits?",
+        answer:
+          "No. No prediction service can guarantee an outcome, and any that claims to is not being honest. VIP improves selection quality; it does not remove risk.",
+      },
+    ],
+  },
 };
