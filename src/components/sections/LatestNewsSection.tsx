@@ -130,6 +130,9 @@ const FeaturedNewsCard: React.FC<{ article: Post }> = ({ article }) => (
   <BlogCard {...article} />
 );
 
+/** Category shown first and opened by default in Latest News and Previews. */
+const LEAD_CATEGORY = "Premier League";
+
 export const CategoryTab: React.FC<{
   category: NewsCategory;
   isActive: boolean;
@@ -155,15 +158,20 @@ const LatestNewsSection: React.FC = () => {
   });
 
   const defaultCategory = useMemo(() => {
-    return data?.data?.find(
-      ({ category }) => category.name === "Premier League",
-    );
+    return data?.data?.find(({ category }) => category.name === LEAD_CATEGORY);
   }, [data]);
 
   const filtredCategories = useMemo(() => {
-    return data?.data?.length
+    const categories = data?.data?.length
       ? data?.data?.map(({ category }) => category)
       : [];
+
+    // Premier League is the tab that opens by default, so it leads the list.
+    // Everything else keeps the order the menu returns.
+    return [
+      ...categories.filter(({ name }) => name === LEAD_CATEGORY),
+      ...categories.filter(({ name }) => name !== LEAD_CATEGORY),
+    ];
   }, [data?.data]);
 
   const [activeCategory, setActiveCategory] = useState<number>(0);
