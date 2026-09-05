@@ -58,7 +58,7 @@ const MarketFAQSection: React.FC<{ slug: string }> = ({ slug }) => {
     <section
       className="py-20 relative overflow-hidden transition-all"
       style={{
-        backgroundImage: "url(/bg5.png)",
+        backgroundImage: "url(/bg5.webp)",
         backgroundColor: "#455DBD",
         backgroundBlendMode: "screen",
       }}

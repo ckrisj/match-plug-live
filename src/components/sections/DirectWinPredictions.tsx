@@ -399,7 +399,7 @@ export const predictionData: PredictionData = {
       accuracy: "72% Accurate",
       subtitle: "8-9 Wins from the last 7 games",
       backgroundImage:
-        "/ncaab.jpg",
+        "/ncaab.webp",
       url: "#",
     },
 
@@ -409,7 +409,7 @@ export const predictionData: PredictionData = {
       accuracy: "79% Accurate",
       subtitle: "4-6 Wins from the last 7 games",
       backgroundImage:
-        "/ncaaf.jpg",
+        "/ncaaf.webp",
       url: "#",
     },
   ],
@@ -503,7 +503,7 @@ const DirectWinPredictions: React.FC = () => {
   return (
     <section id="tips" className=" py-16 relative">
       <div className="absolute inset-0 z-0">
-        <img src="/bg1.png" alt="" className="h-full w-full bg-cover" />
+        <img src="/bg1.webp" alt="" className="h-full w-full bg-cover" />
       </div>
       <div className="max-w-7xl mx-auto px-4 z-10 relative">
         {/* Header with Navigation Arrows */}

@@ -59,7 +59,7 @@ export function SureWinPrediction({ data }: { data: FixturePrediction[] }) {
       className="py-16 relative overflow-hidden"
       style={{
         backgroundImage:
-          "linear-gradient(0deg, #455DBD, #455DBD), url(/bg5.png)",
+          "linear-gradient(0deg, #455DBD, #455DBD), url(/bg5.webp)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundBlendMode: "screen",
