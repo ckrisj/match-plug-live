@@ -10,9 +10,9 @@ type RouteTitle = { label: string; title: string; description: string };
 const baseRouteTitles: Record<string, RouteTitle> = {
   "/": {
     label: "Home",
-    title: "Expert Football Predictions Today – Win Big with Matchplug",
+    title: "Soccer Tips Today — Win Draw Win Predictions | Matchplug",
     description:
-      "Boost your bets with daily football predictions, NFL & NBA Picks. Start winning smarter now with Matchplug Sure Win Prediction today.",
+      "Free soccer tips and win draw win predictions for today's matches across 40+ leagues, plus BTTS, over 2.5 goals and correct score. Live in-play tips.",
   },
   "/blog": {
     label: "Blog",
