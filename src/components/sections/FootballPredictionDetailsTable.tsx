@@ -54,11 +54,24 @@ const FootballPredictionDetailsTable = async ({
     description: string;
   };
 }) => {
+  // The predictions call runs on the server so the table — including the empty
+  // "No Prediction Available" state — is in the HTML before any JS runs. A
+  // failed call must degrade to that same empty state rather than throwing,
+  // which would take the whole page down instead of just the table.
+  let data: MatchPrediction[] = [];
 
-  const data = await getAdminData<MatchPrediction[]>({
-    key: ["predictions", currentDate, slug.label],
-    path: `predictions?date=${currentDate}&market=${slug.label}`,
-  });
+  try {
+    data =
+      (await getAdminData<MatchPrediction[]>({
+        key: ["predictions", currentDate, slug.label],
+        path: `predictions?date=${currentDate}&market=${slug.label}`,
+      })) ?? [];
+  } catch (error) {
+    console.error(
+      `Predictions request failed for market "${slug.label}" on ${currentDate}:`,
+      error
+    );
+  }
 
 
   return (
