@@ -16,6 +16,7 @@ export function useGetData<T extends Record<string, any>>({
   key,
   params,
   path,
+  initialData,
   enabled = true,
 }: UseGetDataArgs<T>) {
   return useQuery<T>({
@@ -33,6 +34,9 @@ export function useGetData<T extends Record<string, any>>({
 
       return response?.data;
     },
+    // Callers pass a committed JSON snapshot as a fallback; without this the
+    // section renders empty whenever the request fails.
+    initialData,
     enabled,
   });
 }

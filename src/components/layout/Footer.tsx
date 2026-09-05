@@ -21,6 +21,20 @@ type MenuResponse = {
   items: MenuItem[];
 };
 
+// The footer menu still returns a retired European League category, and its
+// Fantasy slot is now used for Champions League. Adjust both here until the
+// backend menu is updated; every other entry is left exactly as the API sends
+// it. Note European League is not Europa League, which stays.
+const HIDDEN_CATEGORY = "european league";
+
+const RENAMED_CATEGORIES: Record<string, { title: string; slug: string }> = {
+  fantasy: { title: "Champions League Predictions", slug: "champions-league" },
+};
+
+// Menu titles carry a trailing "Predictions" that the match list above omits.
+const categoryKey = (title: string) =>
+  title.toLowerCase().replace(/predictions?/g, "").trim();
+
 const FooterLink: React.FC<{ href: string; children: React.ReactNode }> = ({
   href,
   children,
@@ -76,38 +90,31 @@ const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({
 const Footer: React.FC = () => {
   const quickLinks = [
     { name: "News", url: "/blog" },
-    { name: "Livescores", url: "#" },
-    { name: "Predictions", url: "#prediction" },
     { name: "Match Previews", url: "#" },
     {
-      name: "NHL Experts Picks",
+      name: "NFL Picks Today",
+      url: "/sports-betting-tips-NFL-predictions-and-tips",
+    },
+    {
+      name: "NBA Picks Today",
+      url: "/sports-betting-tips-NBA-predictions-and-tips",
+    },
+    {
+      name: "MLB Picks Today",
+      url: "/sports-betting-tips-MLB-predictions-and-tips",
+    },
+    {
+      name: "NHL Picks Today",
       url: "/sports-betting-tips-NHL-predictions-and-tips",
     },
     {
-      name: "NFL Picks for Free",
-      url: "/sports-betting-tips-NFL-predictions-and-tips",
+      name: "NCAAF Picks Today",
+      url: "/sports-betting-tips-NCAAF-predictions-and-tips",
     },
-    { name: "Jackpot Bet Codes", url: "#jackpot-bet-codes" },
     {
-      name: "MLB Best Bets Today",
-      url: "/sports-betting-tips-MLB-predictions-and-tips",
+      name: "NCAAB Picks Today",
+      url: "/sports-betting-tips-NCAAB-predictions-and-tips",
     },
-    { name: "American Sports Picks", url: "#collapseFour" },
-  ];
-
-  const categories = [
-    "America Sports Previews ",
-    "MLS Predictions",
-    "FA Cup Predictions",
-    "American Sports News",
-    "French Ligue Predictions",
-    "Italian Serie A Predictions",
-    "Europa League Predictions",
-    "Spanish La Liga Predictions",
-    "Premier League Predictions",
-    "European League Predictions",
-    "German Bundesliga Predictions",
-    "USA World Cup 2026 Predictions",
   ];
 
   const informationLinks = [
@@ -142,6 +149,13 @@ const Footer: React.FC = () => {
     path: "menu/footerMenu",
     initialData: footerResponse,
   });
+
+  const categories = (categoriesResponse?.items ?? [])
+    .filter((category) => categoryKey(category.title) !== HIDDEN_CATEGORY)
+    .map((category) => {
+      const renamed = RENAMED_CATEGORIES[categoryKey(category.title)];
+      return renamed ? { ...category, ...renamed } : category;
+    });
 
   return (
     <footer className="bg-[#272727] text-white">
@@ -203,7 +217,7 @@ const Footer: React.FC = () => {
             {/* Categories */}
             <FooterSection title="Categories">
               <div className="space-y-4">
-                {categoriesResponse?.items?.map((category, index) => (
+                {categories.map((category, index) => (
                   <FooterLink
                     key={index}
                     href={`/blog/category/${category.slug}`}

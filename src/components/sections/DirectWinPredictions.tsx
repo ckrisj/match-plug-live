@@ -430,10 +430,26 @@ interface PredictionData {
   americaSportsPicks: PredictionCard[];
 }
 
-const marketSections: { key: keyof PredictionData; label: string }[] = [
-  { key: "footballBettingTips", label: "Football Betting Tips" },
-  { key: "riskyTipsMarkets", label: "Risky Tips Markets" },
-  { key: "americaSportsPicks", label: "America Sports Picks" },
+/**
+ * Football and its riskier markets sit together under one heading; American
+ * sports is a separate group below. `subLabel` is the heading shown above a
+ * group's second and later grids.
+ */
+const marketGroups: {
+  heading: string;
+  sections: { key: keyof PredictionData; subLabel?: string }[];
+}[] = [
+  {
+    heading: "Football Betting Tips",
+    sections: [
+      { key: "footballBettingTips" },
+      { key: "riskyTipsMarkets", subLabel: "Risky Tips Markets" },
+    ],
+  },
+  {
+    heading: "American Sports Picks",
+    sections: [{ key: "americaSportsPicks" }],
+  },
 ];
 
 const DirectWinPredictions: React.FC = () => {
@@ -503,17 +519,29 @@ const DirectWinPredictions: React.FC = () => {
           </p>
         </div>
 
-        {/* One section per market */}
-        <div className="flex flex-col gap-14">
-          {marketSections.map(({ key, label }) => (
-            <div key={key} id={slugify(label)}>
+        {/* Football (with its risky markets) first, American sports below */}
+        <div className="flex flex-col gap-20">
+          {marketGroups.map(({ heading, sections }) => (
+            <div key={heading} id={slugify(heading)}>
               <h3 className="text-lg md:text-xl font-bold text-gray-900 text-center mb-6">
-                {label}
+                {heading}
               </h3>
 
-              <div className="gap-6 flex-col items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center pb-4 ">
-                {predictionData[key].map((card) => (
-                  <PredictionCard key={card.id} card={card} />
+              <div className="flex flex-col gap-10">
+                {sections.map(({ key, subLabel }) => (
+                  <div key={key} id={subLabel ? slugify(subLabel) : undefined}>
+                    {subLabel && (
+                      <h4 className="text-base md:text-lg font-semibold text-gray-700 text-center mb-5">
+                        {subLabel}
+                      </h4>
+                    )}
+
+                    <div className="gap-6 flex-col items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center pb-4 ">
+                      {predictionData[key].map((card) => (
+                        <PredictionCard key={card.id} card={card} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
