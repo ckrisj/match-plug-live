@@ -1,5 +1,6 @@
 import { PredictionMap } from "@/components/sections/DirectWinPredictions";
 import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
+import MarketFAQSection from "@/components/sections/MarketFAQSection";
 import { DateTime } from "luxon";
 
 type PageParams = {
@@ -223,10 +224,13 @@ const Page = async ({ params, searchParams }: PageParams) => {
 
   return (
     title && (
-      <FootballPredictionDetailsTable
-        currentDate={date ?? DateTime.now().toISODate()}
-        slug={title}
-      />
+      <>
+        <FootballPredictionDetailsTable
+          currentDate={date ?? DateTime.now().toISODate()}
+          slug={title}
+        />
+        <MarketFAQSection slug={pageSlug} />
+      </>
     )
   );
 };
