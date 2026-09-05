@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import Logo from "../layout/Logo";
 import { key } from "flatpickr/dist/types/locale";
 
@@ -29,16 +29,6 @@ const allTitles = [
   "Correct Score",
   "Player Tip",
   "Cards",
-
-  // specialTipsMarkets
-  "Free Kicks",
-  "Throw In",
-  "Fouls",
-  "Tackles",
-  "Shots",
-  "Shots on Target",
-  "Goal Kicks",
-  "Corners",
 
   // americaSportsPicks
   "Player Picks",
@@ -235,17 +225,6 @@ export const predictionMap = {
   "free-football-predictions-player-specials-and-tips": "Player Tip",
   "free-football-predictions-cards-predictions-and-tips": "Cards",
 
-  // --- Special Tips Markets ---
-  "free-football-predictions-free-kick-prediction-and-tips": "Free Kicks",
-  "free-football-predictions-throw-in-prediction-and-tips": "Throw In",
-  "free-football-predictions-fouls-prediction-and-tips": "Fouls",
-  "free-football-prediction-tackles": "Tackles",
-  "free-football-predictions-shots-prediction-and-tips": "Shots",
-  "free-football-predictions-shots-on-target-prediction-and-tips":
-    "Shots on Target",
-  "free-footballpredictions-goal-kicks-predictions-and-tips": "Goal Kicks",
-  "free-football-predictions-corner-predictions-and-tips": "Corners",
-
   // --- American Sports Picks ---
   "sports-betting-tips-NFL-predictions-and-tips": "NFL Picks",
   "sports-betting-tips-NBA-predictions-and-tips": "NBA Picks",
@@ -377,82 +356,6 @@ export const predictionData: PredictionData = {
     },
   ],
 
-  specialTipsMarkets: [
-    {
-      id: "15",
-      title: "Free Kicks",
-      subtitle: "6-7 Wins from the last 7 games",
-      accuracy: "85% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-    {
-      id: "16",
-      title: "Throw In",
-      subtitle: "7-7 Wins from the last 7 games",
-      accuracy: "90% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-    {
-      id: "17",
-      title: "Fouls",
-      subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "80% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-
-    {
-      id: "19",
-      title: "Tackles",
-      subtitle: "7-7 Wins from the last 7 games",
-      accuracy: "92% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-    {
-      id: "20",
-      title: "Shots",
-      subtitle: "6-6 Wins from the last 7 games",
-      accuracy: "88% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-    {
-      id: "21",
-      title: "Shots on Target",
-      subtitle: "7-7 Wins from the last 7 games",
-      accuracy: "92% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-    {
-      id: "22",
-      title: "Goal Kicks",
-      subtitle: "7-7 Wins from the last 7 games",
-      accuracy: "92% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-
-    {
-      id: "24",
-      title: "Corners",
-      subtitle: "7-7 Wins from the last 7 games",
-      accuracy: "92% Accurate",
-      backgroundImage:
-        "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      url: "#",
-    },
-  ],
   americaSportsPicks: [
     {
       id: "28",
@@ -524,46 +427,17 @@ interface PredictionCard {
 interface PredictionData {
   footballBettingTips: PredictionCard[];
   riskyTipsMarkets: PredictionCard[];
-  specialTipsMarkets: PredictionCard[];
   americaSportsPicks: PredictionCard[];
 }
 
+const marketSections: { key: keyof PredictionData; label: string }[] = [
+  { key: "footballBettingTips", label: "Football Betting Tips" },
+  { key: "riskyTipsMarkets", label: "Risky Tips Markets" },
+  { key: "americaSportsPicks", label: "America Sports Picks" },
+];
+
 const DirectWinPredictions: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    | "footballBettingTips"
-    | "riskyTipsMarkets"
-    | "specialTipsMarkets"
-    | "americaSportsPicks"
-  >("footballBettingTips");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   // Dummy data - replace with API later
-
-  const getCurrentData = () => predictionData[activeTab];
-  const displayData = getCurrentData();
-
-  const handlePrevious = () => {
-    const totalData = getCurrentData().length;
-    setCurrentIndex((prev) =>
-      prev === 0 ? Math.max(0, totalData - 4) : Math.max(0, prev - 1)
-    );
-  };
-
-  const handleNext = () => {
-    const totalData = getCurrentData().length;
-    setCurrentIndex((prev) => (prev + 4 >= totalData ? 0 : prev + 1));
-  };
-
-  const handleTabChange = (
-    tab:
-      | "footballBettingTips"
-      | "riskyTipsMarkets"
-      | "specialTipsMarkets"
-      | "americaSportsPicks"
-  ) => {
-    setActiveTab(tab);
-    setCurrentIndex(0);
-  };
 
   const PredictionCard: React.FC<{ card: PredictionCard }> = ({ card }) => (
     <Link
@@ -629,62 +503,21 @@ const DirectWinPredictions: React.FC = () => {
           </p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-12">
-          <div className="flex gap-3 flex-wrap items-center justify-center">
-            <button
-              onClick={() => handleTabChange("footballBettingTips")}
-              className={` px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 border border-black/10 ${
-                activeTab === "footballBettingTips"
-                  ? "bg-[#455DBD] text-white"
-                  : "text-gray-600 bg-white bla hover:text-gray-800"
-              }`}
-            >
-              Football Betting Tips
-            </button>
-            <button
-              onClick={() => handleTabChange("riskyTipsMarkets")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 border border-black/10 ${
-                activeTab === "riskyTipsMarkets"
-                  ? "bg-[#455DBD] text-white"
-                  : "text-gray-600 bg-white bla hover:text-gray-800"
-              }`}
-            >
-              Risky Tips Markets
-            </button>
-            <button
-              onClick={() => handleTabChange("specialTipsMarkets")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 border border-black/10 ${
-                activeTab === "specialTipsMarkets"
-                  ? "bg-[#455DBD] text-white"
-                  : "text-gray-600 bg-white bla hover:text-gray-800"
-              }`}
-            >
-              Special Tips Markets
-            </button>
-            <button
-              onClick={() => handleTabChange("americaSportsPicks")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 border border-black/10 ${
-                activeTab === "americaSportsPicks"
-                  ? "bg-[#455DBD] text-white"
-                  : "text-gray-600 bg-white bla hover:text-gray-800"
-              }`}
-            >
-              America Sports Picks
-            </button>
-          </div>
-        </div>
+        {/* One section per market */}
+        <div className="flex flex-col gap-14">
+          {marketSections.map(({ key, label }) => (
+            <div key={key} id={slugify(label)}>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 text-center mb-6">
+                {label}
+              </h3>
 
-        {/* Cards Container */}
-        <div className="relative">
-          <div className="gap-6 flex-col items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center pb-4 ">
-            {displayData.map((card) => (
-              <PredictionCard key={card.id} card={card} />
-            ))}
-          </div>
-
-          {/* Fade out effect on right */}
-          {/* <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" /> */}
+              <div className="gap-6 flex-col items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center pb-4 ">
+                {predictionData[key].map((card) => (
+                  <PredictionCard key={card.id} card={card} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

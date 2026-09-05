@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 
 interface PricingFeature {
@@ -172,9 +173,11 @@ const PricingCard: React.FC<{ plan: PricingPlan }> = ({ plan }) => (
 
       {/* CTA Button */}
       <div className="text-center">
-        <button className="bg-[#455DBD] rounded-full px-6 py-2 text-lg font-bold text-white hover:opacity-90 transition-opacity">
-          Get Started
-        </button>
+        <Link href="https://user.matchplug.com/auth/register">
+          <button className="bg-[#455DBD] cursor-pointer rounded-full px-6 py-2 text-lg font-bold text-white hover:opacity-90 transition-opacity">
+            Get Started
+          </button>
+        </Link>
         <p className="text-base font-medium text-black mt-3">{plan.cancelText}</p>
       </div>
     </div>
