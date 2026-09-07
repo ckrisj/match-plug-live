@@ -1,5 +1,7 @@
 import { PredictionMap } from "@/components/sections/DirectWinPredictions";
 import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
+import MarketFAQSection from "@/components/sections/MarketFAQSection";
+import { marketContent } from "@/components/utils/Collection/market-content";
 import { DateTime } from "luxon";
 
 type PageParams = {
@@ -26,7 +28,10 @@ const descriptions = [
   },
   {
     link: "free-football-predictions-mix-chance",
+    // `label` stays "Mix Chance" because it is the market key the predictions
+    // API is queried with; only the public-facing name changed.
     label: "Mix Chance",
+    displayLabel: "Betbuilder / Same Game Parlay",
     description:
       "Football betting involves forecasting the outcomes of games, as well as the exact score of matches and the teams that will qualify in each bracket. But with so many different betting options, it can be hard to know where to start. One popular method of football betting is a mix chance bet. Here’s what you need to know. \n\nWhat Are Mix Chance Bets? \n\nMix chance bets are a type of football bet that combines two or more individual bets into one single bet. This means that you get to put two bets on, but you can only win the wager if you get both of them correct. Mix chance bets offer more chances to win big money, so it’s one of the most popular ways to bet on football. \n\nAdvantages of Mix Chance Bets \n\nMix chance bets offer a number of advantages to football bettors: \n\n1. Increased odds. Because you’re putting two bets on, the odds for mix chance bets are usually better than for a single bet. This means you have a better chance of winning more money when you bet on a mix chance bet. \n\n2. More control. Another advantage to a mix chance bet is that you have more control over the outcome. You can choose two different bets, or even three, which means you can adjust the bet to suit your strategy and increase your chances of success. \n\n3. Flexible. Mix chance bets also offer more flexibility.",
   },
@@ -38,7 +43,10 @@ const descriptions = [
   },
   {
     link: "free-football-predictions-1x2",
+    // `label` stays "Straight Win" because it is the market key the predictions
+    // API is queried with; only the public-facing name changed.
     label: "Straight Win",
+    displayLabel: "1X2 - Win Draw Win",
     description:
       "Football betting has grown quickly in popularity in recent years and one of the most \ncommon bets for football is the 1x2 bet called the Straight Win. This straight win bet is one \nof the simplest bets to make with solid returns, and with the help of Matchplug.com you \ncan find football super tips for any major football game in just a few clicks of the mouse.\n\nThe 1x2 bet is quite straightforward and easy to understand, making it perfect for both new\nand experienced football bettors. When you make a 1x2 bet, you are essentially predicting \nwhich team will win the match. If you bet on the home team to win, it is referred to as 1, \nwhile the away team is 2 and a draw would be x. As an example, a bet of 1 would be \nbetting on the home team to win the match, and a bet of 2 is for the away team.\n\nSince Sure six straight win Today betting is one of the most basic bets on football, you can \npick up solid wins by going with the home team, as they usually have the home field \nadvantage. This is why at Matchplug.com, we match you up with the best odds \nrespectively in order to increase your chance of winning. With a simple but highly efficient \nsearch engine, you can compare multiple odds at once and quickly choose the best option \nto place your bet.",
   },
@@ -217,16 +225,31 @@ const Page = async ({ params, searchParams }: PageParams) => {
 
   const { date } = await searchParams;
 
-  const title = descriptions.find(({ link }) => {
+  const entry = descriptions.find(({ link }) => {
     return link === pageSlug;
   });
 
+  // Markets covered by the build sheet take their heading and explanation from
+  // it; the rest keep the copy defined above.
+  const sheet = marketContent[pageSlug];
+  const title = entry && {
+    ...entry,
+    ...(sheet && {
+      displayLabel: sheet.name,
+      heading: sheet.heading,
+      description: sheet.note,
+    }),
+  };
+
   return (
     title && (
-      <FootballPredictionDetailsTable
-        currentDate={date ?? DateTime.now().toISODate()}
-        slug={title}
-      />
+      <>
+        <FootballPredictionDetailsTable
+          currentDate={date ?? DateTime.now().toISODate()}
+          slug={title}
+        />
+        <MarketFAQSection slug={pageSlug} />
+      </>
     )
   );
 };

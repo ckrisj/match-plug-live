@@ -1,5 +1,5 @@
-import { DateTime } from "luxon";
 import { MatchPrediction } from "@/components/sections/FootballPredictionDetailsTable";
+import { DateTime } from "luxon";
 import { getAdminData } from "./useGetAdminData";
 
 export const getPredictionData = async (type: string) => {
@@ -19,10 +19,21 @@ export const getPredictionData = async (type: string) => {
 
   const dateTIme = getDate() ?? "";
 
-  const data = await getAdminData<MatchPrediction[]>({
-    key: ["predictions", dateTIme, "Free Expert Tips"],
-    path: `predictions?date=${dateTIme}&market=Free Expert Tips`,
-  });
-
-  return data;
+  // This runs on the server for the homepage table. A failed call must fall
+  // back to an empty list so the section renders "No Prediction Available",
+  // rather than throwing and taking the whole homepage down with it.
+  try {
+    return (
+      (await getAdminData<MatchPrediction[]>({
+        key: ["predictions", dateTIme, "Free Expert Tips"],
+        path: `predictions?date=${dateTIme}&market=Free Expert Tips`,
+      })) ?? []
+    );
+  } catch (error) {
+    console.error(
+      `Predictions request failed for "${type}" (${dateTIme}):`,
+      error,
+    );
+    return [];
+  }
 };

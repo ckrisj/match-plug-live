@@ -1,17 +1,24 @@
 // app/lib/titles.ts
 
+import { marketContent } from "@/components/utils/Collection/market-content";
+
 /**
  * A simple map of routes → titles
  */
-export const routeTitles: Record<
-  string,
-  { label: string; title: string; description: string }
-> = {
+type RouteTitle = { label: string; title: string; description: string };
+
+const baseRouteTitles: Record<string, RouteTitle> = {
+  "/vip": {
+    label: "VIP Results",
+    title: "Matchplug VIP — Premium Football Tips & Live Alerts | Matchplug",
+    description:
+      "Matchplug VIP: our highest-conviction daily picks, live in-play alerts and staking guidance, delivered to Telegram. Pricing, what's included and our record.",
+  },
   "/": {
     label: "Home",
-    title: "Expert Football Predictions Today – Win Big with Matchplug",
+    title: "Soccer Tips Today — Win Draw Win Predictions | Matchplug",
     description:
-      "Boost your bets with daily football predictions, NFL & NBA Picks. Start winning smarter now with Matchplug Sure Win Prediction today.",
+      "Free soccer tips and win draw win predictions for today's matches across 40+ leagues, plus BTTS, over 2.5 goals and correct score. Live in-play tips.",
   },
   "/blog": {
     label: "Blog",
@@ -210,4 +217,22 @@ export const routeTitles: Record<
     description:
       "Free corner predictions with expert stats and betting insights.",
   },
+};
+
+/**
+ * Markets covered by the on-page build sheet take their meta title and
+ * description from it, overriding the entries above so the two can't drift.
+ */
+export const routeTitles: Record<string, RouteTitle> = {
+  ...baseRouteTitles,
+  ...Object.fromEntries(
+    Object.entries(marketContent).map(([slug, content]) => [
+      `/${slug}`,
+      {
+        label: content.name,
+        title: content.metaTitle,
+        description: content.metaDescription,
+      },
+    ])
+  ),
 };

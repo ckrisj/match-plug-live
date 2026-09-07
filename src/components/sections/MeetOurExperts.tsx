@@ -82,7 +82,7 @@ const MeetOurExperts: React.FC = () => {
       name: "NFL Specialist with 10+ Years Experience",
       specialty: "NFL",
       description: "",
-      backgroundImage: "/t1.png",
+      backgroundImage: "/t1.webp",
       achievements: "Predicted 500+ Wins Last Season",
     },
     {
@@ -90,7 +90,7 @@ const MeetOurExperts: React.FC = () => {
       name: "Soccer Predictor with 90% Win Rate",
       specialty: "Soccer",
       description: "",
-      backgroundImage: "/t2.png",
+      backgroundImage: "/t2.webp",
       achievements: "Predicted 750+ Wins Last Season",
     },
     {
@@ -98,7 +98,7 @@ const MeetOurExperts: React.FC = () => {
       name: "NBA/NCAA Specialist with 10+Years Experience",
       specialty: "Basketball",
       description: "",
-      backgroundImage: "/t3.png",
+      backgroundImage: "/t3.webp",
       achievements: "Predicted 1200+ Wins Last Season",
     },
     {
@@ -106,7 +106,7 @@ const MeetOurExperts: React.FC = () => {
       name: "NHL Specialist with 10+ Years Experience",
       specialty: "Hockey",
       description: "",
-      backgroundImage: "/t4.png",
+      backgroundImage: "/t4.webp",
       achievements: "Predicted 800+ Wins Last Season",
     },
     {
@@ -114,7 +114,7 @@ const MeetOurExperts: React.FC = () => {
       name: "MLB Specialist with 10+ Years Experience",
       specialty: "Baseball",
       description: "",
-      backgroundImage: "/t5.png",
+      backgroundImage: "/t5.webp",
       achievements: "Predicted 1000+ Wins Last Season",
     },
   ];

@@ -48,25 +48,25 @@ const months: MonthResult[] = [
     month: "March Results",
     score: "15/18",
     cells: RESULT_CELLS,
-    link: "free-football-prediction-over-2.5-goals",
+    link: "vip",
   },
   {
     month: "April Results",
     score: "15/18",
     cells: RESULT_CELLS,
-    link: "free-football-prediction-over-2.5-goals",
+    link: "vip",
   },
   {
     month: "May Results",
     score: "15/18",
     cells: RESULT_CELLS,
-    link: "free-football-prediction-over-2.5-goals",
+    link: "vip",
   },
   {
     month: "June Results",
     score: "15/18",
     cells: RESULT_CELLS,
-    link: "free-football-prediction-over-2.5-goals",
+    link: "vip",
   },
 ];
 
