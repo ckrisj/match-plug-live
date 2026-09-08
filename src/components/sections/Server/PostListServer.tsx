@@ -16,6 +16,12 @@ type PostListServerProps = {
   basePath: string;
   page: number;
   heading?: string;
+  /** Overrides the page size — the homepage shows a short list. */
+  perPage?: number;
+  /** Hidden on the homepage, where the list is a teaser rather than an index. */
+  showPagination?: boolean;
+  /** Renders a link through to the full archive. */
+  viewAllHref?: string;
 };
 
 function formatDate(value: string) {
@@ -46,8 +52,11 @@ export default async function PostListServer({
   basePath,
   page,
   heading,
+  perPage,
+  showPagination = true,
+  viewAllHref,
 }: PostListServerProps) {
-  const { posts, totalPages } = await getBlogPosts({ page, categoryId });
+  const { posts, totalPages } = await getBlogPosts({ page, categoryId, perPage });
 
   if (!posts.length) {
     return null;
@@ -85,7 +94,7 @@ export default async function PostListServer({
         ))}
       </ul>
 
-      {totalPages > 1 && (
+      {showPagination && totalPages > 1 && (
         <nav
           aria-label="Pagination"
           className="mt-8 flex flex-wrap items-center gap-2"
@@ -125,6 +134,14 @@ export default async function PostListServer({
             </Link>
           )}
         </nav>
+      )}
+      {viewAllHref && (
+        <Link
+          href={viewAllHref}
+          className="mt-6 inline-block text-sm font-semibold text-[#455DBF] hover:underline"
+        >
+          See all articles
+        </Link>
       )}
     </section>
   );
