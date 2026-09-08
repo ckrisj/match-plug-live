@@ -154,7 +154,6 @@ const LatestNewsSection: React.FC = () => {
   const { data, isFetching } = useGetData<ApiResponse>({
     key: ["football-news"],
     path: "football-news",
-    initialData: { data: [] },
   });
 
   const defaultCategory = useMemo(() => {
@@ -178,7 +177,9 @@ const LatestNewsSection: React.FC = () => {
 
   useMemo(() => {
     if (filtredCategories.length) {
-      setActiveCategory(defaultCategory?.category.id ?? 0);
+      // Fall back to the first tab when the feed has no Premier League category,
+      // otherwise nothing matches and the post list renders empty.
+      setActiveCategory(defaultCategory?.category.id ?? filtredCategories[0].id);
     }
   }, [filtredCategories]);
 
