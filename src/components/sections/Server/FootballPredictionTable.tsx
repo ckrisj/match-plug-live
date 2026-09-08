@@ -13,6 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { formatParagraphToHTML } from "@/components/utils/helper";
 import PredictionFallbackNotice from "./PredictionFallbackNotice";
 import EmptyPredictionState from "./EmptyPredictionState";
+import ExpertTipsFallback from "./ExpertTipsFallback";
 
 
 interface Team {
@@ -49,6 +50,8 @@ type FootballPredictionTableProps = {
   isFallback: boolean;
   /** Next day after the requested one that already has picks. */
   nextDate: string | null;
+  /** Last-resort general tips shown when this market has nothing at all. */
+  expertTips: { predictions: MatchPrediction[]; servedDate: string } | null;
 };
 
 const FootballPredictionTable = ({
@@ -58,6 +61,7 @@ const FootballPredictionTable = ({
   servedDate,
   isFallback,
   nextDate,
+  expertTips,
 }: FootballPredictionTableProps) => {
   const router = useRouter();
 
@@ -215,6 +219,13 @@ const FootballPredictionTable = ({
                 marketLabel={slug.displayLabel ?? slug.label}
                 requestedDate={currentDate}
                 currentHref={`/${slug.link}`}
+              />
+            )}
+
+            {expertTips && (
+              <ExpertTipsFallback
+                predictions={expertTips.predictions}
+                servedDate={expertTips.servedDate}
               />
             )}
 

@@ -1,4 +1,6 @@
 import React from "react";
+import { DateTime } from "luxon";
+
 import FootballPredictionTable from "./Server/FootballPredictionTable";
 import { getMarketPredictions } from "@/app/Hooks/getMarketPredictions";
 
@@ -38,6 +40,9 @@ export interface MatchPrediction {
   result: string;
 }
 
+/** Market published on the homepage, used as the last-resort table here. */
+const GENERAL_MARKET = "Free Expert Tips";
+
 const FootballPredictionDetailsTable = async ({
   currentDate,
   slug,
@@ -62,6 +67,16 @@ const FootballPredictionDetailsTable = async ({
   const { predictions, servedDate, isFallback, nextDate } =
     await getMarketPredictions(slug.label, currentDate);
 
+  // Markets that have not published for weeks would still leave the page with
+  // no table at all, so fall back once more to the general expert tips card.
+  // Clearly labelled as such — it is not presented as this market's picks.
+  const expertTips = predictions.length
+    ? null
+    : await getMarketPredictions(
+        GENERAL_MARKET,
+        DateTime.now().toISODate() ?? currentDate,
+      );
+
   return (
     <FootballPredictionTable
       data={predictions}
@@ -69,6 +84,14 @@ const FootballPredictionDetailsTable = async ({
       servedDate={servedDate}
       isFallback={isFallback}
       nextDate={nextDate}
+      expertTips={
+        expertTips && expertTips.predictions.length
+          ? {
+              predictions: expertTips.predictions,
+              servedDate: expertTips.servedDate,
+            }
+          : null
+      }
       slug={slug}
     />
   );

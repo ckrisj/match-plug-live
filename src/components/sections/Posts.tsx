@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useGetData } from "@/app/Hooks/UseGetDataArgs";
 import Link from "next/link";
@@ -173,15 +174,13 @@ export function Posts({
                   className="h-full"
                 >
                   <div className="h-[500px] rounded-xl shadow-md overflow-hidden bg-white flex flex-col">
-                    <img
+                    <Image
                       src={post?.jetpack_featured_media_url || "/person.webp"}
                       alt={post?.title?.rendered}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/person.webp";
-                      }}
                       width={600}
                       height={300}
                       className="h-52 w-full object-cover shrink-0"
+                      unoptimized={false}
                     />
 
                     <div className="p-4 flex flex-col flex-1">

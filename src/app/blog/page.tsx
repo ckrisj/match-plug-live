@@ -3,6 +3,9 @@ import Blogs from "@/components/sections/BlogPage";
 import { Posts } from "@/components/sections/Posts";
 import PostListServer from "@/components/sections/Server/PostListServer";
 import { parsePageParam } from "@/app/Hooks/getBlogPosts";
+import { metadataForRoute } from "@/app/lib/title";
+
+export const metadata = metadataForRoute("/blog");
 
 type PageProps = {
   searchParams: Promise<{

@@ -4,6 +4,8 @@ import MarketFAQSection from "@/components/sections/MarketFAQSection";
 import { marketContent } from "@/components/utils/Collection/market-content";
 import { DateTime } from "luxon";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { metadataForRoute } from "@/app/lib/title";
 
 type PageParams = {
   params: Promise<{
@@ -242,6 +244,14 @@ Stay ahead of the game with our NCAAF picks and predictions. From regular season
  * crawl of every market page does not re-run the upstream call each time.
  */
 export const revalidate = 300;
+
+export async function generateMetadata({
+  params,
+}: PageParams): Promise<Metadata> {
+  const { slug } = await params;
+
+  return metadataForRoute(`/${slug}`);
+}
 
 const Page = async ({ params, searchParams }: PageParams) => {
   const { slug: pageSlug } = await params;

@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { metadataForRoute } from "@/app/lib/title";
+
+export const metadata = metadataForRoute("/about-us");
 
 /* ---------------------------------------------------------------- content -- */
 

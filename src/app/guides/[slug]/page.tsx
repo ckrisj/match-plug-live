@@ -37,6 +37,7 @@ export async function generateMetadata({
       url: canonical,
       title: guide.metaTitle,
       description: guide.metaDescription,
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     },
   };
 }

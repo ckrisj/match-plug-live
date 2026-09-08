@@ -3,6 +3,9 @@ import Header from "@/components/layout/Header";
 import Link from "next/link";
 import React from "react";
 import { v4 } from "uuid";
+import { metadataForRoute } from "@/app/lib/title";
+
+export const metadata = metadataForRoute("/how-to-subscribe");
 
 const steps = [
   "Visit www.matchplug.com",

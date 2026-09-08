@@ -128,6 +128,8 @@ const Footer: React.FC = () => {
     },
     { src: "/how-to-subscribe", label: "How to subscribe" },
     { src: "/terms-of-service", label: "Terms and Conditions" },
+    { src: "/privacy-policy", label: "Privacy Policy" },
+    { src: "/contact-us", label: "Contact us" },
   ];
 
   const paymentMethods = [

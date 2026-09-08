@@ -2,6 +2,9 @@ import Link from "next/link";
 import { DateTime } from "luxon";
 import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
 import MarketFAQSection from "@/components/sections/MarketFAQSection";
+import { metadataForRoute } from "@/app/lib/title";
+
+export const metadata = metadataForRoute("/vip");
 
 type PageParams = {
   searchParams: Promise<{
