@@ -139,3 +139,58 @@ export function parsePageParam(value: string | string[] | undefined): number {
 
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
 }
+
+/**
+ * Maps a raw WordPress post onto the listing shape. Exported so the client-side
+ * category views produce exactly the same objects the server does.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function mapWpPost(post: any): BlogListPost {
+  return {
+    id: post.id,
+    slug: post.slug,
+    title: toPlainText(post?.title?.rendered ?? ""),
+    excerpt: toExcerpt(post?.excerpt?.rendered ?? ""),
+    image: post?.jetpack_featured_media_url ?? "",
+    date: post.date,
+  };
+}
+
+/** Fields the listing needs; without this WordPress returns whole articles. */
+export const POST_FIELDS = "id,slug,title,excerpt,date,jetpack_featured_media_url";
+
+export interface BlogCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+/**
+ * The category set the news section offers. Taken from the site's own
+ * football-news endpoint so the list stays whatever the editors curate there,
+ * rather than every WordPress category.
+ */
+export async function getNewsCategories(): Promise<BlogCategory[]> {
+  try {
+    const response = await fetch(`${API_URL}/wp-json/next/v1/football-news`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_BLOG_API_KEY}`,
+      },
+      next: { revalidate: REVALIDATE_SECONDS },
+    });
+
+    if (!response.ok) {
+      console.error(`News categories responded ${response.status}`);
+      return [];
+    }
+
+    const body = await response.json();
+
+    return (body?.data ?? [])
+      .map((entry: { category: BlogCategory }) => entry.category)
+      .filter((category: BlogCategory) => category?.id);
+  } catch (error) {
+    console.error("News categories request failed:", error);
+    return [];
+  }
+}
