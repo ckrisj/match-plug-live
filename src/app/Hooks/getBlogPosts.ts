@@ -15,6 +15,8 @@ export interface BlogListPost {
   title: string;
   excerpt: string;
   date: string;
+  /** Featured image URL, empty when the post has none set. */
+  image: string;
 }
 
 export interface BlogList {
@@ -35,17 +37,42 @@ const REVALIDATE_SECONDS = 900;
 function toPlainText(html: string): string {
   return html
     .replace(/<[^>]*>/g, "")
-    .replace(/&hellip;|&#8230;/g, "…")
-    .replace(/&#8217;|&rsquo;/g, "’")
-    .replace(/&#8216;|&lsquo;/g, "‘")
-    .replace(/&#8220;|&ldquo;/g, "“")
-    .replace(/&#8221;|&rdquo;/g, "”")
+    .replace(/&hellip;/g, "…")
+    .replace(/&rsquo;/g, "’")
+    .replace(/&lsquo;/g, "‘")
+    .replace(/&ldquo;/g, "“")
+    .replace(/&rdquo;/g, "”")
     .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
-    .replace(/&#039;|&apos;/g, "'")
+    .replace(/&apos;/g, "'")
+    // Numeric entities are decoded generically — WordPress emits far more of
+    // them than it is worth listing, and an undecoded &#8211; is visible text.
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) =>
+      String.fromCharCode(parseInt(code, 16)),
+    )
+    // Last, so an escaped entity inside the text is not double-decoded.
+    .replace(/&amp;/g, "&")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+/**
+ * Many posts have no hand-written excerpt, and WordPress then returns the whole
+ * article. The card clamps it visually, but there is no reason to ship a few
+ * thousand words per post to do it.
+ */
+function toExcerpt(html: string): string {
+  const text = toPlainText(html);
+
+  if (text.length <= 400) {
+    return text;
+  }
+
+  const cut = text.slice(0, 400);
+  const lastSpace = cut.lastIndexOf(" ");
+
+  return `${cut.slice(0, lastSpace > 200 ? lastSpace : 400)}…`;
 }
 
 export async function getBlogPosts({
@@ -63,7 +90,7 @@ export async function getBlogPosts({
   url.searchParams.set("page", String(page));
   // Without _fields WordPress returns the full rendered body of every post,
   // which is megabytes per listing page.
-  url.searchParams.set("_fields", "id,slug,title,excerpt,date");
+  url.searchParams.set("_fields", "id,slug,title,excerpt,date,jetpack_featured_media_url");
 
   if (categoryId) {
     url.searchParams.set("categories", String(categoryId));
@@ -93,7 +120,8 @@ export async function getBlogPosts({
       id: post.id,
       slug: post.slug,
       title: toPlainText(post?.title?.rendered ?? ""),
-      excerpt: toPlainText(post?.excerpt?.rendered ?? ""),
+      excerpt: toExcerpt(post?.excerpt?.rendered ?? ""),
+      image: post?.jetpack_featured_media_url ?? "",
       date: post.date,
     }));
 

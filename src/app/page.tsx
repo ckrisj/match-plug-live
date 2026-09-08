@@ -64,6 +64,7 @@ export default async function Page() {
         page={1}
         perPage={6}
         showPagination={false}
+        variant="card"
         heading="Latest posts"
         viewAllHref="/blog"
       />
