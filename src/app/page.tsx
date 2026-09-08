@@ -8,8 +8,7 @@ import FootballPredictionTable from "@/components/sections/FootballPredictionTab
 import Hero from "@/components/sections/Hero";
 import LiveInplaySection from "@/components/sections/LiveInplaySection";
 // import JoinWinningBettorsSection from "@/components/sections/JoinWinningBettorsSection";
-import LatestNewsSection from "@/components/sections/LatestNewsSection";
-import PostListServer from "@/components/sections/Server/PostListServer";
+import LatestNews from "@/components/sections/LatestNews";
 import { Loader } from "@/components/sections/Loader";
 // import { LogosSection } from "@/components/sections/LogosSection";
 import MeetOurExperts from "@/components/sections/MeetOurExperts";
@@ -53,21 +52,7 @@ export default async function Page() {
       <RealWinsSection />
       <PricingPlans />
       <MeetOurExperts />
-      <LatestNewsSection />
-      {/*
-        The section above groups posts by category and fetches them in the
-        browser, so its feed carries no publish date and none of its links
-        reach a crawler. This adds the newest posts by date, server-rendered.
-      */}
-      <PostListServer
-        basePath="/blog"
-        page={1}
-        perPage={6}
-        showPagination={false}
-        variant="card"
-        heading="Latest posts"
-        viewAllHref="/blog"
-      />
+      <LatestNews />
       <AboutUsPage />
       <FAQSection />
       {/* <AmericanSportsSection /> */}
