@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { MatchPrediction } from "../FootballPredictionDetailsTable";
 import { Loader } from "../Loader";
-import Button from "@/components/ui/Button";
-import Link from "next/link";
+import { MarketPredictions } from "@/app/Hooks/getMarketPredictions";
+import PredictionFallbackNotice from "./PredictionFallbackNotice";
+import EmptyPredictionState from "./EmptyPredictionState";
 
 interface Team {
   logo: string;
@@ -34,13 +35,16 @@ interface PredictionData {
 export function FootballPredictionTableServer({
   data,
   title,
+  marketLabel,
 }: {
   data: {
-    today: MatchPrediction[];
-    tomorrow: MatchPrediction[];
-    yesterday: MatchPrediction[];
+    today: MarketPredictions;
+    tomorrow: MarketPredictions;
+    yesterday: MarketPredictions;
   };
   title: string;
+  /** Market name for the empty state copy. */
+  marketLabel: string;
 }) {
   const [activeTab, setActiveTab] = useState<
     "today" | "tomorrow" | "yesterday"
@@ -49,6 +53,8 @@ export function FootballPredictionTableServer({
   const handleTabChange = (tab: "today" | "tomorrow" | "yesterday") => {
     setActiveTab(tab);
   };
+
+  const active = data[activeTab];
 
   const TeamCell: React.FC<{ team: Team }> = ({ team }) => (
     <div
@@ -113,8 +119,8 @@ export function FootballPredictionTableServer({
   };
 
   const renderTableRows = () => {
-    return data?.[activeTab]?.map((match, index) => {
-      const isLastRow = index === data?.[activeTab]?.length - 1;
+    return data?.[activeTab]?.predictions?.map((match, index) => {
+      const isLastRow = index === data?.[activeTab]?.predictions?.length - 1;
       const firstTdClass = isLastRow ? "rounded-bl-full" : "";
       const lastTdClass = isLastRow ? "rounded-br-full" : "";
 
@@ -258,15 +264,24 @@ export function FootballPredictionTableServer({
 
         {/* Table */}
         <div className="overflow-hidden">
-          {!data[activeTab]?.length ? (
-            <div
-              className={`flex flex-col gap-2 items-center justify-center h-[200px] w-full`}
-            >
-              No Prediction Available
-              <Link href="https://user.matchplug.com/auth/login">
-                <Button className="cursor-pointer">Subscribe Now</Button>
-              </Link>
-            </div>
+          {active.isFallback && (
+            <PredictionFallbackNotice
+              requestedDate={active.requestedDate}
+              servedDate={active.servedDate}
+              nextDate={active.nextDate}
+            />
+          )}
+
+          {!active.predictions?.length ? (
+            <EmptyPredictionState
+              marketLabel={marketLabel}
+              requestedDate={active.requestedDate}
+              message={
+                activeTab === "tomorrow"
+                  ? `Tomorrow's ${marketLabel} are not published yet. Selections go up each morning, so check back then.`
+                  : undefined
+              }
+            />
           ) : (
             <div className="w-full">
               <table className="w-full overflow-hidden">

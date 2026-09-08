@@ -14,6 +14,8 @@ import { getMarketPredictions } from "@/app/Hooks/getMarketPredictions";
 
 /** Markets treated as must-publish for the daily check. */
 const CORE_MARKETS = [
+  // The homepage block publishes this one, so it matters most.
+  "Free Expert Tips",
   "Straight Win",
   "Over 2.5 Goals",
   "Under 2.5 Goals",
