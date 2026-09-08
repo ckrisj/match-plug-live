@@ -14,7 +14,7 @@ async function getPost(slug: string) {
     `${API_URL}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}`,
     {
       next: {
-        revalidate: 2,
+        revalidate: 900,
       },
     },
   );

@@ -3,6 +3,7 @@ import FootballPredictionDetailsTable from "@/components/sections/FootballPredic
 import MarketFAQSection from "@/components/sections/MarketFAQSection";
 import { marketContent } from "@/components/utils/Collection/market-content";
 import { DateTime } from "luxon";
+import { notFound } from "next/navigation";
 
 type PageParams = {
   params: Promise<{
@@ -15,6 +16,21 @@ type PageParams = {
 
 const descriptions = [
   {
+    link: "free-football-predictions-mix-chance",
+    // `label` is the market key the predictions API is queried with.
+    label: "Mix Chance",
+    displayLabel: "Mix Chance / Double Chance",
+    description:
+      "Double chance — listed as mix chance by some bookmakers — covers two of the three possible results in a single bet: home or draw (1X), away or draw (X2), or home or away (12). It settles as a win if either covered outcome lands, which is why the odds are shorter than a straight 1X2 call. You are buying a wider margin for error rather than a bigger return, and it is at its most useful on a strong favourite playing away, where a draw would otherwise sink a straight win bet.",
+  },
+  {
+    link: "free-football-prediction-ht-ft-predictions",
+    label: "HT / FT",
+    displayLabel: "HT/FT",
+    description:
+      "HT/FT — half-time/full-time — is one bet on two checkpoints: who leads at the break, and who wins the match. There are nine combinations, and because both legs have to land the odds run much longer than a straight result bet. The turnaround combinations are the longest of all, since a side trailing at half-time goes on to win outright in only a small share of matches.",
+  },
+  {
     link: "free-football-prediction-over-2.5-goals",
     label: "Over 2.5 Goals",
     description:
@@ -22,15 +38,16 @@ const descriptions = [
   },
   {
     link: "free-football-predictions-both-team-to-score",
-    label: "BTTS / GG",
+    // The API key has no spaces around the slash; the spaced form returns
+    // nothing, which is why this page was empty.
+    label: "BTTS/GG",
+    displayLabel: "BTTS / GG",
     description:
       "Football betting has become increasingly popular in recent years, and with that has come the emergence of a new type of bet: Both Teams To Score (BTTS). With this type of bet, a punter can potentially win if both teams in a football match score at least one goal. \n\nThe concept is simple, and can be appealing for those looking to make a profit. If the team you bet on scores two or more, you win. If the opposing team fails to score, you’re still a winner. That’s why so many people love matchplug because its the best btts prediction site \nfor those choosing to invest in BTTS bets. \n\nBut before you start betting with BTTS, it’s important to consider some key points. Here are some tips to keep in mind:  \n\n1. Research Your Teams: Research each team you’re considering betting on. Learn as much as you can about their recent performances, injury reports, and news stories. This will allow you to make more informed bets.  \n\n2. Choose the Right Bookmaker: No two bookmakers are the same. It’s best to look around and compare what different operators can offer in terms of odds, bonuses, and promotions. The website Matchplug.com is a great resource for finding the best bookmaker for you. The site helps you compare different bookmakers’ offers and bonuses, and also provides advice on which bookmaker is best for BTTS bets.",
   },
   {
-    link: "free-football-predictions-mix-chance",
-    // `label` stays "Mix Chance" because it is the market key the predictions
-    // API is queried with; only the public-facing name changed.
-    label: "Mix Chance",
+    link: "free-football-predictions-bet-builders-predictions-and-tips",
+    label: "Bet Builder",
     displayLabel: "Betbuilder / Same Game Parlay",
     description:
       "Football betting involves forecasting the outcomes of games, as well as the exact score of matches and the teams that will qualify in each bracket. But with so many different betting options, it can be hard to know where to start. One popular method of football betting is a mix chance bet. Here’s what you need to know. \n\nWhat Are Mix Chance Bets? \n\nMix chance bets are a type of football bet that combines two or more individual bets into one single bet. This means that you get to put two bets on, but you can only win the wager if you get both of them correct. Mix chance bets offer more chances to win big money, so it’s one of the most popular ways to bet on football. \n\nAdvantages of Mix Chance Bets \n\nMix chance bets offer a number of advantages to football bettors: \n\n1. Increased odds. Because you’re putting two bets on, the odds for mix chance bets are usually better than for a single bet. This means you have a better chance of winning more money when you bet on a mix chance bet. \n\n2. More control. Another advantage to a mix chance bet is that you have more control over the outcome. You can choose two different bets, or even three, which means you can adjust the bet to suit your strategy and increase your chances of success. \n\n3. Flexible. Mix chance bets also offer more flexibility.",
@@ -63,19 +80,19 @@ const descriptions = [
       "Football fans and punters around the world love to make predictions on the match results of their favorite teams. One of the most interesting predictions they can make is regarding a match’s overall score - more specifically whether there will be under or over 2.5 goals. This type of bet is very popular and it can provide great returns if done correctly. \n\nCalled Under/Over 2.5 Goal markets in football betting, betting on under or over 2.5 goals means you are predicting the number of goals scored in a match to be less than or more than 2.5. For instance, if you place an under 2.5 bet for a match and the final score ends up as 1-1 – meaning 2 goals, then you will win your bet. If you had placed an over 2.5 bet, then you would have lost. \n\nAt Matchplug, we make it easy for you to follow your dreams of becoming a successful punter by providing you with all the essential information, predictions and tips you need to win. We understand that betting, especially on under/over 2.5 goals can feel intimidating, but with the right guidance, it can become one of the easiest bets to make. Our experienced professionals are here to provide you with valuable data and smart betting strategies to gain profits on the football matches you wager on.",
   },
   {
-    link: "free-football-predictions-draw-predictions-and-tips",
+    link: "free-football-predictions-handicap-predictions",
     label: "Handicap",
     description:
       "Are you interested in Handicap bets when it comes to Football Betting? You can get started with your betting journey with the help of Matchplug.com. Matchplug.com is an online football betting platform with an extensive array of handicap bets on football matches. We offer our customers the opportunity to bet on any event across the global football industry and with our carefully selected expert’s tips and strategies, you can get the most out of your handicap bets.\n\nA handicap bet is a type of bet in which one team is given a certain amount of points over the other team. This makes the betting field a bit more even. For example, in a match, if team A is -2.5 Goals, then team B is +2.5 goals, then the bettor can wager on either team winning by the handicap assigned. This type of bet is risky but it allows you to profit more if the team you choose to bet on wins.\n\nAt Matchplug.com, you can bet on any football event within the handicap market. We offer a variety of markets like; 1X2 Full Time Handicap, Asian Handicap, Correct Score Handicap, 1st Half Handicap, Draw No Bet Handicap, Over/Under Handicap, Sure home win predictions and more.",
   },
   {
-    link: "free-football-predictions-correct-score-and-tips",
+    link: "free-football-predictions-draw-predictions-and-tips",
     label: "Draw",
     description:
       "Football betting has become an increasingly popular way to make money in recent years. With the rise of football fans across the globe, this type of wagering has skyrocketed in popularity. If you are looking to start betting on football, one of the most important things to understand is the concept of a draw. A draw in football betting implies that no team has a distinct advantage over the other. This means the outcome of the match could be a draw, or either team could win.\n\nDraws occur in football betting more often than you might think. In fact, approximately one-third of all matches in the english premier league result in a draw. This makes it important to understand how to bet on a draw and maximize your chances of winning. \n\nOne of the best ways to play a draw in football betting is through the Matchplug Acca Boost. This boosts your odds by up to 50%, making your chance for a win much higher. It also allows you to bet on more than one squad and create a 'combo' that covers all of your teams. Plus, with the Acca boost, you'll be able to get free weekly cash prizes as well. \n\nAnother key thing to note about draw betting in football is the cost. Since a draw can be a bit more unpredictable than other bets, the cost of the bet is often higher than average.",
   },
   {
-    link: "free-football-prediction-ht-ft-predictions",
+    link: "free-football-predictions-correct-score-and-tips",
     label: "Correct Score",
     description:
       "Football betting has become increasingly popular in recent years and one of the most popular bets is correct score predictions. This involves predicting the exact score of a particular football match. Accurate prediction of the correct score for a football match is quite difficult and as a result, correct score betting often provides more rewards than other types of football bets.\n\nIf you want to make a correct score bet, then you’re in the right place. Matchplug.com is the king of correct score and offers you the perfect platform to make accurate predictions based on our exhaustive analysis and assessment of football matches. With our cutting edge technology, we offer an edge over bookmakers. We are the ultimate online destination for all your football betting needs.\n\nAt Matchplug.com, we use our deep knowledge and experience in the football betting industry to assess the chances of each team in a particular match and how likely it is that the match will end in the correct score that you predict. We also use our extensive database of previous results and statistics to give you the best possible predictions for both teams in a match. This wealth of information and detailed analysis allow you to make more informed and accurate Correct score predictions—leading to better rewards.\n\nOn Matchplug.com, you will also find up-to-date information on the odds for different correct score matches which are being offered by different bookmakers. In addition to this, we also provide you with the latest football news and updates, so that you are well informed before placing a correct score bet.",
@@ -85,7 +102,7 @@ const descriptions = [
     link: "free-football-predictions-player-specials-and-tips",
     label: "Player Tip",
     description:
-      "Matchplug offers Sure win Prediction today and we use analytics to create accurate football predictions which involves direct win prediction to help you win big.",
+      "Matchplug publishes free football predictions every day, built from form, head-to-head records and expected-goals data, with the reasoning shown alongside each pick.",
   },
   {
     link: "free-football-predictions-cards-predictions-and-tips",
@@ -220,6 +237,12 @@ Stay ahead of the game with our NCAAF picks and predictions. From regular season
   },
 ];
 
+/**
+ * Predictions are cached for five minutes (see getMarketPredictions), so a
+ * crawl of every market page does not re-run the upstream call each time.
+ */
+export const revalidate = 300;
+
 const Page = async ({ params, searchParams }: PageParams) => {
   const { slug: pageSlug } = await params;
 
@@ -229,10 +252,17 @@ const Page = async ({ params, searchParams }: PageParams) => {
     return link === pageSlug;
   });
 
+  // Anything that is not a market we publish has to 404. Rendering an empty
+  // shell with a 200 made every unknown URL — /og-image.jpg, the legacy .php
+  // paths, plain typos — look to Google like a real page with no content.
+  if (!entry) {
+    notFound();
+  }
+
   // Markets covered by the build sheet take their heading and explanation from
   // it; the rest keep the copy defined above.
   const sheet = marketContent[pageSlug];
-  const title = entry && {
+  const title = {
     ...entry,
     ...(sheet && {
       displayLabel: sheet.name,
@@ -242,15 +272,13 @@ const Page = async ({ params, searchParams }: PageParams) => {
   };
 
   return (
-    title && (
-      <>
-        <FootballPredictionDetailsTable
-          currentDate={date ?? DateTime.now().toISODate()}
-          slug={title}
-        />
-        <MarketFAQSection slug={pageSlug} />
-      </>
-    )
+    <>
+      <FootballPredictionDetailsTable
+        currentDate={date ?? DateTime.now().toISODate()}
+        slug={title}
+      />
+      <MarketFAQSection slug={pageSlug} />
+    </>
   );
 };
 

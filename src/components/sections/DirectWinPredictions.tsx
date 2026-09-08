@@ -40,6 +40,18 @@ const allTitles = [
 
 export const descriptions = [
   {
+    link: "free-football-predictions-mix-chance",
+    label: "Mix Chance / Double Chance",
+    description:
+      "Double chance covers two of the three possible results in one bet: home or draw, away or draw, or home or away.",
+  },
+  {
+    link: "free-football-prediction-ht-ft-predictions",
+    label: "HT/FT",
+    description:
+      "Half-time/full-time pairs the score at the break with the final result in a single, longer-priced bet.",
+  },
+  {
     link: "free-football-prediction-over-2.5-goals",
     label: "Over 2.5 Goals",
     description:
@@ -52,7 +64,7 @@ export const descriptions = [
       "Football betting has become increasingly popular in recent years, and with that has come the emergence of a new type of bet: Both Teams To Score (BTTS). With this type of bet, a punter can potentially win if both teams in a football match score at least one goal. \n\nThe concept is simple, and can be appealing for those looking to make a profit. If the team you bet on scores two or more, you win. If the opposing team fails to score, you’re still a winner. That’s why so many people love matchplug because its the best btts prediction site \nfor those choosing to invest in BTTS bets. \n\nBut before you start betting with BTTS, it’s important to consider some key points. Here are some tips to keep in mind:  \n\n1. Research Your Teams: Research each team you’re considering betting on. Learn as much as you can about their recent performances, injury reports, and news stories. This will allow you to make more informed bets.  \n\n2. Choose the Right Bookmaker: No two bookmakers are the same. It’s best to look around and compare what different operators can offer in terms of odds, bonuses, and promotions. The website Matchplug.com is a great resource for finding the best bookmaker for you. The site helps you compare different bookmakers’ offers and bonuses, and also provides advice on which bookmaker is best for BTTS bets.",
   },
   {
-    link: "free-football-predictions-mix-chance",
+    link: "free-football-predictions-bet-builders-predictions-and-tips",
     label: "Betbuilder / Same Game Parlay",
     description:
       "Football betting involves forecasting the outcomes of games, as well as the exact score of matches and the teams that will qualify in each bracket. But with so many different betting options, it can be hard to know where to start. One popular method of football betting is a mix chance bet. Here’s what you need to know. \n\nWhat Are Mix Chance Bets? \n\nMix chance bets are a type of football bet that combines two or more individual bets into one single bet. This means that you get to put two bets on, but you can only win the wager if you get both of them correct. Mix chance bets offer more chances to win big money, so it’s one of the most popular ways to bet on football. \n\nAdvantages of Mix Chance Bets \n\nMix chance bets offer a number of advantages to football bettors: \n\n1. Increased odds. Because you’re putting two bets on, the odds for mix chance bets are usually better than for a single bet. This means you have a better chance of winning more money when you bet on a mix chance bet. \n\n2. More control. Another advantage to a mix chance bet is that you have more control over the outcome. You can choose two different bets, or even three, which means you can adjust the bet to suit your strategy and increase your chances of success. \n\n3. Flexible. Mix chance bets also offer more flexibility.",
@@ -82,19 +94,19 @@ export const descriptions = [
       "Football fans and punters around the world love to make predictions on the match results of their favorite teams. One of the most interesting predictions they can make is regarding a match’s overall score - more specifically whether there will be under or over 2.5 goals. This type of bet is very popular and it can provide great returns if done correctly. \n\nCalled Under/Over 2.5 Goal markets in football betting, betting on under or over 2.5 goals means you are predicting the number of goals scored in a match to be less than or more than 2.5. For instance, if you place an under 2.5 bet for a match and the final score ends up as 1-1 – meaning 2 goals, then you will win your bet. If you had placed an over 2.5 bet, then you would have lost. \n\nAt Matchplug, we make it easy for you to follow your dreams of becoming a successful punter by providing you with all the essential information, predictions and tips you need to win. We understand that betting, especially on under/over 2.5 goals can feel intimidating, but with the right guidance, it can become one of the easiest bets to make. Our experienced professionals are here to provide you with valuable data and smart betting strategies to gain profits on the football matches you wager on.",
   },
   {
-    link: "free-football-predictions-draw-predictions-and-tips",
+    link: "free-football-predictions-handicap-predictions",
     label: "Handicap",
     description:
       "Football betting has become an increasingly popular way to make money in recent years. With the rise of football fans across the globe, this type of wagering has skyrocketed in popularity. If you are looking to start betting on football, one of the most important things to understand is the concept of a draw. A draw in football betting implies that no team has a distinct advantage over the other. This means the outcome of the match could be a draw, or either team could win.\n\nDraws occur in football betting more often than you might think. In fact, approximately one-third of all matches in the english premier league result in a draw. This makes it important to understand how to bet on a draw and maximize your chances of winning. \n\nOne of the best ways to play a draw in football betting is through the Matchplug Acca Boost. This boosts your odds by up to 50%, making your chance for a win much higher. It also allows you to bet on more than one squad and create a 'combo' that covers all of your teams. Plus, with the Acca boost, you'll be able to get free weekly cash prizes as well. \n\nAnother key thing to note about draw betting in football is the cost. Since a draw can be a bit more unpredictable than other bets, the cost of the bet is often higher than average.",
   },
   {
-    link: "free-football-predictions-correct-score-and-tips",
+    link: "free-football-predictions-draw-predictions-and-tips",
     label: "Draw",
     description:
       "Football betting has become increasingly popular in recent years and one of the most \npopular bets is correct score predictions. This involves predicting the exact score of a \nparticular football match. Accurate prediction of the correct score for a football match is \nquite difficult and as a result, correct score betting often provides more rewards than other \ntypes of football bets.\nIf you want to make a correct score bet, then you’re in the right place. Matchplug.com is \nthe king of correct score and offers you the perfect platform to make accurate predictions \nbased on our exhaustive analysis and assessment of football matches. With our cutting edge technology, we offer an edge over bookmakers. We are the ultimate online \ndestination for all your football betting needs.\nAt Matchplug.com, we use our deep knowledge and experience in the football betting \nindustry to assess the chances of each team in a particular match and how likely it is that \nthe match will end in the correct score that you predict. We also use our extensive \ndatabase of previous results and statistics to give you the best possible predictions for \nboth teams in a match. This wealth of information and detailed analysis allow you to make \nmore informed and accurate Correct score predictions—leading to better rewards.\nOn Matchplug.com, you will also find up-to-date information on the odds for different \ncorrect score matches which are being offered by different bookmakers. In addition to this, \nwe also provide you with the latest football news and updates, so that you are well informed before placing a correct score bet.",
   },
   {
-    link: "free-football-prediction-ht-ft-predictions",
+    link: "free-football-predictions-correct-score-and-tips",
     label: "Correct Score",
     description:
       "Football betting has come leaps and bounds since its introduction and the advent of HT / \nFT bets one of the major advancement in the sports betting industry. HT / FT bets are no \ndoubt one of the most lucrative betting products available for bettors. With the help of HT / \nFT bets, bettors are now able to both hedge and speculate the outcome of football \nmatches, giving them a great chance to make a profit in the process through matchplug \nExpert Football Predictions. \nAt Matchplug.com, we understand the importance and significance of HT / FT bets and \nnow provide our clients a chance to utilise these bets and make huge profits. Before you \ntake part in these bets and win some money, let’s try to understand more about HT / FT \nbets and how we can benefit from them.\nWhat is HT / FT Betting?\nHT / FT bets is a type of betting, in which you provide a prediction or a guess The result of \na football match at both the half time and the end of the match. Most bookmakers have HT\n/ FT bets as a standard football bet, as this bet can offer decent returns based on the \nbookmaker’s odds.\nHow Does it Work?\nWhen you make a HT / FT bet, you must provide a prediction for the result of a football \nmatch at both halftime and full time. Your prediction must reflect accurately within the 90 \nminutes of the football match, including extra-time if it’s necessary.",
@@ -104,7 +116,7 @@ export const descriptions = [
     link: "free-football-predictions-player-specials-and-tips",
     label: "Player Tip",
     description:
-      "Matchplug offers Sure win Prediction today and we use analytics to create accurate football predictions which involves direct win prediction to help you win big.",
+      "Matchplug publishes free football predictions every day, built from form, head-to-head records and expected-goals data, with the reasoning shown alongside each pick.",
   },
   {
     link: "free-football-predictions-cards-predictions-and-tips",
@@ -212,7 +224,10 @@ export const predictionMap = {
   // --- Football Betting Tips ---
   "free-football-prediction-over-2.5-goals": "Over 2.5 Goals",
   "free-football-predictions-both-team-to-score": "BTTS / GG",
-  "free-football-predictions-mix-chance": "Betbuilder / Same Game Parlay",
+  "free-football-predictions-mix-chance": "Mix Chance",
+  "free-football-predictions-bet-builders-predictions-and-tips":
+    "Betbuilder / Same Game Parlay",
+  "free-football-prediction-ht-ft-predictions": "HT/FT",
   "free-football-predictions-goal-first-half": "Goal First Half",
   "free-football-predictions-1x2": "1X2 - Win Draw Win",
   "free-football-predictions-over-1.5-goals": "Over 1.5 Goals",
@@ -246,72 +261,72 @@ export const predictionData: PredictionData = {
       id: "1",
       title: "1X2 - Win Draw Win",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1459865264687-595d652de67e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #455DBF 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "2",
       title: "Over 2.5 Goals",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #0B3B2E 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "3",
       title: "BTTS / GG",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #1F2A6B 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "4",
       title: "Betbuilder / Same Game Parlay",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #123C4A 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "5",
       title: "Goal First Half",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #3A1F5C 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "6",
       title: "Over 1.5 Goals",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #14532D 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "7",
       title: "Under 2.5 Goals",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #455DBF 0%, #070B12 100%)",
       url: "#",
     },
     {
       id: "8",
       title: "Handicap",
       subtitle: "5-6 Wins from the last 7 games",
-      accuracy: "78% Accurate",
+      accuracy: "Updated daily",
       backgroundImage:
-        "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #0B3B2E 0%, #070B12 100%)",
       url: "#",
     },
   ],
@@ -323,7 +338,7 @@ export const predictionData: PredictionData = {
       subtitle: "4-5 Wins from the last 7 games",
       accuracy: "65% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #1F2A6B 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -332,7 +347,7 @@ export const predictionData: PredictionData = {
       subtitle: "3-4 Wins from the last 7 games",
       accuracy: "55% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #123C4A 0%, #070B12 100%)",
       url: "#",
     },
 
@@ -342,7 +357,7 @@ export const predictionData: PredictionData = {
       subtitle: "4-5 Wins from the last 7 games",
       accuracy: "64% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #3A1F5C 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -351,7 +366,7 @@ export const predictionData: PredictionData = {
       subtitle: "4-5 Wins from the last 7 games",
       accuracy: "62% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #14532D 0%, #070B12 100%)",
       url: "#",
     },
   ],
@@ -363,7 +378,7 @@ export const predictionData: PredictionData = {
       subtitle: "5-6 Wins from the last 7 games",
       accuracy: "75% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #455DBF 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -372,7 +387,7 @@ export const predictionData: PredictionData = {
       subtitle: "4-5 Wins from the last 7 games",
       accuracy: "72% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #0B3B2E 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -381,7 +396,7 @@ export const predictionData: PredictionData = {
       subtitle: "4-5 Wins from the last 7 games",
       accuracy: "70% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #1F2A6B 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -390,7 +405,7 @@ export const predictionData: PredictionData = {
       subtitle: "5-6 Wins from the last 7 games",
       accuracy: "76% Accurate",
       backgroundImage:
-        "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "linear-gradient(135deg, #123C4A 0%, #070B12 100%)",
       url: "#",
     },
     {
@@ -469,7 +484,7 @@ const DirectWinPredictions: React.FC = () => {
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${card.backgroundImage})` }}
+          style={{ backgroundImage: card.backgroundImage }}
         />
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-all duration-300" />

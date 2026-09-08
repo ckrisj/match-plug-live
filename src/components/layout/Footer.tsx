@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { DateTime } from "luxon";
 import { useGetData } from "@/app/Hooks/useGetData";
 import footerResponse from "@/components/utils/Collection/footer-menu-response.json";
 
@@ -89,36 +88,33 @@ const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({
 );
 
 const Footer: React.FC = () => {
-  // The picks pages default to today anyway, but the link carries the date
-  // explicitly so it always resolves to today's card rather than a fixed day.
-  const today = DateTime.now().toISODate();
 
   const quickLinks = [
     { name: "News", url: "/blog" },
     { name: "Match Previews", url: "#" },
     {
       name: "NFL Picks Today",
-      url: `/sports-betting-tips-NFL-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-NFL-predictions-and-tips`,
     },
     {
       name: "NBA Picks Today",
-      url: `/sports-betting-tips-NBA-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-NBA-predictions-and-tips`,
     },
     {
       name: "MLB Picks Today",
-      url: `/sports-betting-tips-MLB-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-MLB-predictions-and-tips`,
     },
     {
       name: "NHL Picks Today",
-      url: `/sports-betting-tips-NHL-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-NHL-predictions-and-tips`,
     },
     {
       name: "NCAAF Picks Today",
-      url: `/sports-betting-tips-NCAAF-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-NCAAF-predictions-and-tips`,
     },
     {
       name: "NCAAB Picks Today",
-      url: `/sports-betting-tips-NCAAB-predictions-and-tips?date=${today}`,
+      url: `/sports-betting-tips-NCAAB-predictions-and-tips`,
     },
   ];
 
@@ -172,7 +168,7 @@ const Footer: React.FC = () => {
               Stop Playing and Start Winning With MatchPlug.
             </h2>
             <p className="text-base mb-8 max-w-sm">
-              Matchplug offers Sure win Prediction today and we use analytics to
+              Matchplug publishes free football predictions every day, and we use
               create accurate football predictions which involves direct win
               prediction to help you win big.
             </p>
@@ -278,7 +274,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Section */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
-          <p className="text-lg">© Matchplug.com 2025. All rights reserved.</p>
+          <p className="text-lg">© Matchplug.com {new Date().getFullYear()}. All rights reserved.</p>
 
           {/* Trust Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-4 items-center">

@@ -1,6 +1,6 @@
 import React from "react";
 import FootballPredictionTable from "./Server/FootballPredictionTable";
-import { getAdminData } from "@/app/Hooks/useGetAdminData";
+import { getMarketPredictions } from "@/app/Hooks/getMarketPredictions";
 
 interface Team {
   logo: string;
@@ -54,30 +54,21 @@ const FootballPredictionDetailsTable = async ({
     description: string;
   };
 }) => {
-  // The predictions call runs on the server so the table — including the empty
-  // "No Prediction Available" state — is in the HTML before any JS runs. A
-  // failed call must degrade to that same empty state rather than throwing,
-  // which would take the whole page down instead of just the table.
-  let data: MatchPrediction[] = [];
-
-  try {
-    data =
-      (await getAdminData<MatchPrediction[]>({
-        key: ["predictions", currentDate, slug.label],
-        path: `predictions?date=${currentDate}&market=${slug.label}`,
-      })) ?? [];
-  } catch (error) {
-    console.error(
-      `Predictions request failed for market "${slug.label}" on ${currentDate}:`,
-      error
-    );
-  }
-
+  // Resolved on the server so the rows are in the HTML before any JS runs, and
+  // so a day with nothing published falls back to the most recent day that has
+  // picks rather than rendering an empty table. A failed call degrades to the
+  // empty state inside the resolver rather than throwing and taking the page
+  // down with it.
+  const { predictions, servedDate, isFallback, nextDate } =
+    await getMarketPredictions(slug.label, currentDate);
 
   return (
     <FootballPredictionTable
-      data={data}
+      data={predictions}
       currentDate={currentDate}
+      servedDate={servedDate}
+      isFallback={isFallback}
+      nextDate={nextDate}
       slug={slug}
     />
   );

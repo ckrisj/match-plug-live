@@ -36,35 +36,32 @@ const TimeUnit: React.FC<{ value: number; label: string }> = ({
 );
 
 const VipPicksPromoSection: React.FC = () => {
+  // Counts down to the end of the day — a real deadline for a daily card.
+  // This previously started from a hardcoded value on every mount, so it reset
+  // on refresh and implied an urgency that was not real.
   const [countdown, setCountdown] = useState<CountdownTime>({
-    hours: 1,
-    minutes: 20,
-    seconds: 7,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        let { hours, minutes, seconds } = prev;
+    const tick = () => {
+      const now = new Date();
+      const endOfDay = new Date(now);
+      endOfDay.setHours(23, 59, 59, 999);
 
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else {
-          hours = 1;
-          minutes = 20;
-          seconds = 7;
-        }
+      const remaining = Math.max(0, endOfDay.getTime() - now.getTime());
 
-        return { hours, minutes, seconds };
+      setCountdown({
+        hours: Math.floor(remaining / 3600000),
+        minutes: Math.floor((remaining % 3600000) / 60000),
+        seconds: Math.floor((remaining % 60000) / 1000),
       });
-    }, 1000);
+    };
+
+    tick();
+    const timer = setInterval(tick, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -76,7 +73,7 @@ const VipPicksPromoSection: React.FC = () => {
 
   const rightFeatures: Feature[] = [
     { icon: <Target className="h-7 w-7" />, label: "Master Play" },
-    { icon: <TrendingUp className="h-7 w-7" />, label: "92.4% Accuracy" },
+    { icon: <TrendingUp className="h-7 w-7" />, label: "Every pick logged" },
   ];
 
   return (

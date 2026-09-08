@@ -20,7 +20,7 @@ async function getCategoryPosts(categoryId: number) {
     `${API_URL}/wp-json/wp/v2/posts?per_page=12&page=1&categories=${categoryId}&orderby=date&order=desc`,
     {
       next: {
-        revalidate: 2,
+        revalidate: 900,
       },
     }
   );

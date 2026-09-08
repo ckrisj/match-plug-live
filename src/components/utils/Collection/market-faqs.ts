@@ -31,7 +31,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       {
         question: "How accurate are win draw win predictions?",
         answer:
-          "Win draw win predictions from statistical models typically land between 50% and 60% across a full season, because the draw is genuinely hard to call. Matchplug publishes its verified 1X2 hit rate by month at /accuracy/, including losing predictions.",
+          "Win draw win predictions from statistical models typically land between 50% and 60% across a full season, because the draw is genuinely hard to call. Matchplug logs every 1X2 call it publishes, including the ones that lose.",
       },
       {
         question: "What time are today's 1X2 predictions published?",
@@ -103,7 +103,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       {
         question: "How accurate are BTTS predictions?",
         answer:
-          "BTTS is one of the more predictable markets because it depends on two independent scoring rates rather than a match result. Matchplug's verified BTTS hit rate by month is published at /accuracy/.",
+          "BTTS is one of the more predictable markets because it depends on two independent scoring rates rather than a match result. Matchplug logs every BTTS call it publishes, including the ones that lose.",
       },
       {
         question: "Can you combine BTTS with over 2.5 goals?",
@@ -113,7 +113,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
     ],
   },
   // /predictions/draw/
-  "free-football-predictions-correct-score-and-tips": {
+  "free-football-predictions-draw-predictions-and-tips": {
     heading: "Draw Betting FAQs",
     faqs: [
       {
@@ -176,7 +176,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       {
         question: "How often does over 1.5 goals win?",
         answer:
-          "Around three quarters of matches in Europe's major leagues produce at least two goals, which is why the odds are usually between 1.20 and 1.40. Matchplug's own record is published at /accuracy/.",
+          "Around three quarters of matches in Europe's major leagues produce at least two goals, which is why the odds are usually between 1.20 and 1.40. Matchplug logs its own calls in this market, including the ones that lose.",
       },
       {
         question: "Is over 1.5 goals good for accumulators?",
@@ -186,7 +186,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
     ],
   },
   // /predictions/correct-score/
-  "free-football-prediction-ht-ft-predictions": {
+  "free-football-predictions-correct-score-and-tips": {
     heading: "Correct Score FAQs",
     faqs: [
       {
@@ -197,7 +197,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       {
         question: "How accurate can correct score predictions be?",
         answer:
-          "Even the best models hit the exact score in only a minority of matches, because the market has 20-plus realistic outcomes. Anyone advertising a high strike rate is not measuring honestly; our published record is at /accuracy/.",
+          "Even the best models hit the exact score in only a minority of matches, because the market has 20-plus realistic outcomes. Anyone advertising a high strike rate in this market is not measuring honestly.",
       },
       {
         question: "What is the most common football scoreline?",
@@ -245,7 +245,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
   // /predictions/bet-builder/ — this market is presented as
   // "Betbuilder / Same Game Parlay", so it carries the sheet's bet builder FAQs
   // rather than the mix chance ones.
-  "free-football-predictions-mix-chance": {
+  "free-football-predictions-bet-builders-predictions-and-tips": {
     heading: "Bet Builder FAQs",
     faqs: [
       {
@@ -276,7 +276,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
     ],
   },
   // /predictions/handicap/
-  "free-football-predictions-draw-predictions-and-tips": {
+  "free-football-predictions-handicap-predictions": {
     heading: "Handicap Betting FAQs",
     faqs: [
       {
@@ -369,6 +369,56 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
     ],
   },
   // /picks/nfl/
+  "free-football-prediction-ht-ft-predictions": {
+    heading: "HT/FT Betting FAQs",
+    faqs: [
+      {
+        question: "What does HT/FT mean in betting?",
+        answer:
+          "HT/FT stands for half-time/full-time. You are predicting two things in one bet: which side is ahead at the break, and which side wins the match. Both legs have to be right for the bet to settle as a win.",
+      },
+      {
+        question: "How many HT/FT combinations are there?",
+        answer:
+          "Nine. Home/home, home/draw, home/away, draw/home, draw/draw, draw/away, away/home, away/draw and away/away. The first word is the half-time position, the second is the full-time result.",
+      },
+      {
+        question: "Why are HT/FT odds so long?",
+        answer:
+          "Because the bet has to clear two checkpoints rather than one. A straight home win might be 1.80, while home/home is priced nearer 2.50 and a comeback such as away/home runs into double figures, since sides that trail at the break rarely win outright.",
+      },
+      {
+        question: "Which HT/FT result is most common?",
+        answer:
+          "Home/home and away/away are the most frequent, because a team ahead at the break usually stays ahead. Draw/home is the most commonly landed result that still pays a meaningful price, which is why it is the combination worth looking for.",
+      },
+    ],
+  },
+  "free-football-predictions-mix-chance": {
+    heading: "Double Chance Betting FAQs",
+    faqs: [
+      {
+        question: "What is a double chance bet?",
+        answer:
+          "A double chance bet covers two of the three possible results at once: home or draw (1X), away or draw (X2), or home or away (12). It wins if either of the two covered outcomes happens.",
+      },
+      {
+        question: "Is mix chance the same as double chance?",
+        answer:
+          "Yes. Mix chance is the name some bookmakers use for the same market. The bet is identical — two of the three results covered on one selection.",
+      },
+      {
+        question: "Why are double chance odds so short?",
+        answer:
+          "Because you are covering roughly two thirds of the possible outcomes. A 1X selection on a solid home favourite often prices below 1.30. The market is about lowering variance, not chasing a return.",
+      },
+      {
+        question: "When is double chance worth backing?",
+        answer:
+          "Two situations mainly: a strong favourite playing away, where a draw would otherwise lose a straight win bet, and a well-organised underdog at 1X against a side that struggles to break down a deep defence.",
+      },
+    ],
+  },
   "sports-betting-tips-NFL-predictions-and-tips": {
     heading: "NFL Picks FAQs",
     faqs: [

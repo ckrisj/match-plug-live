@@ -219,7 +219,7 @@ const VipResultsSlider: React.FC = () => {
       <TornEdge position="bottom" color="#FFFFFF" />
       <div className="relative z-10 mx-auto max-w-[1650px] px-4">
         <h2 className="mb-10 text-center text-2xl font-bold uppercase text-white sm:text-3xl">
-          VIP Results - Verified Records
+          VIP Results
         </h2>
         <div className="flex items-center gap-3 sm:gap-6">
           <NavButton

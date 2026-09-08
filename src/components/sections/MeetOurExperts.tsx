@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import Button from "../ui/Button";
 
@@ -8,31 +7,8 @@ interface Expert {
   name: string;
   specialty: string;
   description: string;
-  backgroundImage: string;
   achievements: string;
 }
-
-const StarRating: React.FC = () => (
-  <div className="flex justify-center gap-0.5 mb-1">
-    {[...Array(4)].map((_, index) => (
-      <div key={index} className="w-4 h-4">
-        <svg
-          width="25"
-          height="23"
-          viewBox="0 0 25 23"
-          className="w-full h-full"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-    ))}
-  </div>
-);
 
 const ExpertCard: React.FC<{
   expert: Expert;
@@ -50,14 +26,14 @@ const ExpertCard: React.FC<{
     </div>
     {/* Card */}
     <div className="relative ">
-      {/* Background image */}
-      <div
-        className="w-40 h-40 rounded-[2rem] border overflow-hidden bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${expert.backgroundImage})` }}
-      >
-        {/* Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-black/70  px-2 py-3">
-          <StarRating />
+      {/* Sport tile. This was a stock portrait presented as a named analyst. */}
+      <div className="w-40 h-40 rounded-[2rem] border overflow-hidden relative bg-gradient-to-br from-[#455DBF] to-[#070B12]">
+        <div className="absolute inset-0 flex items-center justify-center px-3 pb-14">
+          <span className="text-white text-lg font-bold text-center">
+            {expert.specialty}
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 bg-black/70 px-2 py-3">
           <p className="text-white text-xs text-center">
             {expert.achievements}
           </p>
@@ -79,43 +55,38 @@ const MeetOurExperts: React.FC = () => {
   const experts: Expert[] = [
     {
       id: 1,
-      name: "NFL Specialist with 10+ Years Experience",
+      name: "NFL picks",
       specialty: "NFL",
       description: "",
-      backgroundImage: "/t1.webp",
-      achievements: "Predicted 500+ Wins Last Season",
+      achievements: "Spreads, totals and player props, published before kickoff",
     },
     {
       id: 2,
-      name: "Soccer Predictor with 90% Win Rate",
+      name: "Soccer predictions",
       specialty: "Soccer",
       description: "",
-      backgroundImage: "/t2.webp",
-      achievements: "Predicted 750+ Wins Last Season",
+      achievements: "Match result, goals and BTTS across 40+ leagues",
     },
     {
       id: 3,
-      name: "NBA/NCAA Specialist with 10+Years Experience",
+      name: "Basketball picks",
       specialty: "Basketball",
       description: "",
-      backgroundImage: "/t3.webp",
-      achievements: "Predicted 1200+ Wins Last Season",
+      achievements: "Spreads and totals, published after line-ups are confirmed",
     },
     {
       id: 4,
-      name: "NHL Specialist with 10+ Years Experience",
+      name: "NHL picks",
       specialty: "Hockey",
       description: "",
-      backgroundImage: "/t4.webp",
-      achievements: "Predicted 800+ Wins Last Season",
+      achievements: "Puck line, moneyline and totals, updated for goalie news",
     },
     {
       id: 5,
-      name: "MLB Specialist with 10+ Years Experience",
+      name: "MLB picks",
       specialty: "Baseball",
       description: "",
-      backgroundImage: "/t5.webp",
-      achievements: "Predicted 1000+ Wins Last Season",
+      achievements: "Run line, moneyline and totals, updated for starting pitchers",
     },
   ];
 
@@ -125,7 +96,7 @@ const MeetOurExperts: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-4">
           <h2 className="text-3xl font-bold text-black mb-8">
-            Meet Our Experts Analysts
+            What We Cover
           </h2>
         </div>
 
