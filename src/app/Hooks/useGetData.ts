@@ -37,6 +37,10 @@ export function useGetData<T extends Record<string, any>>({
     // Callers pass a committed JSON snapshot as a fallback; without this the
     // section renders empty whenever the request fails.
     initialData,
+    // The snapshot only seeds the first paint. Dating it to the epoch keeps it
+    // stale so the live request still runs; without this the 10-minute
+    // staleTime treats the seed as fresh and skips the fetch entirely.
+    initialDataUpdatedAt: 0,
     enabled,
   });
 }
