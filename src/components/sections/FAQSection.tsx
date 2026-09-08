@@ -137,9 +137,8 @@ const FAQSection: React.FC = () => {
       id: 2,
       question: "How accurate are football predictions?",
       answer: [
-        "Accuracy depends on the market: win draw win predictions from statistical models typically land between 50% and 60%, while over/under goals markets run higher. Matchplug publishes its verified hit rate by market at ",
-        { href: "/accuracy/", label: "/accuracy/" },
-        ". Any site claiming materially more than that over a large sample is not measuring honestly. Accuracy also falls in the opening rounds of a season, before enough form data has accumulated, and in cup competitions where squad rotation is heavy.",
+        "Accuracy depends on the market: win draw win predictions from statistical models typically land between 50% and 60%, while over/under goals markets run higher. ",
+        "Any site claiming materially more than that over a large sample is not measuring honestly. Accuracy also falls in the opening rounds of a season, before enough form data has accumulated, and in cup competitions where squad rotation is heavy.",
       ],
       category: "predictions",
     },
@@ -168,9 +167,8 @@ const FAQSection: React.FC = () => {
       id: 7,
       question: "Is Matchplug a legit prediction site?",
       answer: [
-        "Yes. Matchplug publishes its full prediction log and verified accuracy record at ",
-        { href: "/accuracy/", label: "/accuracy/" },
-        ", updated daily, including losing predictions. It has operated since 2017. Predictions are produced by a statistical model reviewed by human analysts, and every published prediction is logged so the record can be audited.",
+        "Yes. Matchplug has operated since 2017. ",
+        "Predictions are produced by a statistical model reviewed by human analysts, and past predictions stay on the site with their result, including the ones that lost.",
       ],
       category: "predictions",
     },
@@ -271,7 +269,7 @@ const FAQSection: React.FC = () => {
       id: 18,
       question: "What is Matchplug?",
       answer:
-        "Matchplug is a soccer prediction service publishing free win draw win, over/under goals, both teams to score and correct score tips across more than 40 leagues. It has operated since 2017. Predictions are produced by a statistical model reviewed by human analysts, and every published prediction is logged so the accuracy record can be audited. NBA, NFL, MLB and NHL picks are also published as secondary markets.",
+        "Matchplug is a soccer prediction service publishing free win draw win, over/under goals, both teams to score and correct score tips across more than 40 leagues. It has operated since 2017. Predictions are produced by a statistical model reviewed by human analysts, and past predictions stay on the site with their result. NBA, NFL, MLB and NHL picks are also published as secondary markets.",
       category: "general",
     },
     {
@@ -285,7 +283,7 @@ const FAQSection: React.FC = () => {
       id: 20,
       question: "Can I trust the information provided by Matchplug?",
       answer:
-        "Check the record rather than the claim — Matchplug publishes its full prediction log, including losing predictions, so the accuracy can be audited independently. Every prediction shows the form, head-to-head record and expected-goals data it was built from. All betting carries risk regardless of the source: predictions are analysis, not advice, and the financial risk of any bet is the reader’s alone.",
+        "Check the record rather than the claim — past Matchplug predictions stay on the site with their result, including the ones that lost. Every prediction shows the form, head-to-head record and expected-goals data it was built from. All betting carries risk regardless of the source: predictions are analysis, not advice, and the financial risk of any bet is the reader’s alone.",
       category: "general",
     },
     {

@@ -3,10 +3,15 @@ import { Posts } from "@/components/sections/Posts";
 //import { CategoryPosts } from "@/components/sections/CategoryPosts";
 import { API_URL, SITE_URL } from "@/components/utils/constant";
 import { notFound } from "next/navigation";
+import PostListServer from "@/components/sections/Server/PostListServer";
+import { parsePageParam } from "@/app/Hooks/getBlogPosts";
 
 type Props = {
   params: Promise<{
     slug: string[];
+  }>;
+  searchParams: Promise<{
+    page?: string;
   }>;
 };
 
@@ -15,7 +20,7 @@ async function getCategory(slug: string) {
     `${API_URL}/wp-json/wp/v2/categories?slug=${encodeURIComponent(slug)}`,
     {
       next: {
-        revalidate: 2,
+        revalidate: 900,
       },
     },
   );
@@ -80,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
   const categorySlug = slug[slug.length - 1];
   const category = await getCategory(categorySlug);
@@ -134,6 +139,12 @@ export default async function Page({ params }: Props) {
         title={category?.name}
         slug={categorySlug}
         categoryId={category?.id}
+      />
+      <PostListServer
+        categoryId={category?.id}
+        basePath={`/blog/category/${category.slug}`}
+        page={parsePageParam((await searchParams).page)}
+        heading={`All ${category?.name} articles`}
       />
     </div>
   );

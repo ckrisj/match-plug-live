@@ -13,6 +13,25 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { formatParagraphToHTML } from "@/components/utils/helper";
 
+/**
+ * Shown when a market has nothing to display, so the page still carries
+ * content and crawlable links instead of an empty table.
+ */
+const RELATED_MARKETS = [
+  { href: "/free-football-predictions-1x2", label: "Win Draw Win" },
+  { href: "/free-football-prediction-over-2.5-goals", label: "Over 2.5 Goals" },
+  { href: "/free-football-predictions-both-team-to-score", label: "BTTS" },
+  { href: "/free-football-predictions-draw-predictions-and-tips", label: "Draw" },
+  { href: "/free-football-predictions-correct-score-and-tips", label: "Correct Score" },
+  { href: "/free-football-predictions-handicap-predictions", label: "Handicap" },
+  { href: "/free-football-predictions-mix-chance", label: "Double Chance" },
+];
+
+const formatMatchDate = (date: string) => {
+  const parsed = DateTime.fromISO(date);
+  return parsed.isValid ? parsed.toFormat("cccc d LLLL") : date;
+};
+
 interface Team {
   logo: string;
   name: string;
@@ -41,11 +60,21 @@ type FootballPredictionTableProps = {
     description: string;
   };
   data: MatchPrediction[];
+  /** ISO date the rows above were actually published for. */
+  servedDate: string;
+  /** True when `servedDate` is an earlier day than the one requested. */
+  isFallback: boolean;
+  /** Next day after the requested one that already has picks. */
+  nextDate: string | null;
 };
 
 const FootballPredictionTable = ({
   slug,
   data,
+  currentDate,
+  servedDate,
+  isFallback,
+  nextDate,
 }: FootballPredictionTableProps) => {
   const router = useRouter();
 
@@ -189,11 +218,55 @@ const FootballPredictionTable = ({
 
           {/* Table */}
           <div className="overflow-hidden">
+            {isFallback && (
+              <div className="mb-6 rounded-lg border border-[#455DBF]/30 bg-white px-4 py-3 text-sm text-gray-700">
+                No picks were published for{" "}
+                <span className="font-semibold">
+                  {formatMatchDate(currentDate)}
+                </span>{" "}
+                yet, so these are the most recent published selections, from{" "}
+                <span className="font-semibold">
+                  {formatMatchDate(servedDate)}
+                </span>
+                .
+                {nextDate && (
+                  <>
+                    {" "}Picks for{" "}
+                    <Link
+                      href={`?date=${nextDate}`}
+                      className="font-semibold text-[#455DBF] underline"
+                    >
+                      {formatMatchDate(nextDate)}
+                    </Link>{" "}
+                    are already up.
+                  </>
+                )}
+              </div>
+            )}
+
             {!data?.length && (
-              <div
-                className={`flex flex-col gap-2 items-center justify-center h-[200px] w-full`}
-              >
-                No Prediction Available
+              <div className="flex flex-col gap-4 items-center justify-center py-12 w-full text-center">
+                <p className="text-gray-700">
+                  No {slug.displayLabel ?? slug.label} picks have been published
+                  for {formatMatchDate(currentDate)} yet. Selections go up each
+                  morning and are updated as team news lands.
+                </p>
+                <p className="text-sm text-gray-600">
+                  In the meantime, try another market:
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center max-w-2xl">
+                  {RELATED_MARKETS.filter(
+                    (market) => market.href !== `/${slug.link}`
+                  ).map((market) => (
+                    <Link
+                      key={market.href}
+                      href={market.href}
+                      className="rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 hover:border-[#455DBF] hover:text-[#455DBF]"
+                    >
+                      {market.label}
+                    </Link>
+                  ))}
+                </div>
                 <Link href="https://user.matchplug.com/auth/login">
                   <Button className="cursor-pointer">Subscribe Now</Button>
                 </Link>

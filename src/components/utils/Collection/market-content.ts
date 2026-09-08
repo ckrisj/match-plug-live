@@ -23,7 +23,7 @@ export const marketContent: Record<string, MarketContent> = {
     name: "1X2 - Win Draw Win",
     heading: "Today's Win Draw Win Predictions",
     note:
-      "Win draw win — written 1X2 by most bookmakers — is a bet on the full-time result of a match: home win (1), draw (X) or away win (2). It settles on 90 minutes plus stoppage time, so extra time and penalties don't count; a match level after 90 minutes is a draw even if it's decided later. Matchplug publishes a free win draw win prediction for every fixture it covers, with the model's pick, its confidence level and the form, head-to-head record and expected-goals data behind it. Selections go up each morning and are updated as team news lands. Every 1X2 call is logged and the hit rate is published at /accuracy/.",
+      "Win draw win — written 1X2 by most bookmakers — is a bet on the full-time result of a match: home win (1), draw (X) or away win (2). It settles on 90 minutes plus stoppage time, so extra time and penalties don't count; a match level after 90 minutes is a draw even if it's decided later. Matchplug publishes a free win draw win prediction for every fixture it covers, with the model's pick, its confidence level and the form, head-to-head record and expected-goals data behind it. Selections go up each morning and are updated as team news lands. Every 1X2 call is logged, including the ones that lose.",
     metaTitle: "Win Draw Win Predictions Today — 1X2 Tips | Matchplug",
     metaDescription:
       "Today's win draw win predictions: a 1X2 call on every fixture with the reasoning behind it, updated each morning. See our published accuracy record.",
@@ -49,7 +49,7 @@ export const marketContent: Record<string, MarketContent> = {
       "Both teams to score predictions for today's matches, with BTTS form, xG and defensive records for each side. Free BTTS tips updated every morning.",
   },
   // /predictions/draw/
-  "free-football-predictions-correct-score-and-tips": {
+  "free-football-predictions-draw-predictions-and-tips": {
     name: "Draw",
     heading: "Today's Draw Predictions",
     note:
@@ -79,7 +79,7 @@ export const marketContent: Record<string, MarketContent> = {
       "Over 1.5 goals predictions for today's matches, with the scoring data behind each pick. The lowest-risk goals market, called fixture by fixture.",
   },
   // /predictions/correct-score/
-  "free-football-prediction-ht-ft-predictions": {
+  "free-football-predictions-correct-score-and-tips": {
     name: "Correct Score",
     heading: "Today's Correct Score Predictions",
     note:
@@ -99,7 +99,7 @@ export const marketContent: Record<string, MarketContent> = {
       "First half goal predictions for today's matches, built from each side's goal-timing profile. Over 0.5 and over 1.5 HT tips, updated every morning.",
   },
   // /predictions/bet-builder/
-  "free-football-predictions-mix-chance": {
+  "free-football-predictions-bet-builders-predictions-and-tips": {
     name: "Betbuilder / Same Game Parlay",
     heading: "Today's Bet Builder Tips",
     note:
@@ -109,7 +109,7 @@ export const marketContent: Record<string, MarketContent> = {
       "Today's bet builder tips: same-game multis built from correlated legs, with every leg, its reasoning and the combined price shown. Free and updated daily.",
   },
   // /predictions/handicap/
-  "free-football-predictions-draw-predictions-and-tips": {
+  "free-football-predictions-handicap-predictions": {
     name: "Handicap",
     heading: "Today's Handicap Predictions",
     note:
@@ -137,6 +137,26 @@ export const marketContent: Record<string, MarketContent> = {
     metaTitle: "Player Tips Today — Goalscorer, Shots & Assists | Matchplug",
     metaDescription:
       "Today's player tips: anytime goalscorer, shots on target and assists, published after line-ups so minutes played is known. Free picks with the data.",
+  },
+  // /predictions/ht-ft/
+  "free-football-prediction-ht-ft-predictions": {
+    name: "HT/FT",
+    heading: "Today's HT/FT Predictions",
+    note:
+      "HT/FT — half-time/full-time — is a single bet on who is ahead at the break and who wins at the end. There are nine combinations: home/home, home/draw, home/away, draw/home, draw/draw, draw/away, away/home, away/draw and away/away. Because it settles on two checkpoints instead of one, the odds run far longer than a straight result bet, and the two turnaround combinations (home/away and away/home) are the longest of all — a side that trails at the break goes on to win outright in only a small share of matches. The combinations worth backing are the ones where a favourite starts slowly against a side that defends deep and tires: draw/home is the most commonly landed non-obvious result. Matchplug publishes an HT/FT call for the fixtures where a team's first-half and second-half profiles diverge enough to price the combination, using goal-timing splits, substitution patterns and how often each side leads or trails at half-time.",
+    metaTitle: "HT/FT Predictions Today — Half-Time/Full-Time Tips | Matchplug",
+    metaDescription:
+      "Today's HT/FT predictions: half-time/full-time calls built from goal-timing splits and second-half form, with the reasoning behind each combination.",
+  },
+  // /predictions/double-chance/
+  "free-football-predictions-mix-chance": {
+    name: "Mix Chance / Double Chance",
+    heading: "Today's Double Chance Predictions",
+    note:
+      "Double chance — listed as mix chance by some bookmakers — covers two of the three possible results in a single bet: home or draw (1X), away or draw (X2), or home or away (12). It settles as a win if either covered outcome lands, which is why the odds are shorter than a straight 1X2 call; you are buying a wider margin for error rather than a bigger return. The market earns its place in two situations: backing a strong favourite away from home, where a draw would otherwise sink the bet, and backing a well-organised underdog at 1X against a side that struggles to break down a low block. Matchplug publishes a double chance call for the fixtures where the straight result is genuinely close, showing which two outcomes are covered and the form, head-to-head record and expected-goals data behind the selection.",
+    metaTitle: "Double Chance Predictions Today — 1X, X2 & 12 Tips | Matchplug",
+    metaDescription:
+      "Today's double chance predictions: 1X, X2 and 12 selections for the fixtures where the straight result is too close to call. Free tips, updated daily.",
   },
   // /picks/nfl/
   "sports-betting-tips-NFL-predictions-and-tips": {

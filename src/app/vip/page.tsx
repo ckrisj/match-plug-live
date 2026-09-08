@@ -15,7 +15,7 @@ const vip = {
   link: "vip",
   label: "VIP",
   displayLabel: "VIP Results",
-  heading: "VIP Results — Verified Records",
+  heading: "VIP Results",
   description:
     "Matchplug VIP is a paid tier delivered through Telegram. Members receive the day's highest-conviction selections earlier than they appear on the site, push alerts the moment a live in-play call is issued, and staking guidance for each selection. The markets are the same ones published free on the site — VIP is a filter and a delivery channel, not a different model, so the hit rate is higher because the selections clear a higher confidence threshold.\n\nEvery VIP selection is logged and the resulting record is published, including the losses. VIP does not remove risk: no prediction service can guarantee an outcome, and any that claims to is not being honest.",
 };
