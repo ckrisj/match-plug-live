@@ -5,8 +5,6 @@ import { SITE_URL } from "@/components/utils/constant";
 import Footer from "@/components/layout/Footer";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { NuqsAdapter } from "nuqs/adapters/react";
-import { routeTitles } from "./lib/title";
-import { headers } from "next/headers";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -16,52 +14,27 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const pathname = (await headers()).get("x-pathname") ?? "/";
-
-  const route = routeTitles[pathname] ?? {
-    title: "Matchplug - Football Predictions & Betting Tips",
-    description:
-      "Expert football predictions, betting tips, and sports insights daily.",
-  };
-
-  const canonicalPath = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
-  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
-
-  return {
-    metadataBase: new URL(SITE_URL),
-
-    title: route.title,
-    description: route.description,
-
-    alternates: {
-      canonical: canonicalUrl,
-    },
-
-    openGraph: {
-      type: "website",
-      url: canonicalUrl,
-      siteName: "MatchPlug",
-      title: route.title,
-      description: route.description,
-      images: [
-        {
-          url: "/og-image.jpg",
-          width: 1200,
-          height: 630,
-          alt: route.title,
-        },
-      ],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title: route.title,
-      description: route.description,
-      images: ["/og-image.jpg"],
-    },
-  };
-}
+/**
+ * Site-wide defaults only. Per-route title, description, canonical and
+ * og:image now come from each route's own metadata (see
+ * src/app/lib/title.ts). This used to read an x-pathname header set by
+ * middleware, which forced every route in the app to render dynamically.
+ */
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: "Matchplug - Football Predictions & Betting Tips",
+  description:
+    "Expert football predictions, betting tips, and sports insights daily.",
+  openGraph: {
+    type: "website",
+    siteName: "MatchPlug",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.jpg"],
+  },
+};
 
 export default function RootLayout({
   children,

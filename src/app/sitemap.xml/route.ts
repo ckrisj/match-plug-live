@@ -18,6 +18,8 @@ const STATIC_ROUTES = [
   "/how-to-subscribe",
   "/terms-of-service",
   "/disclaimer",
+  "/privacy-policy",
+  "/contact-us",
   "/blog",
   "/guides",
 ];

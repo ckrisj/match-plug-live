@@ -85,9 +85,7 @@ const nextConfig = {
       },
       {
         source: "/contact.php",
-        // No standalone contact route exists; about-us carries the contact
-        // details. Repoint if the cutover map says otherwise.
-        destination: "/about-us",
+        destination: "/contact-us",
         statusCode: 301,
       },
       {

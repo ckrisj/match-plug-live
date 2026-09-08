@@ -1,6 +1,9 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { Link } from "lucide-react";
+import { metadataForRoute } from "@/app/lib/title";
+
+export const metadata = metadataForRoute("/partners");
 
 export default function Partners() {
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import HaalandArticle from "./HaalandArticle";
@@ -50,20 +51,12 @@ export function BlogDetailPage({
 
       {data?.jetpack_featured_media_url && (
         <div className="mb-6">
-          <img
-            src={data?.jetpack_featured_media_url || "person.webp"}
-            alt={data?.title?.rendered}
-            onError={(e) => {
-              const imageContainer = (e.currentTarget as HTMLImageElement)
-                .parentElement;
-
-              if (imageContainer) {
-                imageContainer.style.display = "none";
-              }
-            }}
-            width={900}
-            height={500}
-            className="rounded-lg object-cover w-full"
+          <Image
+            src={data?.jetpack_featured_media_url || "/person.webp"}
+            alt={data?.title?.rendered ?? ""}
+            width={1200}
+            height={630}
+            className="w-full rounded-xl object-cover"
           />
         </div>
       )}

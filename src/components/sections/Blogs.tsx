@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -125,10 +126,13 @@ export function BlogPage() {
                 href={`/blog/${post.slug}`}
               >
                 <div className="relative h-96 rounded-xl overflow-hidden">
-                  <img
-                    src={post?.jetpack_featured_media_url || "person.webp"}
+                  <Image
+                    src={post?.jetpack_featured_media_url || "/person.webp"}
                     alt={post?.title?.rendered}
+                    width={800}
+                    height={384}
                     className="w-full h-full object-cover"
+                    unoptimized={false}
                   />
                   <div className="absolute bottom-0    bg-opacity-50 text-white p-4 w-full">
                     <p className="text-xl font-bold">{post.title?.rendered}</p>

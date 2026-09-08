@@ -22,15 +22,17 @@ import VipResultsSlider from "@/components/sections/VipResultsSlider";
 // import WhyMatchplug from "@/components/sections/WhyMatchplug";
 import { Suspense } from "react";
 import AboutUsPage from "./about-us/page";
+import { metadataForRoute } from "@/app/lib/title";
 
-type PageParams = {
-  searchParams: Promise<{
-    date: string;
-    market: string;
-  }>;
-};
+export const metadata = metadataForRoute("/");
 
-export default async function Page({ searchParams }: PageParams) {
+/**
+ * No searchParams are read here, so the homepage can be statically rendered
+ * and revalidated rather than rebuilt for every request.
+ */
+export const revalidate = 300;
+
+export default async function Page() {
   return (
     <div className="flex flex-col">
       <Hero />

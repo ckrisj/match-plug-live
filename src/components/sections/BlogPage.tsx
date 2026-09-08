@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -186,13 +187,13 @@ export default function BlogPage() {
                 >
                   <div className="h-full rounded-xl shadow-lg overflow-hidden bg-white flex flex-col">
                     {/* Image */}
-                    <img
-                      src={news?.jetpack_featured_media_url || "person.webp"}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "person.webp";
-                      }}
+                    <Image
+                      src={news?.jetpack_featured_media_url || "/person.webp"}
                       alt={news.title?.rendered || "News Image"}
+                      width={400}
+                      height={160}
                       className="h-40 w-full object-cover flex-shrink-0"
+                      unoptimized={false}
                     />
 
                     {/* Content */}
@@ -357,13 +358,13 @@ export default function BlogPage() {
                   href={`/blog/${news?.slug}`}
                 >
                   <div className="relative rounded-xl overflow-hidden shadow-lg">
-                    <img
-                      src={news.jetpack_featured_media_url || "person.webp"}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "person.webp";
-                      }}
+                    <Image
+                      src={news.jetpack_featured_media_url || "/person.webp"}
                       alt={news?.title?.rendered}
+                      width={800}
+                      height={320}
                       className="h-80 w-full object-cover"
+                      unoptimized={false}
                     />
 
                     <div
@@ -406,7 +407,7 @@ export default function BlogPage() {
                   <div
                     className="h-[500px] bg-cover bg-center flex flex-col justify-end"
                     style={{
-                      backgroundImage: `url(${news.jetpack_featured_media_url || "person.webp"})`,
+                      backgroundImage: `url(${news.jetpack_featured_media_url || "/person.webp"})`,
                     }}
                   >
                     <div
@@ -455,12 +456,11 @@ export default function BlogPage() {
             >
               <div className="col-span-1">
                 <div className="rounded-xl shadow-md overflow-hidden bg-white h-full">
-                  <img
-                    src={data?.featured?.thumbnail || "person.webp"}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "person.webp";
-                    }}
-                    alt="{featuredPost.title}"
+                  <Image
+                    src={data?.featured?.thumbnail || "/person.webp"}
+                    alt={data?.featured?.title ?? ""}
+                    width={600}
+                    height={256}
                     className="w-full h-64 object-cover"
                   />
                   <div className="p-4">
@@ -493,12 +493,11 @@ export default function BlogPage() {
                   className="h-[120px]"
                 >
                   <div className="h-full rounded-xl shadow-md flex overflow-hidden bg-white items-stretch">
-                    <img
-                      src={news?.jetpack_featured_media_url || "person.webp"}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "person.webp";
-                      }}
-                      alt={news?.title?.rendered}
+                    <Image
+                      src={news?.jetpack_featured_media_url || "/person.webp"}
+                      alt={news?.title?.rendered ?? ""}
+                      width={120}
+                      height={120}
                       className="w-[120px] h-full object-cover flex-shrink-0"
                     />
 

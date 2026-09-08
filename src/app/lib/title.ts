@@ -1,5 +1,7 @@
 // app/lib/titles.ts
 
+import type { Metadata } from "next";
+import { SITE_URL } from "@/components/utils/constant";
 import { marketContent } from "@/components/utils/Collection/market-content";
 
 /**
@@ -8,6 +10,36 @@ import { marketContent } from "@/components/utils/Collection/market-content";
 type RouteTitle = { label: string; title: string; description: string };
 
 const baseRouteTitles: Record<string, RouteTitle> = {
+  "/about-us": {
+    label: "About us",
+    title: "About Matchplug — How Our Predictions Are Made | Matchplug",
+    description:
+      "Who Matchplug is, how our football predictions are produced, and what we do and do not claim. Free tips across 40+ leagues since 2017.",
+  },
+  "/partners": {
+    label: "Partners",
+    title: "Partners & Affiliates | Matchplug",
+    description:
+      "Partner with Matchplug: affiliate and media enquiries for our football predictions and VIP tipping service.",
+  },
+  "/how-to-subscribe": {
+    label: "How to subscribe",
+    title: "How to Subscribe to Matchplug VIP | Matchplug",
+    description:
+      "Step-by-step guide to subscribing to Matchplug VIP: the plans, accepted payment methods, and how selections reach you on Telegram.",
+  },
+  "/terms-of-service": {
+    label: "Terms and Conditions",
+    title: "Terms of Service | Matchplug",
+    description:
+      "The terms governing use of Matchplug, including account rules, subscriptions, acceptable use and limitation of liability.",
+  },
+  "/disclaimer": {
+    label: "Disclaimer",
+    title: "Disclaimer | Matchplug",
+    description:
+      "Matchplug publishes predictions and analysis, not betting advice. No outcome is guaranteed. 18+ only — please gamble responsibly.",
+  },
   "/vip": {
     label: "VIP Results",
     title: "Matchplug VIP — Premium Football Tips & Live Alerts | Matchplug",
@@ -236,3 +268,51 @@ export const routeTitles: Record<string, RouteTitle> = {
     ])
   ),
 };
+
+/**
+ * Builds a route's metadata from the table above.
+ *
+ * Metadata used to be resolved in the root layout by reading an `x-pathname`
+ * header that middleware set. That worked, but calling `headers()` in the root
+ * layout opts every route in the app into dynamic rendering, so nothing could
+ * be cached or statically generated. Each route now declares its own metadata
+ * from the same table instead.
+ */
+export function metadataForRoute(route: string): Metadata {
+  const entry = routeTitles[route] ?? {
+    label: "Matchplug",
+    title: "Matchplug - Football Predictions & Betting Tips",
+    description:
+      "Expert football predictions, betting tips, and sports insights daily.",
+  };
+
+  const canonicalPath = route === "/" ? "" : route.replace(/\/$/, "");
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+
+  return {
+    title: entry.title,
+    description: entry.description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: "website",
+      url: canonicalUrl,
+      siteName: "MatchPlug",
+      title: entry.title,
+      description: entry.description,
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: entry.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: entry.title,
+      description: entry.description,
+      images: ["/og-image.jpg"],
+    },
+  };
+}
