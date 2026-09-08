@@ -23,7 +23,7 @@ export interface BlogList {
   totalPages: number;
 }
 
-const PER_PAGE = 12;
+const DEFAULT_PER_PAGE = 12;
 
 /** Posts change far less often than predictions do. */
 const REVALIDATE_SECONDS = 900;
@@ -51,12 +51,15 @@ function toPlainText(html: string): string {
 export async function getBlogPosts({
   page = 1,
   categoryId,
+  perPage = DEFAULT_PER_PAGE,
 }: {
   page?: number;
   categoryId?: number;
+  /** Overrides the default page size — the homepage shows a short list. */
+  perPage?: number;
 } = {}): Promise<BlogList> {
   const url = new URL(`${API_URL}/wp-json/wp/v2/posts`);
-  url.searchParams.set("per_page", String(PER_PAGE));
+  url.searchParams.set("per_page", String(perPage));
   url.searchParams.set("page", String(page));
   // Without _fields WordPress returns the full rendered body of every post,
   // which is megabytes per listing page.
