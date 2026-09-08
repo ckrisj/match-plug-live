@@ -53,6 +53,18 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL}/auth/password-reset/request`,
         statusCode: 301,
       },
+      // Auth lives on the admin domain. Without these the bare paths fall
+      // through to the .php catch-all and 301 into a 404.
+      {
+        source: "/forgot-password.php",
+        destination: `${process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL}/auth/password-reset/request`,
+        statusCode: 301,
+      },
+      {
+        source: "/forgot-password",
+        destination: `${process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL}/auth/password-reset/request`,
+        statusCode: 301,
+      },
       // Legacy .php URLs from the pre-Next site. These returned 200 with an
       // empty shell until the [slug] route started calling notFound(); a 301
       // passes their history to the replacement page instead of 404ing it.

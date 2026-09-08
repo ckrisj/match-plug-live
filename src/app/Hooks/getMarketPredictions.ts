@@ -83,6 +83,16 @@ async function fetchPredictions(
 const shiftDays = (date: string, days: number) =>
   DateTime.fromISO(date).plus({ days }).toISODate() ?? date;
 
+export interface MarketPredictionsOptions {
+  /**
+   * "past" walks back to the most recent published day when the requested day
+   * is empty. "none" leaves it empty — used for forward-looking views such as
+   * the homepage's Tomorrow tab, where showing an earlier day's picks under a
+   * future label would be wrong.
+   */
+  fallback?: "past" | "none";
+}
+
 /**
  * Resolves the rows to show for a market on a given day, falling back to the
  * most recent published day when that day is empty.
@@ -90,6 +100,7 @@ const shiftDays = (date: string, days: number) =>
 export async function getMarketPredictions(
   market: string,
   requestedDate: string,
+  { fallback = "past" }: MarketPredictionsOptions = {},
 ): Promise<MarketPredictions> {
   const onTheDay = await fetchPredictions(market, requestedDate);
 
@@ -105,9 +116,14 @@ export async function getMarketPredictions(
 
   // Nothing for the requested day. Probe the surrounding days in parallel — a
   // sequential walk would add a round trip for every empty day in the gap.
-  const earlier = Array.from({ length: LOOKBACK_DAYS }, (_, index) =>
-    shiftDays(requestedDate, -(index + 1)),
-  );
+  // A forward-looking view skips the backward window entirely rather than
+  // paying for ten requests whose result it would discard.
+  const earlier =
+    fallback === "none"
+      ? []
+      : Array.from({ length: LOOKBACK_DAYS }, (_, index) =>
+          shiftDays(requestedDate, -(index + 1)),
+        );
   const later = Array.from({ length: LOOKAHEAD_DAYS }, (_, index) =>
     shiftDays(requestedDate, index + 1),
   );
