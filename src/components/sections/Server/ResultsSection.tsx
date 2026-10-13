@@ -1,10 +1,10 @@
 import React from "react";
 import { DateTime } from "luxon";
 
-import ResultsSlider, {
-  ResultCardData,
+import ResultsGrid, {
+  ResultDayData,
   ResultsTabData,
-} from "@/components/sections/ResultsSlider";
+} from "@/components/sections/ResultsGrid";
 import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
 import { SettledTip } from "@/components/utils/results";
 
@@ -18,15 +18,23 @@ const TABS = [
   },
 ] as const;
 
-const toCard = (tip: SettledTip, index: number): ResultCardData => ({
-  id: `${tip.date}-${index}`,
-  dateLabel: DateTime.fromISO(tip.date).toFormat("ccc d LLL"),
-  league: tip.league,
-  match: `${tip.home} v ${tip.away}`,
-  tip: tip.tip,
-  odds: tip.odds === null ? null : tip.odds.toFixed(2),
-  result: tip.result,
-});
+const toDay = (day: { date: string; tips: SettledTip[] }): ResultDayData => {
+  const date = DateTime.fromISO(day.date);
+
+  return {
+    date: day.date,
+    weekday: date.toFormat("ccc"),
+    dayMonth: date.toFormat("d LLL"),
+    tips: day.tips.map((tip, index) => ({
+      id: `${day.date}-${index}`,
+      league: tip.league,
+      match: `${tip.home} v ${tip.away}`,
+      tip: tip.tip,
+      odds: tip.odds === null ? null : tip.odds.toFixed(2),
+      result: tip.result,
+    })),
+  };
+};
 
 /* Rough, torn-paper edge rendered with a turbulence-displaced rectangle. */
 const TornEdge: React.FC<{ position: "top" | "bottom" }> = ({ position }) => {
@@ -74,9 +82,10 @@ const TornEdge: React.FC<{ position: "top" | "bottom" }> = ({ position }) => {
 };
 
 /**
- * VIP and Elite results from the tips backend, including the losses. Rendered
- * on the server so the stats line and first cards are in the HTML crawlers
- * read. Renders nothing when there is no data — never dummy numbers.
+ * VIP and Elite results from the tips backend, including the losses, as a
+ * 30-day grid. Rendered on the server so the stats line and every day are in
+ * the HTML crawlers read. Renders nothing when there is no data — never dummy
+ * numbers.
  */
 const ResultsSection = async ({
   recordHref = "/vip#results",
@@ -100,7 +109,7 @@ const ResultsSection = async ({
             label: tab.label,
             name: tab.name,
             stats: result.stats,
-            cards: result.tips.map(toCard),
+            days: result.days.map(toDay),
             month: result.month,
           },
         ]
@@ -125,7 +134,7 @@ const ResultsSection = async ({
         <h2 className="mb-8 text-center text-2xl font-bold text-white sm:text-3xl">
           VIP & Elite Results — Last 30 Days
         </h2>
-        <ResultsSlider tabs={tabs} recordHref={recordHref} joinHref={joinHref} />
+        <ResultsGrid tabs={tabs} recordHref={recordHref} joinHref={joinHref} />
       </div>
     </section>
   );

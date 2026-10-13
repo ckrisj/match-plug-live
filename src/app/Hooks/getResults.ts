@@ -19,7 +19,7 @@ export const RESULTS_PACKAGES = {
   elite: "ELITE SINGLE",
 } as const;
 
-/** The slider and its stats line cover this many days. */
+/** The grid and its stats line cover this many days. */
 const WINDOW_DAYS = 30;
 
 /** The strip under the hero covers this many days. */
@@ -55,9 +55,12 @@ interface PredictionRow {
 }
 
 export interface PackageResults {
-  /** Settled tips in the last 30 days, newest first. */
-  tips: SettledTip[];
-  /** Stats for `tips`. */
+  /**
+   * Every one of the last 30 days, oldest first, with that day's tips — empty
+   * on a day without one, so the grid shows each day in its place.
+   */
+  days: { date: string; tips: SettledTip[] }[];
+  /** Stats for the last 30 days. */
   stats: ResultsStats;
   /** Stats for the last 7 days. */
   week: ResultsStats;
@@ -277,11 +280,11 @@ async function loadPackageResults(
         : [],
     )
     .filter((tip): tip is SettledTip => tip !== null)
-    // Days are already newest first; within a day, latest kickoff first.
+    // Oldest first, as the grid reads; within a day, earliest kickoff first.
     .sort(
       (a, b) =>
-        b.date.localeCompare(a.date) ||
-        (b.kickoff ?? "").localeCompare(a.kickoff ?? ""),
+        a.date.localeCompare(b.date) ||
+        (a.kickoff ?? "").localeCompare(b.kickoff ?? ""),
     );
 
   const windowTips = tips.filter((tip) => inRange(tip, windowStart, yesterday));
@@ -291,12 +294,23 @@ async function loadPackageResults(
     return null;
   }
 
+  const calendar: PackageResults["days"] = [];
+
+  for (let day = windowStart; day <= yesterday; day = day.plus({ days: 1 })) {
+    const date = day.toISODate() ?? "";
+
+    calendar.push({
+      date,
+      tips: windowTips.filter((tip) => tip.date === date),
+    });
+  }
+
   const monthStats = summarize(
     tips.filter((tip) => inRange(tip, monthStart, monthEnd)),
   );
 
   return {
-    tips: windowTips,
+    days: calendar,
     stats,
     week: summarize(tips.filter((tip) => inRange(tip, weekStart, yesterday))),
     month: hasDecidedTips(monthStats)
@@ -309,7 +323,7 @@ async function loadPackageResults(
  * The whole result is cached for 10 minutes, an empty one included. Next only
  * caches successful fetches, so while the API errors every render would repeat
  * all ~40 day requests, and /vip renders on every request. `cache` on top
- * lets the strip and the slider on one page share a single lookup.
+ * lets the strip and the grid on one page share a single lookup.
  */
 export const getPackageResults = cache(
   unstable_cache(loadPackageResults, ["package-results"], {
