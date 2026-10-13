@@ -17,8 +17,8 @@ import RealWinsSection from "@/components/sections/RealWinsSection";
 // import SureWinPredictionSection from "@/components/sections/SureWinPredictionSection";
 // import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import VipPicksPromoSection from "@/components/sections/VipPicksPromoSection";
-// import VipRecordsSection from "@/components/sections/VipRecordsSection";
-import VipResultsSlider from "@/components/sections/VipResultsSlider";
+import ResultsSection from "@/components/sections/Server/ResultsSection";
+import ResultsStrip from "@/components/sections/Server/ResultsStrip";
 // import WhyMatchplug from "@/components/sections/WhyMatchplug";
 import { Suspense } from "react";
 import AboutUsPage from "./about-us/page";
@@ -36,6 +36,10 @@ export default async function Page() {
   return (
     <div className="flex flex-col">
       <Hero />
+      {/* The results blocks are deliberately outside Suspense: streamed
+          content lands in a hidden div at the end of the HTML, and the record
+          has to be readable in place by crawlers that do not run JS. */}
+      <ResultsStrip />
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[300] w-full">
@@ -48,8 +52,10 @@ export default async function Page() {
       <DirectWinPredictions />
       <VipPicksPromoSection />
       <LiveInplaySection />
-      <VipResultsSlider />
       <RealWinsSection />
+      {/* Proof right before the price: the VIP tab leads into the VIP plan
+          and the Elite tab into the Elite card below it. */}
+      <ResultsSection />
       <PricingPlans />
       <MeetOurExperts />
       <LatestNews />
@@ -63,7 +69,6 @@ export default async function Page() {
       {/* <BetBuilderSection /> */}
       {/* <BetNowSection /> */}
       {/* <SureWinPredictionSection /> */}
-      {/* <VipRecordsSection /> */}
       {/* <EmailSubscriptionSection /> */}
       {/* <JoinWinningBettorsSection /> */}
     </div>

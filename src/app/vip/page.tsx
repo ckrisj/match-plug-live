@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DateTime } from "luxon";
 import FootballPredictionDetailsTable from "@/components/sections/FootballPredictionDetailsTable";
 import MarketFAQSection from "@/components/sections/MarketFAQSection";
+import ResultsSection from "@/components/sections/Server/ResultsSection";
 import { metadataForRoute } from "@/app/lib/title";
 
 export const metadata = metadataForRoute("/vip");
@@ -31,6 +32,13 @@ const Page = async ({ searchParams }: PageParams) => {
       <FootballPredictionDetailsTable
         currentDate={date ?? DateTime.now().toISODate()}
         slug={vip}
+      />
+
+      {/* The "full record" every results link on the site points to
+          (/vip#results), so it has no link back to itself. */}
+      <ResultsSection
+        recordHref={null}
+        joinHref="https://user.matchplug.com/auth/register"
       />
 
       <section className="max-w-6xl mx-auto sm:px-4 px-2 py-12">

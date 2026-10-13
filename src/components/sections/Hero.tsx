@@ -2,12 +2,25 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
-import { CountdownBox } from "./VipRecordsSection";
 interface CountdownTime {
   hours: number;
   minutes: number;
   seconds: number;
 }
+
+const CountdownBox: React.FC<{
+  value: number;
+  label: string;
+}> = ({ value, label }) => (
+  <div className="flex flex-col items-center gap-1">
+    <div className="bg-white rounded-xl w-10 h-10 flex items-center justify-center">
+      <span className="text-lg font-normal text-black">
+        {value.toString().padStart(2, "0")}
+      </span>
+    </div>
+    <span className="text-sm text-white">{label}</span>
+  </div>
+);
 
 const Hero: React.FC = () => {
   // Counts down to the end of the day — a real deadline for a daily card.
