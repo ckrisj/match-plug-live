@@ -189,7 +189,7 @@ const PricingPlans: React.FC = () => {
     {
       id: "vip",
       name: "VIP",
-      price: "$29.9",
+      price: "$29",
       pricePeriod: "/ Month",
       accuracy: "Every pick logged",
       backgroundColor: "#EDEBF1",
@@ -207,7 +207,7 @@ const PricingPlans: React.FC = () => {
     {
       id: "fixed",
       name: "ELITE GAMES (HIGH STAKERS)",
-      price: "$99.9",
+      price: "$99",
       pricePeriod: "/ Month",
       accuracy: "Every pick logged",
       backgroundColor: "#F9EFEF",

@@ -617,7 +617,7 @@ export const marketFaqs: Record<string, MarketFAQGroup> = {
       {
         question: "How much does Matchplug VIP cost?",
         answer:
-          "VIP is $29.9 per month and Elite Games (High Stakers) is $99.9 per month, billed monthly. Each renews automatically at the same price until you cancel.",
+          "VIP is $29 per month and Elite Games (High Stakers) is $99 per month, billed monthly. Each renews automatically at the same price until you cancel.",
       },
       {
         question: "Is VIP more accurate than the free tips?",

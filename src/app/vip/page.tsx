@@ -44,9 +44,9 @@ const Page = async ({ searchParams }: PageParams) => {
       <section className="max-w-6xl mx-auto sm:px-4 px-2 py-12">
         <h2 className="text-[28px] font-bold mb-3">Pricing</h2>
         <p className="text-lg mb-6">
-          VIP is <span className="font-semibold">$29.9 / month</span> and Elite
+          VIP is <span className="font-semibold">$29 / month</span> and Elite
           Games (High Stakers) is{" "}
-          <span className="font-semibold">$99.9 / month</span>, billed monthly.
+          <span className="font-semibold">$99 / month</span>, billed monthly.
           Cancel anytime.
         </p>
 

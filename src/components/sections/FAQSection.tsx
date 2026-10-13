@@ -261,7 +261,7 @@ const FAQSection: React.FC = () => {
       id: 17,
       question: "How much does a VIP football betting tips subscription cost?",
       answer:
-        "Matchplug VIP costs $29.9 per month and the Elite Games tier costs $99.9 per month. VIP includes Telegram group access, website access to prematch games, 1.8 to 15 odds daily, daily emails and 5-8 max bets weekly. Elite Games includes everything in VIP plus 20 high-stake games monthly and direct 1-on-1 support with bankroll guidance. Both can be cancelled at any time.",
+        "Matchplug VIP costs $29 per month and the Elite Games tier costs $99 per month. VIP includes Telegram group access, website access to prematch games, 1.8 to 15 odds daily, daily emails and 5-8 max bets weekly. Elite Games includes everything in VIP plus 20 high-stake games monthly and direct 1-on-1 support with bankroll guidance. Both can be cancelled at any time.",
       category: "betting",
     },
     // General
