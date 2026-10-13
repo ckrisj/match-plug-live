@@ -22,8 +22,12 @@ const ResultsStrip = async () => {
           <span className="font-bold text-[#03DD3C]">{vip.week.won} won</span>
           {" · "}
           <span className="font-bold text-[#FF6B76]">{vip.week.lost} lost</span>
-          {" · "}
-          <span className="font-bold">{formatUnits(vip.week.units)}u</span>
+          {vip.week.units !== null && (
+            <>
+              {" · "}
+              <span className="font-bold">{formatUnits(vip.week.units)}u</span>
+            </>
+          )}
         </span>
         <span className="font-semibold text-[#03DD3C] underline-offset-4 group-hover:underline">
           → See results

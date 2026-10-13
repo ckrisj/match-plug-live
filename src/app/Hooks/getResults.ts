@@ -5,16 +5,18 @@ import { DateTime } from "luxon";
 import {
   ResultsStats,
   SettledTip,
-  TIP_OUTCOMES,
   TipOutcome,
   hasDecidedTips,
   summarize,
 } from "@/components/utils/results";
 
-/** Package single IDs on the tips backend, sent as the predictions market_id. */
+/**
+ * Predictions-API markets for the VIP (single ID 182) and Elite (single ID 178)
+ * packages. The API filters by market name, not by ID.
+ */
 export const RESULTS_PACKAGES = {
-  vip: 182,
-  elite: 178,
+  vip: "VIP SINGLE",
+  elite: "ELITE SINGLE",
 } as const;
 
 /** The slider and its stats line cover this many days. */
@@ -39,17 +41,17 @@ const SETTLED_REVALIDATE_SECONDS = 6 * 60 * 60;
 /** Each call takes about a second, so fan out, but not all at once. */
 const CONCURRENCY = 8;
 
-/** A row from /api/predictions/. odds, status and kickoff are required here. */
+/** A row from /api/predictions/. */
 interface PredictionRow {
   league_name?: string;
   home_team_name?: string;
   away_team_name?: string;
   prediction?: string;
-  /** The final score, e.g. "3-1". */
-  result?: string;
-  odds?: number | string;
-  status?: string;
-  kickoff?: string;
+  odds?: number | string | null;
+  /** WON / LOST / CANCELLED once graded, null before. */
+  outcome?: string | null;
+  /** Kickoff, sent as a timestamp. */
+  fixture_date?: number | string | null;
 }
 
 export interface PackageResults {
@@ -70,7 +72,7 @@ type DayResponse = { rows: PredictionRow[] } | { error: string };
  * with a trailing slash because the backend 308s the bare path.
  */
 async function fetchDay(
-  singleId: number,
+  market: string,
   date: string,
   revalidate: number,
 ): Promise<DayResponse> {
@@ -82,7 +84,7 @@ async function fetchDay(
 
   const url = new URL(`${base}/api/predictions/`);
   url.searchParams.set("date", date);
-  url.searchParams.set("market_id", String(singleId));
+  url.searchParams.set("market", market);
 
   try {
     const response = await fetch(url, {
@@ -106,52 +108,85 @@ async function fetchDay(
   }
 }
 
-function parseKickoff(value: string | undefined) {
-  if (!value) {
+/**
+ * fixture_date arrives as a timestamp: Unix seconds, or milliseconds when it
+ * is too large to be seconds. An ISO or SQL date string is accepted too.
+ */
+function parseFixtureDate(value: number | string | null | undefined) {
+  if (value === null || value === undefined || value === "") {
     return null;
   }
 
-  const iso = DateTime.fromISO(value, { setZone: true });
+  const numeric =
+    typeof value === "number"
+      ? value
+      : /^\d+(\.\d+)?$/.test(value.trim())
+        ? Number(value)
+        : NaN;
+
+  if (Number.isFinite(numeric)) {
+    const date =
+      numeric > 1e12
+        ? DateTime.fromMillis(numeric)
+        : DateTime.fromSeconds(numeric);
+
+    return date.isValid ? date : null;
+  }
+
+  const iso = DateTime.fromISO(String(value), { setZone: true });
 
   if (iso.isValid) {
     return iso;
   }
 
-  const sql = DateTime.fromSQL(value, { setZone: true });
+  const sql = DateTime.fromSQL(String(value), { setZone: true });
 
   return sql.isValid ? sql : null;
 }
 
 /**
- * Only a tip with a final won / lost / void status is shown. Anything else is
- * still in play, and showing it would hand a paid pick out for free.
+ * The backend sends WON, LOST or CANCELLED, or null while a tip is ungraded.
+ * A cancelled tip is shown as void; anything else as NA.
+ */
+const OUTCOMES: Record<string, TipOutcome> = {
+  won: "won",
+  lost: "lost",
+  cancelled: "void",
+  canceled: "void",
+  void: "void",
+};
+
+/**
+ * A graded tip has been played. An ungraded one is shown as NA, but only once
+ * its kickoff is known to have passed: before that it may be a paid pick still
+ * to come, and showing it would hand it out for free.
  */
 function toSettledTip(
   row: PredictionRow,
   date: string,
   now: DateTime,
 ): SettledTip | null {
-  const result = row.status?.trim().toLowerCase() as TipOutcome | undefined;
+  const tip = row.prediction?.trim();
 
-  if (!result || !TIP_OUTCOMES.includes(result)) {
+  if (!row.home_team_name || !row.away_team_name || !tip) {
     return null;
   }
 
-  const odds = Number(row.odds);
-
-  if (!Number.isFinite(odds) || odds <= 1) {
-    return null;
-  }
-
-  if (!row.home_team_name || !row.away_team_name || !row.prediction) {
-    return null;
-  }
-
-  const kickoff = parseKickoff(row.kickoff);
+  const kickoff = parseFixtureDate(row.fixture_date);
 
   if (kickoff && kickoff > now) {
     return null;
   }
+
+  const result =
+    OUTCOMES[String(row.outcome ?? "").trim().toLowerCase()] ?? "na";
+
+  if (result === "na" && !kickoff) {
+    return null;
+  }
+
+  // Missing odds leave the tip on the record and drop only the units figure.
+  const odds = Number(row.odds);
 
   return {
     date,
@@ -159,10 +194,9 @@ function toSettledTip(
     league: row.league_name ?? "",
     home: row.home_team_name,
     away: row.away_team_name,
-    tip: row.prediction,
-    odds,
+    tip,
+    odds: Number.isFinite(odds) && odds > 1 ? odds : null,
     result,
-    final_score: row.result ?? "",
   };
 }
 
@@ -194,7 +228,7 @@ const inRange = (tip: SettledTip, from: DateTime, to: DateTime) => {
  * Today is never requested: its picks may not have kicked off yet.
  */
 async function loadPackageResults(
-  singleId: number,
+  market: string,
 ): Promise<PackageResults | null> {
   const now = DateTime.now();
   const today = now.startOf("day");
@@ -216,7 +250,7 @@ async function loadPackageResults(
 
   const responses = await mapInBatches(days, CONCURRENCY, (day) =>
     fetchDay(
-      singleId,
+      market,
       day.toISODate() ?? "",
       today.diff(day, "days").days <= RECENT_DAYS
         ? RECENT_REVALIDATE_SECONDS
@@ -230,7 +264,7 @@ async function loadPackageResults(
 
   if (failures.length) {
     console.error(
-      `Results for single ID ${singleId}: ${failures.length} of ${days.length} days failed (first: ${failures[0].error})`,
+      `Results for "${market}": ${failures.length} of ${days.length} days failed (first: ${failures[0].error})`,
     );
   }
 

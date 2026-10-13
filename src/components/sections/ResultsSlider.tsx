@@ -4,7 +4,14 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { Check, ChevronLeft, ChevronRight, Minus, X } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Minus,
+  X,
+} from "lucide-react";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -21,8 +28,7 @@ export interface ResultCardData {
   league: string;
   match: string;
   tip: string;
-  odds: string;
-  score: string;
+  odds: string | null;
   result: TipOutcome;
 }
 
@@ -60,6 +66,13 @@ const OUTCOMES: Record<
     badge: "bg-[#9CA3AF] text-black",
     border: "border-[#9CA3AF]",
   },
+  // Played but not graded yet by the backend.
+  na: {
+    label: "NA",
+    Icon: Clock,
+    badge: "bg-white text-black/60 ring-1 ring-black/20",
+    border: "border-black/15",
+  },
 };
 
 const ResultCard: React.FC<{ card: ResultCardData }> = ({ card }) => {
@@ -80,11 +93,14 @@ const ResultCard: React.FC<{ card: ResultCardData }> = ({ card }) => {
         {card.match}
       </p>
       <p className="mt-3 truncate text-sm">{card.tip}</p>
-      <p className="text-sm font-semibold">@ {card.odds}</p>
       <div className="mt-auto flex items-center justify-between gap-2 pt-4">
-        <span className="text-xl font-bold tabular-nums">{card.score}</span>
+        {card.odds && (
+          <span className="text-sm font-semibold tabular-nums">
+            @ {card.odds}
+          </span>
+        )}
         <span
-          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${badge}`}
+          className={`ml-auto inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${badge}`}
         >
           <Icon className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
           {label}
@@ -109,8 +125,8 @@ const MonthCard: React.FC<{
       {" · "}
       <span className="font-bold text-[#FF6B76]">{month.stats.lost} lost</span>
       {" · "}
-      {month.stats.hitRate}%{" · "}
-      {formatUnits(month.stats.units)}u
+      {month.stats.hitRate}%
+      {month.stats.units !== null && ` · ${formatUnits(month.stats.units)}u`}
     </p>
     <Link
       href={joinHref}
@@ -202,10 +218,14 @@ const ResultsSlider: React.FC<{
           </span>
           {" · "}
           <span className="font-bold">{active.stats.hitRate}%</span>
-          {" · "}
-          <span className="font-bold">
-            {formatUnits(active.stats.units)} units
-          </span>
+          {active.stats.units !== null && (
+            <>
+              {" · "}
+              <span className="font-bold">
+                {formatUnits(active.stats.units)} units
+              </span>
+            </>
+          )}
         </p>
       </div>
 

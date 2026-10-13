@@ -4,11 +4,10 @@
  * pulling the admin API key into the browser bundle.
  */
 
-export type TipOutcome = "won" | "lost" | "void";
+/** "na" is a played tip the backend has not graded yet. */
+export type TipOutcome = "won" | "lost" | "void" | "na";
 
-export const TIP_OUTCOMES: readonly TipOutcome[] = ["won", "lost", "void"];
-
-/** One settled tip, in the shape the developer brief specifies. */
+/** One past tip, close to the shape the developer brief specifies. */
 export interface SettledTip {
   /** ISO date the tip was published for. */
   date: string;
@@ -18,9 +17,9 @@ export interface SettledTip {
   home: string;
   away: string;
   tip: string;
-  odds: number;
+  /** Null when the backend did not send odds for this tip. */
+  odds: number | null;
   result: TipOutcome;
-  final_score: string;
 }
 
 export interface ResultsStats {
@@ -29,8 +28,11 @@ export interface ResultsStats {
   void: number;
   /** Wins as a whole-number percentage of won + lost. Voids are left out. */
   hitRate: number;
-  /** Profit at a 1-unit stake: Σ(odds − 1) for wins, −1 per loss, voids excluded. */
-  units: number;
+  /**
+   * Profit at a 1-unit stake: Σ(odds − 1) for wins, −1 per loss, voids
+   * excluded. Null when a win has no odds, since a partial sum would misstate it.
+   */
+  units: number | null;
 }
 
 /**
@@ -42,17 +44,24 @@ export function summarize(tips: SettledTip[]): ResultsStats {
   let lost = 0;
   let voided = 0;
   let units = 0;
+  let winWithoutOdds = false;
 
   for (const tip of tips) {
     if (tip.result === "won") {
       won += 1;
-      units += tip.odds - 1;
+
+      if (tip.odds === null) {
+        winWithoutOdds = true;
+      } else {
+        units += tip.odds - 1;
+      }
     } else if (tip.result === "lost") {
       lost += 1;
       units -= 1;
-    } else {
+    } else if (tip.result === "void") {
       voided += 1;
     }
+    // Ungraded (na) tips are shown but left out of every figure.
   }
 
   const decided = won + lost;
@@ -62,7 +71,7 @@ export function summarize(tips: SettledTip[]): ResultsStats {
     lost,
     void: voided,
     hitRate: decided ? Math.round((won / decided) * 100) : 0,
-    units,
+    units: winWithoutOdds ? null : units,
   };
 }
 

@@ -9,12 +9,12 @@ import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
 import { SettledTip } from "@/components/utils/results";
 
 const TABS = [
-  { key: "vip", label: "VIP", name: "VIP", singleId: RESULTS_PACKAGES.vip },
+  { key: "vip", label: "VIP", name: "VIP", market: RESULTS_PACKAGES.vip },
   {
     key: "elite",
     label: "ELITE",
     name: "Elite",
-    singleId: RESULTS_PACKAGES.elite,
+    market: RESULTS_PACKAGES.elite,
   },
 ] as const;
 
@@ -24,8 +24,7 @@ const toCard = (tip: SettledTip, index: number): ResultCardData => ({
   league: tip.league,
   match: `${tip.home} v ${tip.away}`,
   tip: tip.tip,
-  odds: tip.odds.toFixed(2),
-  score: tip.final_score,
+  odds: tip.odds === null ? null : tip.odds.toFixed(2),
   result: tip.result,
 });
 
@@ -88,7 +87,7 @@ const ResultsSection = async ({
   joinHref?: string;
 }) => {
   const results = await Promise.all(
-    TABS.map((tab) => getPackageResults(tab.singleId)),
+    TABS.map((tab) => getPackageResults(tab.market)),
   );
 
   const tabs: ResultsTabData[] = TABS.flatMap((tab, index) => {
