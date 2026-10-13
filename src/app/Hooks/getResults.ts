@@ -26,17 +26,11 @@ const WINDOW_DAYS = 30;
 const STRIP_DAYS = 7;
 
 /**
- * Days this recent can still be settled or corrected, so they are refetched
- * every 10 minutes as the brief asks.
+ * Outcomes are graded by hand in the admin, often for days already past, and
+ * should show on the site soon after. A refresh is ~40 calls per package, made
+ * in the background, so a minute keeps it close without hammering the API.
  */
-const RECENT_DAYS = 3;
-const RECENT_REVALIDATE_SECONDS = 600;
-
-/**
- * Older days are settled. The API only answers one day at a time, so
- * refetching them all every 10 minutes would mean ~120 upstream calls a cycle.
- */
-const SETTLED_REVALIDATE_SECONDS = 6 * 60 * 60;
+const RESULTS_REVALIDATE_SECONDS = 60;
 
 /** Each call takes about a second, so fan out, but not all at once. */
 const CONCURRENCY = 8;
@@ -71,14 +65,11 @@ export interface PackageResults {
 type DayResponse = { rows: PredictionRow[] } | { error: string };
 
 /**
- * Fetched with `fetch` rather than axios so Next can cache the response, and
- * with a trailing slash because the backend 308s the bare path.
+ * Not cached on its own: the whole result is cached once in
+ * `getPackageResults`, which runs fetches uncached anyway. The trailing slash
+ * is because the backend 308s the bare path.
  */
-async function fetchDay(
-  market: string,
-  date: string,
-  revalidate: number,
-): Promise<DayResponse> {
+async function fetchDay(market: string, date: string): Promise<DayResponse> {
   const base = process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL;
 
   if (!base) {
@@ -94,7 +85,7 @@ async function fetchDay(
       headers: {
         "MATCHPLUG-API-KEY": process.env.NEXT_PUBLIC_BLOG_ADMIN_API_KEY ?? "",
       },
-      next: { revalidate },
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -252,13 +243,7 @@ async function loadPackageResults(
   }
 
   const responses = await mapInBatches(days, CONCURRENCY, (day) =>
-    fetchDay(
-      market,
-      day.toISODate() ?? "",
-      today.diff(day, "days").days <= RECENT_DAYS
-        ? RECENT_REVALIDATE_SECONDS
-        : SETTLED_REVALIDATE_SECONDS,
-    ),
+    fetchDay(market, day.toISODate() ?? ""),
   );
 
   const failures = responses.filter(
@@ -320,13 +305,13 @@ async function loadPackageResults(
 }
 
 /**
- * The whole result is cached for 10 minutes, an empty one included. Next only
+ * The whole result is cached for a minute, an empty one included. Next only
  * caches successful fetches, so while the API errors every render would repeat
  * all ~40 day requests, and /vip renders on every request. `cache` on top
  * lets the strip and the grid on one page share a single lookup.
  */
 export const getPackageResults = cache(
   unstable_cache(loadPackageResults, ["package-results"], {
-    revalidate: RECENT_REVALIDATE_SECONDS,
+    revalidate: RESULTS_REVALIDATE_SECONDS,
   }),
 );
