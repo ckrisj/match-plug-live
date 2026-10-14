@@ -34,12 +34,9 @@ const Page = async ({ searchParams }: PageParams) => {
         slug={vip}
       />
 
-      {/* The "full record" every results link on the site points to
-          (/vip#results), so it has no link back to itself. */}
-      <ResultsSection
-        recordHref={null}
-        joinHref="https://user.matchplug.com/auth/register"
-      />
+      {/* This page has its own pricing block, so Subscribe goes straight to
+          sign-up. */}
+      <ResultsSection subscribeHref="https://user.matchplug.com/auth/register" />
 
       <section className="max-w-6xl mx-auto sm:px-4 px-2 py-12">
         <h2 className="text-[28px] font-bold mb-3">Pricing</h2>

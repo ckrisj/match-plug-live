@@ -9,13 +9,8 @@ import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
 import { SettledTip } from "@/components/utils/results";
 
 const TABS = [
-  { key: "vip", label: "VIP", name: "VIP", market: RESULTS_PACKAGES.vip },
-  {
-    key: "elite",
-    label: "ELITE",
-    name: "Elite",
-    market: RESULTS_PACKAGES.elite,
-  },
+  { key: "vip", label: "VIP", market: RESULTS_PACKAGES.vip },
+  { key: "elite", label: "ELITE", market: RESULTS_PACKAGES.elite },
 ] as const;
 
 const toDay = (day: { date: string; tips: SettledTip[] }): ResultDayData => {
@@ -91,13 +86,11 @@ const TornEdge: React.FC<{ position: "top" | "bottom"; color: string }> = ({
  * numbers.
  */
 const ResultsSection = async ({
-  recordHref = "/vip#results",
-  joinHref = "/vip",
+  subscribeHref = "/#pricing",
   topEdgeColor = "#FFFFFF",
 }: {
-  /** "See full record" target; null hides it. */
-  recordHref?: string | null;
-  joinHref?: string;
+  /** Where "Subscribe" goes: the plans, like every other Subscribe button. */
+  subscribeHref?: string;
   /** Colour of the section above, so the torn top edge blends into it. */
   topEdgeColor?: string;
 }) => {
@@ -113,10 +106,8 @@ const ResultsSection = async ({
           {
             key: tab.key,
             label: tab.label,
-            name: tab.name,
             stats: result.stats,
             days: result.days.map(toDay),
-            month: result.month,
           },
         ]
       : [];
@@ -140,7 +131,7 @@ const ResultsSection = async ({
         <h2 className="mb-8 text-center text-2xl font-bold text-white sm:text-3xl">
           VIP & Elite Results — Last 30 Days
         </h2>
-        <ResultsGrid tabs={tabs} recordHref={recordHref} joinHref={joinHref} />
+        <ResultsGrid tabs={tabs} subscribeHref={subscribeHref} />
       </div>
     </section>
   );

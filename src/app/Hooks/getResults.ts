@@ -27,7 +27,7 @@ const WINDOW_DAYS = 30;
 
 /**
  * Outcomes are graded by hand in the admin, often for days already past, and
- * should show on the site soon after. A refresh is ~40 calls per package, made
+ * should show on the site soon after. A refresh is 30 calls per package, made
  * in the background, so a minute keeps it close without hammering the API.
  */
 const RESULTS_REVALIDATE_SECONDS = 60;
@@ -56,8 +56,6 @@ export interface PackageResults {
   days: { date: string; tips: SettledTip[] }[];
   /** Stats for the last 30 days. */
   stats: ResultsStats;
-  /** The previous calendar month, if it has any won or lost tips. */
-  month: { name: string; stats: ResultsStats } | null;
 }
 
 type DayResponse = { rows: PredictionRow[] } | { error: string };
@@ -206,12 +204,6 @@ async function mapInBatches<T, R>(
   return results;
 }
 
-const inRange = (tip: SettledTip, from: DateTime, to: DateTime) => {
-  const date = DateTime.fromISO(tip.date);
-
-  return date >= from && date <= to;
-};
-
 /**
  * Settled results for one package. Returns null when the last 30 days have no
  * won or lost tips, or the API fails, so the block is hidden rather than ever
@@ -227,15 +219,11 @@ async function loadPackageResults(
   const yesterday = today.minus({ days: 1 });
 
   const windowStart = yesterday.minus({ days: WINDOW_DAYS - 1 });
-  const monthStart = today.minus({ months: 1 }).startOf("month");
-  const monthEnd = monthStart.endOf("month");
 
-  // One request per day, newest first, back far enough to cover both the
-  // 30-day window and the whole of last month.
-  const from = DateTime.min(windowStart, monthStart);
+  // One request per day of the window, newest first.
   const days: DateTime[] = [];
 
-  for (let day = yesterday; day >= from; day = day.minus({ days: 1 })) {
+  for (let day = yesterday; day >= windowStart; day = day.minus({ days: 1 })) {
     days.push(day);
   }
 
@@ -269,8 +257,7 @@ async function loadPackageResults(
         (a.kickoff ?? "").localeCompare(b.kickoff ?? ""),
     );
 
-  const windowTips = tips.filter((tip) => inRange(tip, windowStart, yesterday));
-  const stats = summarize(windowTips);
+  const stats = summarize(tips);
 
   if (!hasDecidedTips(stats)) {
     return null;
@@ -283,28 +270,18 @@ async function loadPackageResults(
 
     calendar.push({
       date,
-      tips: windowTips.filter((tip) => tip.date === date),
+      tips: tips.filter((tip) => tip.date === date),
     });
   }
 
-  const monthStats = summarize(
-    tips.filter((tip) => inRange(tip, monthStart, monthEnd)),
-  );
-
-  return {
-    days: calendar,
-    stats,
-    month: hasDecidedTips(monthStats)
-      ? { name: monthStart.toFormat("LLLL"), stats: monthStats }
-      : null,
-  };
+  return { days: calendar, stats };
 }
 
 /**
  * The whole result is cached for a minute, an empty one included. Next only
  * caches successful fetches, so while the API errors every render would repeat
- * all ~40 day requests, and /vip renders on every request. `cache` on top
- * lets the strip and the grid on one page share a single lookup.
+ * all 30 day requests, and /vip renders on every request. `cache` on top
+ * lets the hero's trust line and the grid on one page share a single lookup.
  */
 export const getPackageResults = cache(
   unstable_cache(loadPackageResults, ["package-results"], {

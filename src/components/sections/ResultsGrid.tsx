@@ -33,12 +33,9 @@ export interface ResultsTabData {
   key: "vip" | "elite";
   /** Shown on the tab, e.g. "ELITE". */
   label: string;
-  /** Shown in running text, e.g. "Join Elite". */
-  name: string;
   stats: ResultsStats;
   /** The last 30 days, oldest first. */
   days: ResultDayData[];
-  month: { name: string; stats: ResultsStats } | null;
 }
 
 const OUTCOMES: Record<
@@ -202,15 +199,30 @@ const DayCell: React.FC<{
   );
 };
 
+/** "Last 30 days: 9 won · 3 lost · 75%", plus units once odds are in. */
+const StatsLine: React.FC<{ stats: ResultsStats }> = ({ stats }) => (
+  <>
+    <span className="text-white/70">Last 30 days: </span>
+    <span className="font-bold text-[#03DD3C]">{stats.won} won</span>
+    {" · "}
+    <span className="font-bold text-[#FF6B76]">{stats.lost} lost</span>
+    {" · "}
+    <span className="font-bold">{stats.hitRate}%</span>
+    {stats.units !== null && (
+      <>
+        {" · "}
+        <span className="font-bold">{formatUnits(stats.units)} units</span>
+      </>
+    )}
+  </>
+);
+
 const ResultsGrid: React.FC<{
   tabs: ResultsTabData[];
-  /** "See full record" target; null hides it, e.g. on the page it points to. */
-  recordHref: string | null;
-  joinHref: string;
-}> = ({ tabs, recordHref, joinHref }) => {
+  subscribeHref: string;
+}> = ({ tabs, subscribeHref }) => {
   const [activeKey, setActiveKey] = useState(tabs[0].key);
   const active = tabs.find((tab) => tab.key === activeKey) ?? tabs[0];
-  const joinLabel = `Join ${active.name}`;
   const first = active.days[0];
   const last = active.days[active.days.length - 1];
 
@@ -260,24 +272,7 @@ const ResultsGrid: React.FC<{
         )}
 
         <p className="rounded-2xl bg-[#0C1636] px-4 py-2 text-center text-sm text-white sm:text-base">
-          <span className="text-white/70">Last 30 days: </span>
-          <span className="font-bold text-[#03DD3C]">
-            {active.stats.won} won
-          </span>
-          {" · "}
-          <span className="font-bold text-[#FF6B76]">
-            {active.stats.lost} lost
-          </span>
-          {" · "}
-          <span className="font-bold">{active.stats.hitRate}%</span>
-          {active.stats.units !== null && (
-            <>
-              {" · "}
-              <span className="font-bold">
-                {formatUnits(active.stats.units)} units
-              </span>
-            </>
-          )}
+          <StatsLine stats={active.stats} />
         </p>
       </div>
 
@@ -329,38 +324,17 @@ const ResultsGrid: React.FC<{
           </li>
         </ul>
 
-        {active.month && (
-          <p className="mt-4 text-center text-sm text-white/80">
-            <span className="font-bold text-white">{active.month.name}:</span>{" "}
-            <span className="font-bold text-[#03DD3C]">
-              {active.month.stats.won} won
-            </span>
-            {" · "}
-            <span className="font-bold text-[#FF6B76]">
-              {active.month.stats.lost} lost
-            </span>
-            {" · "}
-            {active.month.stats.hitRate}%
-            {active.month.stats.units !== null &&
-              ` · ${formatUnits(active.month.stats.units)}u`}
-          </p>
-        )}
+        <p className="mt-4 text-center text-sm text-white">
+          <StatsLine stats={active.stats} />
+        </p>
       </div>
 
-      <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        {recordHref && (
-          <Link
-            href={recordHref}
-            className="inline-flex w-full items-center justify-center rounded-full border-2 border-white px-8 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-[#20358A] sm:w-auto sm:text-base"
-          >
-            See full {active.name} record
-          </Link>
-        )}
+      <div className="mt-8 flex justify-center">
         <Link
-          href={joinHref}
-          className="inline-flex w-full items-center justify-center rounded-full bg-[#03DD3C] px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-black transition-transform hover:scale-105 sm:w-auto sm:text-base"
+          href={subscribeHref}
+          className="inline-flex w-full items-center justify-center rounded-full bg-[#03DD3C] px-10 py-3.5 text-sm font-bold uppercase tracking-wide text-black transition-transform hover:scale-105 sm:w-auto sm:text-base"
         >
-          {joinLabel} →
+          Subscribe
         </Link>
       </div>
     </div>
