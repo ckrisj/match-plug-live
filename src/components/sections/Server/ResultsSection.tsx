@@ -3,15 +3,23 @@ import { DateTime } from "luxon";
 
 import ResultsGrid, {
   ResultDayData,
+  ResultsPeriodData,
   ResultsTabData,
 } from "@/components/sections/ResultsGrid";
-import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
+import {
+  RESULTS_PACKAGES,
+  ResultsPeriod,
+  getPackageResults,
+} from "@/app/Hooks/getResults";
 import { SettledTip } from "@/components/utils/results";
 
 const TABS = [
   { key: "vip", label: "VIP", market: RESULTS_PACKAGES.vip },
   { key: "elite", label: "ELITE", market: RESULTS_PACKAGES.elite },
 ] as const;
+
+/** Slider page titles, newest first. */
+const PERIOD_TITLES = ["Last 30 days", "Previous 30 days"];
 
 const toDay = (day: { date: string; tips: SettledTip[] }): ResultDayData => {
   const date = DateTime.fromISO(day.date);
@@ -28,6 +36,19 @@ const toDay = (day: { date: string; tips: SettledTip[] }): ResultDayData => {
       odds: tip.odds === null ? null : tip.odds.toFixed(2),
       result: tip.result,
     })),
+  };
+};
+
+const toPeriod = (period: ResultsPeriod, index: number): ResultsPeriodData => {
+  const days = period.days.map(toDay);
+  const first = days[0];
+  const last = days[days.length - 1];
+
+  return {
+    title: PERIOD_TITLES[index] ?? `${(index + 1) * 30} days ago`,
+    range: `${first.weekday} ${first.dayMonth} – ${last.weekday} ${last.dayMonth}`,
+    days,
+    stats: period.stats,
   };
 };
 
@@ -81,9 +102,9 @@ const TornEdge: React.FC<{ position: "top" | "bottom"; color: string }> = ({
 
 /**
  * VIP and Elite results from the tips backend, including the losses, as a
- * 30-day grid. Rendered on the server so the stats line and every day are in
- * the HTML crawlers read. Renders nothing when there is no data — never dummy
- * numbers.
+ * slider of 30-day grids: the last 30 days, then the 30 before. Rendered on the
+ * server so the stats line and every day are in the HTML crawlers read.
+ * Renders nothing when there is no data — never dummy numbers.
  */
 const ResultsSection = async ({
   topEdgeColor = "#FFFFFF",
@@ -103,8 +124,7 @@ const ResultsSection = async ({
           {
             key: tab.key,
             label: tab.label,
-            stats: result.stats,
-            days: result.days.map(toDay),
+            periods: result.periods.map(toPeriod),
           },
         ]
       : [];

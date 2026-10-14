@@ -14,6 +14,7 @@ import { formatParagraphToHTML } from "@/components/utils/helper";
 import PredictionFallbackNotice from "./PredictionFallbackNotice";
 import EmptyPredictionState from "./EmptyPredictionState";
 import ExpertTipsFallback from "./ExpertTipsFallback";
+import PredictionOutcome from "../PredictionOutcome";
 
 
 interface Team {
@@ -28,7 +29,8 @@ export interface MatchPrediction {
   prediction: string;
   away_team_name: string;
   away_team_logo: string;
-  result: string;
+  /** WON / LOST / CANCELLED once graded, null before. */
+  outcome?: string | null;
 }
 
 type FootballPredictionTableProps = {
@@ -150,9 +152,7 @@ const FootballPredictionTable = ({
           <td
             className={`text-center py-3  sm:px-6 bg-[#EDF0F9] ${lastTdClass}`}
           >
-            <span className="inline-block text-nowrap bg-green-100 text-green-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
-              {match.result}
-            </span>
+            <PredictionOutcome outcome={match.outcome} />
           </td>
         </tr>
       );

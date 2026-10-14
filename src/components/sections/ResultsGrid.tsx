@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Check, Clock, Minus, X } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, Clock, Minus, X } from "lucide-react";
 
 import {
   ResultsStats,
@@ -28,13 +28,23 @@ export interface ResultDayData {
   tips: ResultTipData[];
 }
 
+/** One page of the slider: 30 days and their stats. */
+export interface ResultsPeriodData {
+  /** e.g. "Last 30 days" */
+  title: string;
+  /** e.g. "Mon 14 Sep – Tue 13 Oct" */
+  range: string;
+  /** Oldest first. */
+  days: ResultDayData[];
+  stats: ResultsStats;
+}
+
 export interface ResultsTabData {
   key: "vip" | "elite";
   /** Shown on the tab, e.g. "ELITE". */
   label: string;
-  stats: ResultsStats;
-  /** The last 30 days, oldest first. */
-  days: ResultDayData[];
+  /** Newest first: the last 30 days, then the 30 before. */
+  periods: ResultsPeriodData[];
 }
 
 const OUTCOMES: Record<
@@ -78,6 +88,9 @@ const OUTCOMES: Record<
     border: "border-black/15",
   },
 };
+
+/** A horizontal finger move this long, mostly sideways, turns the page. */
+const SWIPE_DISTANCE = 50;
 
 /**
  * In a grid cell: icon only on a phone-width cell, icon and label from sm up.
@@ -198,37 +211,114 @@ const DayCell: React.FC<{
   );
 };
 
-/** "Last 30 days: 9 won · 3 lost · 75%", plus units once odds are in. */
-const StatsLine: React.FC<{ stats: ResultsStats }> = ({ stats }) => (
-  <>
-    <span className="text-white/70">Last 30 days: </span>
-    <span className="font-bold text-[#03DD3C]">{stats.won} won</span>
-    {" · "}
-    <span className="font-bold text-[#FF6B76]">{stats.lost} lost</span>
-    {" · "}
-    <span className="font-bold">{stats.hitRate}%</span>
-    {stats.units !== null && (
-      <>
-        {" · "}
-        <span className="font-bold">{formatUnits(stats.units)} units</span>
-      </>
-    )}
-  </>
-);
+/**
+ * "Last 30 days: 9 won · 3 lost · 75%", plus units once odds are in. A page
+ * with nothing graded says so rather than showing 0%.
+ */
+const StatsLine: React.FC<{ period: ResultsPeriodData }> = ({ period }) => {
+  const { stats } = period;
+
+  if (stats.won + stats.lost === 0) {
+    return (
+      <span className="text-white/70">{period.title}: no graded tips yet</span>
+    );
+  }
+
+  return (
+    <>
+      <span className="text-white/70">{period.title}: </span>
+      <span className="font-bold text-[#03DD3C]">{stats.won} won</span>
+      {" · "}
+      <span className="font-bold text-[#FF6B76]">{stats.lost} lost</span>
+      {" · "}
+      <span className="font-bold">{stats.hitRate}%</span>
+      {stats.units !== null && (
+        <>
+          {" · "}
+          <span className="font-bold">{formatUnits(stats.units)} units</span>
+        </>
+      )}
+    </>
+  );
+};
+
+const ArrowButton: React.FC<{
+  direction: "older" | "newer";
+  disabled: boolean;
+  onClick: () => void;
+}> = ({ direction, disabled, onClick }) => {
+  const Icon = direction === "older" ? ChevronLeft : ChevronRight;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={
+        direction === "older" ? "Previous 30 days" : "Next 30 days"
+      }
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#20358A] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-30"
+    >
+      <Icon className="h-5 w-5" strokeWidth={2.5} aria-hidden />
+    </button>
+  );
+};
 
 const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
   const [activeKey, setActiveKey] = useState(tabs[0].key);
   const active = tabs.find((tab) => tab.key === activeKey) ?? tabs[0];
-  const first = active.days[0];
-  const last = active.days[active.days.length - 1];
 
-  // The mobile details panel opens on the latest bet, so the details show
-  // before anyone taps.
+  // 0 is the last 30 days; each step back is 30 days older.
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageCount = active.periods.length;
+  const page = active.periods[Math.min(pageIndex, pageCount - 1)];
+
+  // The mobile details panel opens on the latest bet of the page, so the
+  // details show before anyone taps.
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const tipDays = active.days.filter((day) => day.tips.length);
+  const tipDays = page.days.filter((day) => day.tips.length);
   const selectedDay =
     tipDays.find((day) => day.date === selectedDate) ??
     tipDays[tipDays.length - 1];
+
+  const goTo = (index: number) => {
+    setPageIndex(Math.max(0, Math.min(pageCount - 1, index)));
+    setSelectedDate(null);
+  };
+
+  // Swipe on touch screens. touch-action: pan-y on the track leaves vertical
+  // scrolling to the browser and hands sideways moves to these handlers.
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+
+  const onPointerDown = (event: React.PointerEvent) => {
+    swipeStart.current =
+      event.pointerType === "mouse"
+        ? null
+        : { x: event.clientX, y: event.clientY };
+  };
+
+  const onPointerUp = (event: React.PointerEvent) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+
+    if (!start) {
+      return;
+    }
+
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+
+    if (Math.abs(dx) < SWIPE_DISTANCE || Math.abs(dx) < Math.abs(dy) * 1.5) {
+      return;
+    }
+
+    // Older days sit to the left, so dragging right goes back in time.
+    goTo(pageIndex + (dx > 0 ? 1 : -1));
+  };
+
+  // The track lays pages out oldest to newest, left to right.
+  const slots = [...active.periods].reverse();
+  const slot = pageCount - 1 - pageIndex;
 
   return (
     <div>
@@ -253,6 +343,7 @@ const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
                 aria-controls="results-panel"
                 onClick={() => {
                   setActiveKey(tab.key);
+                  setPageIndex(0);
                   setSelectedDate(null);
                 }}
                 className={`rounded-full px-6 py-2 text-sm font-bold tracking-wide transition-colors ${
@@ -268,7 +359,7 @@ const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
         )}
 
         <p className="rounded-2xl bg-[#0C1636] px-4 py-2 text-center text-sm text-white sm:text-base">
-          <StatsLine stats={active.stats} />
+          <StatsLine period={page} />
         </p>
       </div>
 
@@ -280,24 +371,73 @@ const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
         }
         className="mx-auto max-w-5xl"
       >
-        {/* Says exactly which 30 days are counted. Today is left out until its
+        {/* Says exactly which 30 days are shown. Today is left out until its
             tips have been played. */}
-        {first && last && (
-          <p className="mb-3 text-center text-xs text-white/70 sm:text-sm">
-            {first.weekday} {first.dayMonth} – {last.weekday} {last.dayMonth}
-          </p>
-        )}
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <ArrowButton
+            direction="older"
+            disabled={pageIndex >= pageCount - 1}
+            onClick={() => goTo(pageIndex + 1)}
+          />
+          <div className="text-center" aria-live="polite">
+            <p className="text-sm font-bold text-white sm:text-base">
+              {page.title}
+            </p>
+            <p className="text-xs text-white/70 sm:text-sm">{page.range}</p>
+            {pageCount > 1 && (
+              <div className="mt-2 flex justify-center gap-1.5">
+                {slots.map((period, index) => (
+                  <button
+                    key={period.range}
+                    type="button"
+                    onClick={() => goTo(pageCount - 1 - index)}
+                    aria-label={`Show ${period.title.toLowerCase()}`}
+                    aria-current={index === slot}
+                    className={`h-2 rounded-full transition-all ${
+                      index === slot ? "w-6 bg-[#03DD3C]" : "w-2 bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <ArrowButton
+            direction="newer"
+            disabled={pageIndex === 0}
+            onClick={() => goTo(pageIndex - 1)}
+          />
+        </div>
 
-        <ol className="grid grid-cols-5 gap-1.5 sm:grid-cols-6 sm:gap-3">
-          {active.days.map((day) => (
-            <DayCell
-              key={day.date}
-              day={day}
-              selected={day.date === selectedDay?.date}
-              onSelect={() => setSelectedDate(day.date)}
-            />
-          ))}
-        </ol>
+        <div className="overflow-hidden">
+          <div
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => {
+              swipeStart.current = null;
+            }}
+            className="flex touch-pan-y transition-transform duration-300 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateX(-${slot * 100}%)` }}
+          >
+            {slots.map((period, index) => (
+              <ol
+                key={period.range}
+                aria-label={`${period.title}, ${period.range}`}
+                aria-hidden={index !== slot}
+                inert={index !== slot}
+                className="grid w-full shrink-0 grid-cols-5 gap-1.5 sm:grid-cols-6 sm:gap-3"
+              >
+                {period.days.map((day) => (
+                  <DayCell
+                    key={day.date}
+                    day={day}
+                    selected={index === slot && day.date === selectedDay?.date}
+                    onSelect={() => setSelectedDate(day.date)}
+                  />
+                ))}
+              </ol>
+            ))}
+          </div>
+        </div>
 
         {selectedDay && <DayDetails day={selectedDay} />}
 
@@ -321,7 +461,7 @@ const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
         </ul>
 
         <p className="mt-4 text-center text-sm text-white">
-          <StatsLine stats={active.stats} />
+          <StatsLine period={page} />
         </p>
       </div>
     </div>

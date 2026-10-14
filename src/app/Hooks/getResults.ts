@@ -19,24 +19,26 @@ export const RESULTS_PACKAGES = {
   elite: "ELITE SINGLE",
 } as const;
 
+/** Each page of the results slider, and its stats lines, covers this many days. */
+const PERIOD_DAYS = 30;
+
 /**
- * The grid and both of its stats lines cover this many days, so every win
- * figure on the page is the same number.
+ * Pages in the slider: the last 30 days and the 30 before. The API returns at
+ * most 62 days per request, so both fit in one call.
  */
-const WINDOW_DAYS = 30;
+const PERIOD_COUNT = 2;
 
 /**
  * Outcomes are graded by hand in the admin, often for days already past, and
- * should show on the site soon after. A refresh is 30 calls per package, made
- * in the background, so a minute keeps it close without hammering the API.
+ * should show on the site soon after. A refresh is one call per package, but it
+ * also rebuilds the page around it, so a minute keeps that rebuild occasional.
  */
 const RESULTS_REVALIDATE_SECONDS = 60;
 
-/** Each call takes about a second, so fan out, but not all at once. */
-const CONCURRENCY = 8;
-
 /** A row from /api/predictions/. */
 interface PredictionRow {
+  /** The day the tip was published for, YYYY-MM-DD. */
+  date?: string | null;
   league_name?: string;
   home_team_name?: string;
   away_team_name?: string;
@@ -48,24 +50,33 @@ interface PredictionRow {
   fixture_date?: number | string | null;
 }
 
-export interface PackageResults {
+/** One page of the slider: 30 days and the stats counted from them. */
+export interface ResultsPeriod {
   /**
-   * Every one of the last 30 days, oldest first, with that day's tips — empty
-   * on a day without one, so the grid shows each day in its place.
+   * Every day of the period, oldest first, with that day's tips — empty on a
+   * day without one, so the grid shows each day in its place.
    */
   days: { date: string; tips: SettledTip[] }[];
-  /** Stats for the last 30 days. */
   stats: ResultsStats;
 }
 
-type DayResponse = { rows: PredictionRow[] } | { error: string };
+export interface PackageResults {
+  /** Newest first: the last 30 days, then the 30 before. */
+  periods: ResultsPeriod[];
+}
+
+type RangeResponse = { rows: PredictionRow[] } | { error: string };
 
 /**
  * Not cached on its own: the whole result is cached once in
  * `getPackageResults`, which runs fetches uncached anyway. The trailing slash
  * is because the backend 308s the bare path.
  */
-async function fetchDay(market: string, date: string): Promise<DayResponse> {
+async function fetchRange(
+  market: string,
+  from: string,
+  to: string,
+): Promise<RangeResponse> {
   const base = process.env.NEXT_PUBLIC_BLOG_ADMIN_API_URL;
 
   if (!base) {
@@ -73,8 +84,9 @@ async function fetchDay(market: string, date: string): Promise<DayResponse> {
   }
 
   const url = new URL(`${base}/api/predictions/`);
-  url.searchParams.set("date", date);
   url.searchParams.set("market", market);
+  url.searchParams.set("from", from);
+  url.searchParams.set("to", to);
 
   try {
     const response = await fetch(url, {
@@ -151,11 +163,7 @@ const OUTCOMES: Record<string, TipOutcome> = {
  * its kickoff is known to have passed: before that it may be a paid pick still
  * to come, and showing it would hand it out for free.
  */
-function toSettledTip(
-  row: PredictionRow,
-  date: string,
-  now: DateTime,
-): SettledTip | null {
+function toSettledTip(row: PredictionRow, now: DateTime): SettledTip | null {
   const tip = row.prediction?.trim();
 
   if (!row.home_team_name || !row.away_team_name || !tip) {
@@ -163,6 +171,15 @@ function toSettledTip(
   }
 
   const kickoff = parseFixtureDate(row.fixture_date);
+
+  // The published day files the tip in the grid; kickoff is the fallback.
+  const date = /^\d{4}-\d{2}-\d{2}/.test(row.date ?? "")
+    ? (row.date ?? "").slice(0, 10)
+    : kickoff?.toISODate();
+
+  if (!date) {
+    return null;
+  }
 
   if (kickoff && kickoff > now) {
     return null;
@@ -190,24 +207,10 @@ function toSettledTip(
   };
 }
 
-async function mapInBatches<T, R>(
-  items: T[],
-  size: number,
-  fn: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results: R[] = [];
-
-  for (let start = 0; start < items.length; start += size) {
-    results.push(...(await Promise.all(items.slice(start, start + size).map(fn))));
-  }
-
-  return results;
-}
-
 /**
- * Settled results for one package. Returns null when the last 30 days have no
- * won or lost tips, or the API fails, so the block is hidden rather than ever
- * falling back to made-up numbers.
+ * Settled results for one package, in 30-day pages. Returns null when no page
+ * has a won or lost tip, or the API fails, so the block is hidden rather than
+ * ever falling back to made-up numbers.
  *
  * Today is never requested: its picks may not have kicked off yet.
  */
@@ -215,40 +218,23 @@ async function loadPackageResults(
   market: string,
 ): Promise<PackageResults | null> {
   const now = DateTime.now();
-  const today = now.startOf("day");
-  const yesterday = today.minus({ days: 1 });
+  const yesterday = now.startOf("day").minus({ days: 1 });
+  const from = yesterday.minus({ days: PERIOD_DAYS * PERIOD_COUNT - 1 });
 
-  const windowStart = yesterday.minus({ days: WINDOW_DAYS - 1 });
-
-  // One request per day of the window, newest first.
-  const days: DateTime[] = [];
-
-  for (let day = yesterday; day >= windowStart; day = day.minus({ days: 1 })) {
-    days.push(day);
-  }
-
-  const responses = await mapInBatches(days, CONCURRENCY, (day) =>
-    fetchDay(market, day.toISODate() ?? ""),
+  const response = await fetchRange(
+    market,
+    from.toISODate() ?? "",
+    yesterday.toISODate() ?? "",
   );
 
-  const failures = responses.filter(
-    (response): response is { error: string } => "error" in response,
-  );
+  if ("error" in response) {
+    console.error(`Results for "${market}" failed: ${response.error}`);
 
-  if (failures.length) {
-    console.error(
-      `Results for "${market}": ${failures.length} of ${days.length} days failed (first: ${failures[0].error})`,
-    );
+    return null;
   }
 
-  const tips = responses
-    .flatMap((response, index) =>
-      "rows" in response
-        ? response.rows.map((row) =>
-            toSettledTip(row, days[index].toISODate() ?? "", now),
-          )
-        : [],
-    )
+  const tips = response.rows
+    .map((row) => toSettledTip(row, now))
     .filter((tip): tip is SettledTip => tip !== null)
     // Oldest first, as the grid reads; within a day, earliest kickoff first.
     .sort(
@@ -257,34 +243,41 @@ async function loadPackageResults(
         (a.kickoff ?? "").localeCompare(b.kickoff ?? ""),
     );
 
-  const stats = summarize(tips);
+  const periods: ResultsPeriod[] = [];
 
-  if (!hasDecidedTips(stats)) {
-    return null;
-  }
+  for (let index = 0; index < PERIOD_COUNT; index++) {
+    const periodEnd = yesterday.minus({ days: PERIOD_DAYS * index });
+    const periodStart = periodEnd.minus({ days: PERIOD_DAYS - 1 });
+    const days: ResultsPeriod["days"] = [];
 
-  const calendar: PackageResults["days"] = [];
+    for (let day = periodStart; day <= periodEnd; day = day.plus({ days: 1 })) {
+      const date = day.toISODate() ?? "";
 
-  for (let day = windowStart; day <= yesterday; day = day.plus({ days: 1 })) {
-    const date = day.toISODate() ?? "";
+      days.push({ date, tips: tips.filter((tip) => tip.date === date) });
+    }
 
-    calendar.push({
-      date,
-      tips: tips.filter((tip) => tip.date === date),
+    periods.push({
+      days,
+      stats: summarize(days.flatMap((day) => day.tips)),
     });
   }
 
-  return { days: calendar, stats };
+  if (!periods.some((period) => hasDecidedTips(period.stats))) {
+    return null;
+  }
+
+  return { periods };
 }
 
 /**
  * The whole result is cached for a minute, an empty one included. Next only
  * caches successful fetches, so while the API errors every render would repeat
- * all 30 day requests, and /vip renders on every request. `cache` on top
- * dedupes repeat lookups within a single render.
+ * the request, and /vip renders on every request. `cache` on top dedupes
+ * repeat lookups within a single render. The key carries a version so a result
+ * cached in the old shape is never served to the new grid.
  */
 export const getPackageResults = cache(
-  unstable_cache(loadPackageResults, ["package-results"], {
+  unstable_cache(loadPackageResults, ["package-results-v2"], {
     revalidate: RESULTS_REVALIDATE_SECONDS,
   }),
 );

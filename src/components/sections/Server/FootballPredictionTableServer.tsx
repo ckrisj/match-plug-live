@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { MatchPrediction } from "../FootballPredictionDetailsTable";
 import { Loader } from "../Loader";
+import PredictionOutcome from "../PredictionOutcome";
 import { MarketPredictions } from "@/app/Hooks/getMarketPredictions";
 import PredictionFallbackNotice from "./PredictionFallbackNotice";
 import EmptyPredictionState from "./EmptyPredictionState";
@@ -157,13 +158,7 @@ export function FootballPredictionTableServer({
               <td
                 className={`text-center py-3  sm:px-6 bg-[#EDF0F9] ${lastTdClass}`}
               >
-                <span
-                  className={`inline-block text-nowrap ${
-                    match.result ? "bg-green-100" : ""
-                  } text-green-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold`}
-                >
-                  {match.result ?? "-"}
-                </span>
+                <PredictionOutcome outcome={match.outcome} />
               </td>
             </>
           ) : (

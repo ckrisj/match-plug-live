@@ -37,7 +37,8 @@ export interface MatchPrediction {
   prediction: string;
   away_team_name: string;
   away_team_logo: string;
-  result: string;
+  /** WON / LOST / CANCELLED once graded, null before. */
+  outcome?: string | null;
 }
 
 /** Market published on the homepage, used as the last-resort table here. */

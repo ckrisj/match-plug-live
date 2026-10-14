@@ -41,6 +41,9 @@ export default async function Page() {
           torn top edge in the hero's near-black. */}
       <ResultsSection topEdgeColor="#0A0A0A" />
       <RealWinsSection />
+      <PricingPlans />
+      {/* Objections answered straight after the price. */}
+      <FAQSection />
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[300] w-full">
@@ -51,9 +54,6 @@ export default async function Page() {
         <FootballPredictionTable title="Smarter soccer predictions for Today" />
       </Suspense>
       <DirectWinPredictions />
-      <PricingPlans />
-      {/* Objections answered straight after the price. */}
-      <FAQSection />
       <MeetOurExperts />
       <LatestNews />
       <AboutUsPage />
