@@ -10,7 +10,6 @@ import Hero from "@/components/sections/Hero";
 import LatestNews from "@/components/sections/LatestNews";
 import { Loader } from "@/components/sections/Loader";
 // import { LogosSection } from "@/components/sections/LogosSection";
-import MeetOurExperts from "@/components/sections/MeetOurExperts";
 import PricingPlans from "@/components/sections/PricingPlans";
 import RealWinsSection from "@/components/sections/RealWinsSection";
 // import SureWinPredictionSection from "@/components/sections/SureWinPredictionSection";
@@ -54,7 +53,6 @@ export default async function Page() {
         <FootballPredictionTable title="Smarter soccer predictions for Today" />
       </Suspense>
       <DirectWinPredictions />
-      <MeetOurExperts />
       <LatestNews />
       <AboutUsPage />
       {/* <AmericanSportsSection /> */}
