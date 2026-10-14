@@ -84,17 +84,31 @@ const Header: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Desktop Login Button */}
-          <div className="hidden md:flex items-center">
-            <Link href="https://user.matchplug.com/auth/login">
-              <button className="bg-white hover:bg-gray-100 text-black font-semibold px-6 py-2 rounded-full transition-all duration-200 transform hover:scale-105 cursor-pointer">
-                Login
-              </button>
+          {/* Desktop actions: Subscribe is the one primary action */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="https://user.matchplug.com/auth/login"
+              className="border border-white/60 hover:border-white text-white font-semibold px-6 py-2 rounded-full transition-colors duration-200"
+            >
+              Login
+            </Link>
+            <Link
+              href="/#pricing"
+              className="bg-[#03DD3C] text-black font-bold px-6 py-2 rounded-full transition-transform duration-200 hover:scale-105"
+            >
+              Subscribe
             </Link>
           </div>
 
-          {/* Mobile Burger Button */}
-          <div className="md:hidden flex items-center justify-center">
+          {/* Mobile: Subscribe stays visible next to the burger */}
+          <div className="md:hidden flex items-center justify-center gap-4">
+            <Link
+              href="/#pricing"
+              onClick={closeMobileMenu}
+              className="bg-[#03DD3C] text-black text-sm font-bold px-4 py-1.5 rounded-full"
+            >
+              Subscribe
+            </Link>
             <button
               onClick={toggleMobileMenu}
               className="text-white hover:text-gray-300 focus:outline-none focus:text-gray-300 transition-colors duration-200"
@@ -166,15 +180,14 @@ const Header: React.FC = () => {
               News
             </Link>
 
-            {/* Mobile Login Button */}
+            {/* Mobile Login Button: secondary to Subscribe */}
             <div className="pt-4 border-t border-gray-700">
               <Link
                 href="https://user.matchplug.com/auth/login"
                 onClick={closeMobileMenu}
+                className="block w-full border border-white/60 text-white text-center font-semibold px-6 py-2 rounded-full"
               >
-                <button className="w-full bg-white hover:bg-gray-100 text-black font-semibold px-6 py-2 rounded-full transition-all duration-200 cursor-pointer">
-                  Login
-                </button>
+                Login
               </Link>
             </div>
           </nav>

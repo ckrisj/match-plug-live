@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CreditCard, Wallet } from "lucide-react";
 import { useGetData } from "@/app/Hooks/useGetData";
 import footerResponse from "@/components/utils/Collection/footer-menu-response.json";
 
@@ -57,21 +58,14 @@ const FooterSection: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const PaymentIcon: React.FC<{
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-}> = ({ src, alt, width, height }) => (
-  <div className=" rounded flex items-center justify-center p-2">
-    <Image
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      className="object-contain w-20"
-    />
-  </div>
+const PaymentMethod: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+}> = ({ icon, label }) => (
+  <span className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white">
+    {icon}
+    {label}
+  </span>
 );
 
 const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({
@@ -132,19 +126,11 @@ const Footer: React.FC = () => {
     { src: "/contact-us", label: "Contact us" },
   ];
 
+  // Only what checkout actually takes: cards through Stripe, and Paystack.
+  // The old row advertised Bitcoin, M-Pesa, PayPal and others it does not.
   const paymentMethods = [
-    { src: "/g1.png", alt: "Bitcoin", width: 100, height: 55 },
-    { src: "/g2.png", alt: "M-Pesa", width: 109, height: 65 },
-    { src: "/g3.png", alt: "Smart Money", width: 109, height: 65 },
-    { src: "/g4.png", alt: "PayPal", width: 87, height: 42 },
-    { src: "/g5.png", alt: "Skrill", width: 87, height: 43 },
-    {
-      src: "/g6.png",
-      alt: "Mastercard",
-      width: 87,
-      height: 59,
-    },
-    { src: "/g7.png", alt: "Mobile Money", width: 87, height: 59 },
+    { icon: <CreditCard className="h-4 w-4" aria-hidden />, label: "Card (Stripe)" },
+    { icon: <Wallet className="h-4 w-4" aria-hidden />, label: "Paystack" },
   ];
 
   const { data: categoriesResponse } = useGetData<MenuResponse>({
@@ -264,9 +250,10 @@ const Footer: React.FC = () => {
 
         {/* Payment Methods */}
         <div className="flex justify-center mb-8">
-          <div className="flex flex-wrap gap-2 items-center justify-center">
-            {paymentMethods.map((method, index) => (
-              <PaymentIcon key={index} {...method} />
+          <div className="flex flex-wrap gap-3 items-center justify-center">
+            <span className="text-sm text-white/70">Secure payments:</span>
+            {paymentMethods.map((method) => (
+              <PaymentMethod key={method.label} {...method} />
             ))}
           </div>
         </div>

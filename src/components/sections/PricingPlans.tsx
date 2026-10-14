@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
+import { Lock } from "lucide-react";
 
 interface PricingFeature {
   icon?: React.ReactNode;
@@ -15,9 +16,12 @@ interface PricingPlan {
   accuracy: string;
   features: PricingFeature[];
   backgroundColor: string;
-  isBestValue?: boolean;
-  guarantee: string;
-  cancelText: string;
+  /** Pill above the card, e.g. "Most popular". */
+  badge?: string;
+  /** The plan the page steers to: emphasised and given the primary button. */
+  featured?: boolean;
+  /** What the plan delivers, in one line. Never an earnings promise. */
+  summary: string;
 }
 
 const FeatureIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -123,22 +127,32 @@ const UserIcon = () => (
 
 const PricingCard: React.FC<{ plan: PricingPlan }> = ({ plan }) => (
   <div className="h-full relative ">
-    {plan.isBestValue && (
-      <div className="absolute -top-9 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="bg-white border border-gray-200 shadow-lg rounded-full px-6 py-4">
-          <span className="text-xl font-bold text-black">Best Value</span>
+    {plan.badge && (
+      <div className="absolute -top-7 left-1/2 transform -translate-x-1/2 z-10">
+        <div
+          className={`whitespace-nowrap rounded-full px-6 py-3 shadow-lg ${
+            plan.featured
+              ? "bg-[#03DD3C]"
+              : "bg-white border border-gray-200"
+          }`}
+        >
+          <span className="text-lg font-bold text-black">{plan.badge}</span>
         </div>
       </div>
     )}
 
     <div
-      className={`relative rounded-[51px] px-8 pb-8 pt-12 h-full flex flex-col border border-gray-300`}
+      className={`relative rounded-[51px] px-8 pb-8 pt-12 h-full flex flex-col ${
+        plan.featured
+          ? "border-4 border-[#03DD3C] shadow-[0_0_40px_rgba(3,221,60,0.35)]"
+          : "border border-gray-300"
+      }`}
       style={{ backgroundColor: plan.backgroundColor }}
     >
       {/* Header */}
       <div className="text-center mb-4">
         <h3 className="text-3xl font-bold text-black mb-2">{plan.name}</h3>
-        <p className="text-base text-black">{plan.guarantee}</p>{" "}
+        <p className="text-base text-black">{plan.summary}</p>
       </div>
       <div className="flex justify-center mb-4">
         <div className="w-20 h-px bg-black"></div>
@@ -173,12 +187,14 @@ const PricingCard: React.FC<{ plan: PricingPlan }> = ({ plan }) => (
 
       {/* CTA Button */}
       <div className="text-center">
-        <Link href="https://user.matchplug.com/auth/register">
-          <button className="bg-[#455DBD] cursor-pointer rounded-full px-6 py-2 text-lg font-bold text-white hover:opacity-90 transition-opacity">
-            Get Started
-          </button>
+        <Link
+          href="https://user.matchplug.com/auth/register"
+          className={`inline-block rounded-full px-8 py-2.5 text-lg font-bold transition-opacity hover:opacity-90 ${
+            plan.featured ? "bg-[#03DD3C] text-black" : "bg-[#455DBD] text-white"
+          }`}
+        >
+          Get Started
         </Link>
-        <p className="text-base font-medium text-black mt-3">{plan.cancelText}</p>
       </div>
     </div>
   </div>
@@ -193,10 +209,15 @@ const PricingPlans: React.FC = () => {
       pricePeriod: "/ Month",
       accuracy: "Every pick logged",
       backgroundColor: "#EDEBF1",
-      guarantee: "Ideal for a minimum of 120% Monthly Returns",
-      cancelText: "Join Free Group and make profit first · Cancel Anytime",
+      badge: "Most popular",
+      featured: true,
+      summary: "1.8 to 15 odds daily · 5-8 bets a week",
       features: [
         { icon: <UserIcon />, text: "VIP Telegram Group Access" },
+        // Folded in from the old standalone "Telegram VIP Access" section.
+        { text: "Pre-Game & Live Bets" },
+        { text: "Match of the Day (Pre-Game)" },
+        { text: "Money Race" },
         { icon: <GlobeIcon />, text: "Website Access to Sure Prematch Games" },
         { text: "1.8 to 15 Odds Daily" },
         { icon: <MailIcon />, text: "Daily Emails of Sure Games Daily" },
@@ -211,9 +232,8 @@ const PricingPlans: React.FC = () => {
       pricePeriod: "/ Month",
       accuracy: "Every pick logged",
       backgroundColor: "#F9EFEF",
-      isBestValue: true,
-      guarantee: "Free Access to VIP Packages",
-      cancelText: "Cancel Anytime",
+      badge: "Premium",
+      summary: "Free Access to VIP Packages",
       features: [
         { icon: <UserIcon />, text: "VIP Telegram Group Access" },
         { text: "20 High Stake Games Monthly" },
@@ -223,7 +243,7 @@ const PricingPlans: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section id="pricing" className="scroll-mt-20 py-20 bg-white">
       <div className="container mx-auto px-4">
         {/* Header */}
 
@@ -238,11 +258,19 @@ const PricingPlans: React.FC = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto mb-16 md:gap-8 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto mt-14 md:gap-8 gap-16">
           {plans.map((plan) => (
             <PricingCard key={plan.id} plan={plan} />
           ))}
         </div>
+
+        {/* Only the methods checkout actually takes. */}
+        <p className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-black">
+          <Lock className="h-4 w-4" aria-hidden />
+          <span className="font-semibold">Cancel anytime</span>
+          <span aria-hidden>·</span>
+          <span>Secure checkout by card (Stripe) or Paystack</span>
+        </p>
       </div>
     </section>
   );

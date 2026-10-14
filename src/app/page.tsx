@@ -6,7 +6,6 @@ import DirectWinPredictions from "@/components/sections/DirectWinPredictions";
 import FAQSection from "@/components/sections/FAQSection";
 import FootballPredictionTable from "@/components/sections/FootballPredictionTable";
 import Hero from "@/components/sections/Hero";
-import LiveInplaySection from "@/components/sections/LiveInplaySection";
 // import JoinWinningBettorsSection from "@/components/sections/JoinWinningBettorsSection";
 import LatestNews from "@/components/sections/LatestNews";
 import { Loader } from "@/components/sections/Loader";
@@ -16,9 +15,7 @@ import PricingPlans from "@/components/sections/PricingPlans";
 import RealWinsSection from "@/components/sections/RealWinsSection";
 // import SureWinPredictionSection from "@/components/sections/SureWinPredictionSection";
 // import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import VipPicksPromoSection from "@/components/sections/VipPicksPromoSection";
 import ResultsSection from "@/components/sections/Server/ResultsSection";
-import ResultsStrip from "@/components/sections/Server/ResultsStrip";
 // import WhyMatchplug from "@/components/sections/WhyMatchplug";
 import { Suspense } from "react";
 import AboutUsPage from "./about-us/page";
@@ -35,11 +32,11 @@ export const revalidate = 300;
 export default async function Page() {
   return (
     <div className="flex flex-col">
+      {/* The hero and results blocks are deliberately outside Suspense:
+          streamed content lands in a hidden div at the end of the HTML, and
+          the record has to be readable in place by crawlers that do not run
+          JS. */}
       <Hero />
-      {/* The results blocks are deliberately outside Suspense: streamed
-          content lands in a hidden div at the end of the HTML, and the record
-          has to be readable in place by crawlers that do not run JS. */}
-      <ResultsStrip />
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[300] w-full">
@@ -50,17 +47,16 @@ export default async function Page() {
         <FootballPredictionTable title="Smarter soccer predictions for Today" />
       </Suspense>
       <DirectWinPredictions />
-      <VipPicksPromoSection />
-      <LiveInplaySection />
       <RealWinsSection />
       {/* Proof right before the price: the VIP tab leads into the VIP plan
           and the Elite tab into the Elite card below it. */}
       <ResultsSection />
       <PricingPlans />
+      {/* Objections answered straight after the price. */}
+      <FAQSection />
       <MeetOurExperts />
       <LatestNews />
       <AboutUsPage />
-      <FAQSection />
       {/* <AmericanSportsSection /> */}
       {/* <TestimonialsSection /> */}
       {/* <WhyMatchplug /> */}

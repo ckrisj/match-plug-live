@@ -2,7 +2,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { Send, Gift } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -140,23 +139,15 @@ const RealWinsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="relative mt-10 w-full max-w-[440px]">
+        {/* One call to action: on to the plans */}
+        <div className="mt-10 w-full max-w-[440px]">
           <Link
-            href="https://user.matchplug.com/auth/register"
-            className="flex w-full items-center justify-center gap-3 rounded-full bg-[#03DD3C] py-4 text-lg font-bold text-black transition-transform duration-300 hover:scale-105 sm:text-2xl"
+            href="#pricing"
+            className="flex w-full items-center justify-center rounded-full bg-[#03DD3C] py-4 text-lg font-bold uppercase text-black transition-transform duration-300 hover:scale-105 sm:text-2xl"
           >
-            <Send className="h-6 w-6" />
-            JOIN FREE VIP CHANNEL
+            See plans
           </Link>
-          <Gift className="absolute -right-1 -top-4 h-10 w-10 text-[#03DD3C]" />
         </div>
-
-        {/* Footer note */}
-        <p className="mt-5 text-center text-base">
-          <span className="text-white">First 100 today members get </span>
-          <span className="text-[#03DD3C]">7 days of VIP access</span>
-        </p>
       </div>
 
       {/* Scroll indicator line */}

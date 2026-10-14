@@ -19,11 +19,11 @@ export const RESULTS_PACKAGES = {
   elite: "ELITE SINGLE",
 } as const;
 
-/** The grid and its stats line cover this many days. */
+/**
+ * The grid, its stats line and the hero's trust line all cover this many
+ * days, so every win figure on the page is the same number.
+ */
 const WINDOW_DAYS = 30;
-
-/** The strip under the hero covers this many days. */
-const STRIP_DAYS = 7;
 
 /**
  * Outcomes are graded by hand in the admin, often for days already past, and
@@ -56,8 +56,6 @@ export interface PackageResults {
   days: { date: string; tips: SettledTip[] }[];
   /** Stats for the last 30 days. */
   stats: ResultsStats;
-  /** Stats for the last 7 days. */
-  week: ResultsStats;
   /** The previous calendar month, if it has any won or lost tips. */
   month: { name: string; stats: ResultsStats } | null;
 }
@@ -229,7 +227,6 @@ async function loadPackageResults(
   const yesterday = today.minus({ days: 1 });
 
   const windowStart = yesterday.minus({ days: WINDOW_DAYS - 1 });
-  const weekStart = yesterday.minus({ days: STRIP_DAYS - 1 });
   const monthStart = today.minus({ months: 1 }).startOf("month");
   const monthEnd = monthStart.endOf("month");
 
@@ -297,7 +294,6 @@ async function loadPackageResults(
   return {
     days: calendar,
     stats,
-    week: summarize(tips.filter((tip) => inRange(tip, weekStart, yesterday))),
     month: hasDecidedTips(monthStats)
       ? { name: monthStart.toFormat("LLLL"), stats: monthStats }
       : null,

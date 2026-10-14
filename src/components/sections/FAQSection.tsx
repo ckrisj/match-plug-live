@@ -100,10 +100,12 @@ const CategoryTab: React.FC<{
 );
 
 const FAQSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState("predictions");
+  // The FAQ sits straight under pricing, so the buying questions open first.
+  const [activeCategory, setActiveCategory] = useState("plans");
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
 
   const categories: Category[] = [
+    { id: "plans", label: "VIP & Billing" },
     { id: "predictions", label: "Predictions" },
     { id: "tips", label: "Tips" },
     { id: "betting", label: "Betting Tips" },
@@ -111,6 +113,39 @@ const FAQSection: React.FC = () => {
   ];
 
   const faqData: FAQItem[] = [
+    // VIP & Billing. Cancellation and refund answers restate what the site
+    // already publishes on /vip and in the terms of service.
+    {
+      id: 17,
+      question: "How much does a VIP football betting tips subscription cost?",
+      answer:
+        "Matchplug VIP costs $29 per month and the Elite Games tier costs $99 per month. VIP includes Telegram group access, website access to prematch games, 1.8 to 15 odds daily, daily emails and 5-8 max bets weekly. Elite Games includes everything in VIP plus 20 high-stake games monthly and direct 1-on-1 support with bankroll guidance. Both can be cancelled at any time.",
+      category: "plans",
+    },
+    {
+      id: 25,
+      question: "How and where are VIP tips delivered?",
+      answer:
+        "VIP tips are posted in the private VIP Telegram group, published on the website when you log in to your account, and sent to you by daily email. Elite Games members get the same plus 20 high-stake games a month and direct 1-on-1 support.",
+      category: "plans",
+    },
+    {
+      id: 26,
+      question: "How do I cancel my subscription?",
+      answer:
+        "You can cancel at any time, with no minimum term. Access continues to the end of the billing period you have already paid for. If you need help cancelling, contact support on WhatsApp, by email or on Telegram.",
+      category: "plans",
+    },
+    {
+      id: 27,
+      question: "Can I get a refund?",
+      answer: [
+        "Subscription payments are not refundable, as set out in our ",
+        { href: "/terms-of-service", label: "terms of service" },
+        ". Cancelling stops the next renewal, and you keep access until the end of the period you have paid for.",
+      ],
+      category: "plans",
+    },
     // Predictions
     {
       id: 22,
@@ -257,13 +292,6 @@ const FAQSection: React.FC = () => {
         "No. No legitimate betting tip can guarantee a win, because match outcomes are genuinely uncertain. Win draw win predictions from statistical models typically land between 50% and 60% across a full season, and anyone claiming materially more than that over a large sample is not measuring honestly. The value of a tip service is consistent analysis over time, not certainty on any single match.",
       category: "betting",
     },
-    {
-      id: 17,
-      question: "How much does a VIP football betting tips subscription cost?",
-      answer:
-        "Matchplug VIP costs $29 per month and the Elite Games tier costs $99 per month. VIP includes Telegram group access, website access to prematch games, 1.8 to 15 odds daily, daily emails and 5-8 max bets weekly. Elite Games includes everything in VIP plus 20 high-stake games monthly and direct 1-on-1 support with bankroll guidance. Both can be cancelled at any time.",
-      category: "betting",
-    },
     // General
     {
       id: 18,
@@ -276,7 +304,7 @@ const FAQSection: React.FC = () => {
       id: 19,
       question: "How do I register for Matchplug?",
       answer:
-        "Registration takes under a minute: choose Subscribe Now or Get Free Tips, then enter your email and phone number. No payment is required to read the free daily predictions — a card is only needed if you choose a paid VIP or Elite Games plan.",
+        "Registration takes under a minute: choose a plan under Pricing and select Get Started, then enter your email and phone number. No payment is required to read the free daily predictions — a card is only needed if you choose a paid VIP or Elite Games plan.",
       category: "general",
     },
     {
