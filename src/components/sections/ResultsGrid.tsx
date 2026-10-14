@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { Check, Clock, Minus, X } from "lucide-react";
 
 import {
@@ -217,10 +216,7 @@ const StatsLine: React.FC<{ stats: ResultsStats }> = ({ stats }) => (
   </>
 );
 
-const ResultsGrid: React.FC<{
-  tabs: ResultsTabData[];
-  subscribeHref: string;
-}> = ({ tabs, subscribeHref }) => {
+const ResultsGrid: React.FC<{ tabs: ResultsTabData[] }> = ({ tabs }) => {
   const [activeKey, setActiveKey] = useState(tabs[0].key);
   const active = tabs.find((tab) => tab.key === activeKey) ?? tabs[0];
   const first = active.days[0];
@@ -327,15 +323,6 @@ const ResultsGrid: React.FC<{
         <p className="mt-4 text-center text-sm text-white">
           <StatsLine stats={active.stats} />
         </p>
-      </div>
-
-      <div className="mt-8 flex justify-center">
-        <Link
-          href={subscribeHref}
-          className="inline-flex w-full items-center justify-center rounded-full bg-[#03DD3C] px-10 py-3.5 text-sm font-bold uppercase tracking-wide text-black transition-transform hover:scale-105 sm:w-auto sm:text-base"
-        >
-          Subscribe
-        </Link>
       </div>
     </div>
   );

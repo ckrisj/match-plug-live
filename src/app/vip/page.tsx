@@ -34,9 +34,7 @@ const Page = async ({ searchParams }: PageParams) => {
         slug={vip}
       />
 
-      {/* This page has its own pricing block, so Subscribe goes straight to
-          sign-up. */}
-      <ResultsSection subscribeHref="https://user.matchplug.com/auth/register" />
+      <ResultsSection />
 
       <section className="max-w-6xl mx-auto sm:px-4 px-2 py-12">
         <h2 className="text-[28px] font-bold mb-3">Pricing</h2>

@@ -20,8 +20,8 @@ export const RESULTS_PACKAGES = {
 } as const;
 
 /**
- * The grid, its stats line and the hero's trust line all cover this many
- * days, so every win figure on the page is the same number.
+ * The grid and both of its stats lines cover this many days, so every win
+ * figure on the page is the same number.
  */
 const WINDOW_DAYS = 30;
 
@@ -281,7 +281,7 @@ async function loadPackageResults(
  * The whole result is cached for a minute, an empty one included. Next only
  * caches successful fetches, so while the API errors every render would repeat
  * all 30 day requests, and /vip renders on every request. `cache` on top
- * lets the hero's trust line and the grid on one page share a single lookup.
+ * dedupes repeat lookups within a single render.
  */
 export const getPackageResults = cache(
   unstable_cache(loadPackageResults, ["package-results"], {

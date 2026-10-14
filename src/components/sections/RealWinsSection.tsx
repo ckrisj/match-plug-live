@@ -145,7 +145,7 @@ const RealWinsSection: React.FC = () => {
             href="#pricing"
             className="flex w-full items-center justify-center rounded-full bg-[#03DD3C] py-4 text-lg font-bold uppercase text-black transition-transform duration-300 hover:scale-105 sm:text-2xl"
           >
-            See plans
+            Subscribe
           </Link>
         </div>
       </div>

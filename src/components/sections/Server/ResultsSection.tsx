@@ -86,11 +86,8 @@ const TornEdge: React.FC<{ position: "top" | "bottom"; color: string }> = ({
  * numbers.
  */
 const ResultsSection = async ({
-  subscribeHref = "/#pricing",
   topEdgeColor = "#FFFFFF",
 }: {
-  /** Where "Subscribe" goes: the plans, like every other Subscribe button. */
-  subscribeHref?: string;
   /** Colour of the section above, so the torn top edge blends into it. */
   topEdgeColor?: string;
 }) => {
@@ -131,7 +128,7 @@ const ResultsSection = async ({
         <h2 className="mb-8 text-center text-2xl font-bold text-white sm:text-3xl">
           VIP & Elite Results — Last 30 Days
         </h2>
-        <ResultsGrid tabs={tabs} subscribeHref={subscribeHref} />
+        <ResultsGrid tabs={tabs} />
       </div>
     </section>
   );

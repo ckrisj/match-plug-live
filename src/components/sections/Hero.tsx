@@ -1,42 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import { Check } from "lucide-react";
-
-import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
-
-/**
- * The VIP record in one line, from the same 30-day count as the results grid
- * further down, so the page never shows two different win rates. Hidden when
- * there is nothing graded to report.
- */
-const TrustLine = async () => {
-  const vip = await getPackageResults(RESULTS_PACKAGES.vip);
-
-  if (!vip) {
-    return null;
-  }
-
-  const { won, lost, hitRate } = vip.stats;
-
-  return (
-    <a
-      href="#results"
-      className="group inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-sm text-white sm:justify-start sm:text-base"
-    >
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#03DD3C]">
-        <Check className="h-3.5 w-3.5 text-black" strokeWidth={3} aria-hidden />
-      </span>
-      <span>
-        VIP, last 30 days: <span className="font-bold">{hitRate}%</span> ·{" "}
-        <span className="font-bold text-[#03DD3C]">{won} won</span> ·{" "}
-        <span className="font-bold text-[#FF6B76]">{lost} lost</span>
-      </span>
-      <span className="font-semibold text-[#03DD3C] underline-offset-4 group-hover:underline">
-        See results →
-      </span>
-    </a>
-  );
-};
 
 const Hero = () => (
   <section className="relative overflow-hidden bg-black">
@@ -65,19 +28,17 @@ const Hero = () => (
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-5">
           <Link
             href="#prediction"
-            className="inline-flex items-center justify-center rounded-full bg-[#03DD3C] px-8 py-3 font-bold text-black transition-transform duration-300 hover:scale-105 sm:text-lg"
+            className="inline-flex items-center justify-center rounded-full bg-[#03DD3C] px-6 py-3 text-center font-bold text-black transition-transform duration-300 hover:scale-105 sm:px-8 sm:text-lg"
           >
-            See today&apos;s picks
+            See today&apos;s free picks
           </Link>
           <Link
             href="#pricing"
-            className="inline-flex items-center justify-center rounded-full border-2 border-white px-8 py-3 font-bold text-white transition-colors duration-300 hover:bg-white hover:text-black sm:text-lg"
+            className="inline-flex items-center justify-center rounded-full border-2 border-white px-6 py-3 text-center font-bold text-white transition-colors duration-300 hover:bg-white hover:text-black sm:px-8 sm:text-lg"
           >
-            Subscribe
+            Subscribe for Highly Accurate Picks
           </Link>
         </div>
-
-        <TrustLine />
       </div>
     </div>
   </section>
