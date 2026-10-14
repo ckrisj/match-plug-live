@@ -37,7 +37,10 @@ const toDay = (day: { date: string; tips: SettledTip[] }): ResultDayData => {
 };
 
 /* Rough, torn-paper edge rendered with a turbulence-displaced rectangle. */
-const TornEdge: React.FC<{ position: "top" | "bottom" }> = ({ position }) => {
+const TornEdge: React.FC<{ position: "top" | "bottom"; color: string }> = ({
+  position,
+  color,
+}) => {
   const filterId = `results-torn-${position}`;
   return (
     <div
@@ -73,7 +76,7 @@ const TornEdge: React.FC<{ position: "top" | "bottom" }> = ({ position }) => {
           y={position === "top" ? -46 : 16}
           width="1280"
           height="60"
-          fill="#FFFFFF"
+          fill={color}
           filter={`url(#${filterId})`}
         />
       </svg>
@@ -90,10 +93,13 @@ const TornEdge: React.FC<{ position: "top" | "bottom" }> = ({ position }) => {
 const ResultsSection = async ({
   recordHref = "/vip#results",
   joinHref = "/vip",
+  topEdgeColor = "#FFFFFF",
 }: {
   /** "See full record" target; null hides it. */
   recordHref?: string | null;
   joinHref?: string;
+  /** Colour of the section above, so the torn top edge blends into it. */
+  topEdgeColor?: string;
 }) => {
   const results = await Promise.all(
     TABS.map((tab) => getPackageResults(tab.market)),
@@ -125,8 +131,8 @@ const ResultsSection = async ({
       id="results"
       className="relative scroll-mt-20 overflow-hidden bg-gradient-to-b from-[#455DBD] to-[#20358A] py-20"
     >
-      <TornEdge position="top" />
-      <TornEdge position="bottom" />
+      <TornEdge position="top" color={topEdgeColor} />
+      <TornEdge position="bottom" color="#FFFFFF" />
       <div className="relative z-10 mx-auto max-w-[1400px] px-4">
         <p className="mb-2 text-center text-sm font-bold uppercase tracking-[0.2em] text-[#03DD3C]">
           Verified results

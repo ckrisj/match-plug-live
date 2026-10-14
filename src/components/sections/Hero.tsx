@@ -5,12 +5,6 @@ import { Check } from "lucide-react";
 import { RESULTS_PACKAGES, getPackageResults } from "@/app/Hooks/getResults";
 
 /**
- * The free channel, offered once here as a quiet secondary link instead of in
- * the four "join free" sections the page used to carry.
- */
-const FREE_TELEGRAM_URL = "https://t.me/MATCHPLUG";
-
-/**
  * The VIP record in one line, from the same 30-day count as the results grid
  * further down, so the page never shows two different win rates. Hidden when
  * there is nothing graded to report.
@@ -84,18 +78,6 @@ const Hero = () => (
         </div>
 
         <TrustLine />
-
-        <p className="text-sm text-white/70">
-          Prefer free tips first?{" "}
-          <Link
-            href={FREE_TELEGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-white underline underline-offset-4 hover:text-[#03DD3C]"
-          >
-            Join our free Telegram channel
-          </Link>
-        </p>
       </div>
     </div>
   </section>

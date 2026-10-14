@@ -37,6 +37,9 @@ export default async function Page() {
           the record has to be readable in place by crawlers that do not run
           JS. */}
       <Hero />
+      {/* Proof first: the verified record sits directly under the hero, its
+          torn top edge in the hero's near-black. */}
+      <ResultsSection topEdgeColor="#0A0A0A" />
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[300] w-full">
@@ -48,9 +51,6 @@ export default async function Page() {
       </Suspense>
       <DirectWinPredictions />
       <RealWinsSection />
-      {/* Proof right before the price: the VIP tab leads into the VIP plan
-          and the Elite tab into the Elite card below it. */}
-      <ResultsSection />
       <PricingPlans />
       {/* Objections answered straight after the price. */}
       <FAQSection />
