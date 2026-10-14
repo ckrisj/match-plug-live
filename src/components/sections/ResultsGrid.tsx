@@ -83,21 +83,69 @@ const OUTCOMES: Record<
   },
 };
 
-/** Icon only on a phone-width cell; icon and label from sm up. */
-const OutcomeBadge: React.FC<{ result: TipOutcome }> = ({ result }) => {
+/**
+ * In a grid cell: icon only on a phone-width cell, icon and label from sm up.
+ * `labelled` always shows the label, as in the mobile details panel.
+ */
+const OutcomeBadge: React.FC<{ result: TipOutcome; labelled?: boolean }> = ({
+  result,
+  labelled = false,
+}) => {
   const { label, Icon, badge } = OUTCOMES[result];
 
   return (
     <span
-      className={`mt-auto inline-flex w-fit items-center gap-1 rounded-full p-1 text-[11px] font-bold sm:px-2.5 sm:py-1 ${badge}`}
+      className={`inline-flex w-fit shrink-0 items-center gap-1 rounded-full text-[11px] font-bold ${
+        labelled ? "px-2.5 py-1" : "mt-auto p-1 sm:px-2.5 sm:py-1"
+      } ${badge}`}
     >
       <Icon className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
-      <span className="sr-only sm:not-sr-only">{label}</span>
+      <span className={labelled ? "" : "sr-only sm:not-sr-only"}>{label}</span>
     </span>
   );
 };
 
-const DayCell: React.FC<{ day: ResultDayData }> = ({ day }) => {
+/**
+ * Phone-width cells are too narrow for the bet, so the selected day's bet is
+ * shown in full under the grid. Desktop cells already show it.
+ */
+const DayDetails: React.FC<{ day: ResultDayData }> = ({ day }) => (
+  <div
+    aria-live="polite"
+    className="mt-4 rounded-2xl bg-white p-4 text-black sm:hidden"
+  >
+    <p className="text-xs font-semibold text-black/60">
+      {day.weekday} {day.dayMonth}
+    </p>
+    {day.tips.map((tip) => (
+      <div
+        key={tip.id}
+        className="mt-2 flex items-start justify-between gap-3 border-t border-black/10 pt-2 first-of-type:border-0 first-of-type:pt-0"
+      >
+        <div className="min-w-0">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-[#20358A]">
+            {tip.league}
+          </p>
+          <p className="text-sm font-bold">{tip.match}</p>
+          <p className="text-sm">
+            {tip.tip}
+            {tip.odds && ` @ ${tip.odds}`}
+          </p>
+        </div>
+        <OutcomeBadge result={tip.result} labelled />
+      </div>
+    ))}
+    <p className="mt-3 text-[11px] text-black/50">
+      Tap any day to see its bet.
+    </p>
+  </div>
+);
+
+const DayCell: React.FC<{
+  day: ResultDayData;
+  selected: boolean;
+  onSelect: () => void;
+}> = ({ day, selected, onSelect }) => {
   const date = (
     <p className="text-[10px] font-semibold leading-tight sm:text-xs">
       <span className="hidden sm:inline">{day.weekday} </span>
@@ -118,31 +166,38 @@ const DayCell: React.FC<{ day: ResultDayData }> = ({ day }) => {
   }
 
   return (
-    <li
-      title={day.tips
-        .map(
-          (tip) =>
-            `${day.weekday} ${day.dayMonth} · ${tip.league} · ${tip.match} · ${tip.tip}${tip.odds ? ` @ ${tip.odds}` : ""} · ${OUTCOMES[tip.result].label}`,
-        )
-        .join("\n")}
-      className={`flex min-h-[72px] flex-col rounded-xl border-2 bg-white p-1.5 text-black sm:min-h-[132px] sm:p-3 ${OUTCOMES[day.tips[0].result].border}`}
-    >
-      <div className="text-black/60">{date}</div>
-      {day.tips.map((tip) => (
-        <div key={tip.id} className="mt-1 flex flex-1 flex-col">
-          <p className="hidden truncate text-[11px] font-bold uppercase tracking-wide text-[#20358A] sm:block">
-            {tip.league}
-          </p>
-          <p className="hidden truncate text-xs font-bold sm:block">
-            {tip.match}
-          </p>
-          <p className="mb-2 hidden truncate text-xs sm:block">
-            {tip.tip}
-            {tip.odds && ` @ ${tip.odds}`}
-          </p>
-          <OutcomeBadge result={tip.result} />
-        </div>
-      ))}
+    <li>
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-pressed={selected}
+        title={day.tips
+          .map(
+            (tip) =>
+              `${day.weekday} ${day.dayMonth} · ${tip.league} · ${tip.match} · ${tip.tip}${tip.odds ? ` @ ${tip.odds}` : ""} · ${OUTCOMES[tip.result].label}`,
+          )
+          .join("\n")}
+        className={`flex h-full min-h-[72px] w-full flex-col rounded-xl border-2 bg-white p-1.5 text-left text-black sm:min-h-[132px] sm:cursor-default sm:p-3 ${
+          OUTCOMES[day.tips[0].result].border
+        } ${selected ? "ring-[3px] ring-white sm:ring-0" : ""}`}
+      >
+        <div className="text-black/60">{date}</div>
+        {day.tips.map((tip) => (
+          <div key={tip.id} className="mt-1 flex w-full min-w-0 flex-1 flex-col">
+            <p className="hidden truncate text-[11px] font-bold uppercase tracking-wide text-[#20358A] sm:block">
+              {tip.league}
+            </p>
+            <p className="hidden truncate text-xs font-bold sm:block">
+              {tip.match}
+            </p>
+            <p className="mb-2 hidden truncate text-xs sm:block">
+              {tip.tip}
+              {tip.odds && ` @ ${tip.odds}`}
+            </p>
+            <OutcomeBadge result={tip.result} />
+          </div>
+        ))}
+      </button>
     </li>
   );
 };
@@ -158,6 +213,14 @@ const ResultsGrid: React.FC<{
   const joinLabel = `Join ${active.name}`;
   const first = active.days[0];
   const last = active.days[active.days.length - 1];
+
+  // The mobile details panel opens on the latest bet, so the details show
+  // before anyone taps.
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const tipDays = active.days.filter((day) => day.tips.length);
+  const selectedDay =
+    tipDays.find((day) => day.date === selectedDate) ??
+    tipDays[tipDays.length - 1];
 
   return (
     <div>
@@ -180,7 +243,10 @@ const ResultsGrid: React.FC<{
                 id={`results-tab-${tab.key}`}
                 aria-selected={tab.key === active.key}
                 aria-controls="results-panel"
-                onClick={() => setActiveKey(tab.key)}
+                onClick={() => {
+                  setActiveKey(tab.key);
+                  setSelectedDate(null);
+                }}
                 className={`rounded-full px-6 py-2 text-sm font-bold tracking-wide transition-colors ${
                   tab.key === active.key
                     ? "bg-[#03DD3C] text-black"
@@ -233,9 +299,16 @@ const ResultsGrid: React.FC<{
 
         <ol className="grid grid-cols-5 gap-1.5 sm:grid-cols-6 sm:gap-3">
           {active.days.map((day) => (
-            <DayCell key={day.date} day={day} />
+            <DayCell
+              key={day.date}
+              day={day}
+              selected={day.date === selectedDay?.date}
+              onSelect={() => setSelectedDate(day.date)}
+            />
           ))}
         </ol>
+
+        {selectedDay && <DayDetails day={selectedDay} />}
 
         <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/80 sm:text-sm">
           {(Object.keys(OUTCOMES) as TipOutcome[]).map((result) => {
